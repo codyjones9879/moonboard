@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 
 import requests
 import urllib
+import time
+from neopixel import *
 from urllib.parse import quote
 '''
 Coordinate Key: This is for color value
@@ -32,14 +34,32 @@ M			G1=6     G2=15    G3=28    G4=37    G5=50    G6=59    G7=72    G8=81    G9=9
 
 
 '''
+'''
+Globals
+'''
+LED_COUNT                = 196 
+LED_PIN                  = 18
+LED_FREQ_HZ              = 800000
+LED_DMA                  = 5
+LED_BRIGHTNESS           = 255
+LED_INVERT               = False
+LED_CHANNEL              = 0
+LED_STRIP                = ws.WS2811_STRIP_GRB
 
-
+#define the color grid
+strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
+strip.begin()
 pageProblems = requests.get("http://www.moonboard.com/problems")
 #.decode('utf-8','ignore')
 soupProblems = BeautifulSoup(pageProblems.content, 'html.parser')
 
 problems = soupProblems.find(class_='ProblemList')
 #print(problems.prettify(encoding='utf-8'))
+def colorWipe(strip, color, wait_ms=50):
+	for i in range(strip.numPixels()):
+		strip.setPixelColor(i, color)
+		strip.show()
+		time.sleep(wait_ms/1000.0)
 
 problemsArray = problems.find_all('a')
 def moonToLED(coord):
@@ -376,16 +396,17 @@ for classes in problemsArray:
 			#start Holds
 			if coordLED[index] != None :
 				colorLED[coordLED[index]] = 1
-			# else:
-			# 	#colorLED[coordLED[index]] = 0
+				strip.setPixelColorRGB(coordLED[index],0,255,0)
 		elif index > 3 and index < 196:
 			if coordLED[index] != None :
 				colorLED[coordLED[index]] = 2
+				strip.setPixelColorRGB(coordLED[index],255,0,0)
 			# else:
 			# 	#colorLED[coordLED[index]] = 0
 		else:
 			if coordLED[index] != None :
 				colorLED[coordLED[index]] = 3
+				strip.setPixelColorRGB(coordLED[index],0,0,255)
 			# else:
 			# 	#colorLED[coordLED[index]] = 0
 		index+=1
@@ -393,8 +414,12 @@ for classes in problemsArray:
 	while index < len(colorLED):
 		if colorLED[index] == None:
 			colorLED[index] = 0
+			strip.setPixelColorRGB(index, 0,0,0)
 		index+=1
-	print(*colorLED)			
+	print(*colorLED)
+	strip.show()
+	time.sleep(1)
+	colorWipe(strip, Color(0,0,0))			
 # name = divs.find("name")
 # for names in name:
 # 	print(names.prettify(encoding='utf-8'))

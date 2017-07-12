@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from kivy.app import App
-
-import MySQLdb
 import pymysql
 import pymysql.cursors
 
@@ -16,11 +16,11 @@ from kivy.app import runTouchApp
 class DbCon:
 
     def __init__(self):
-        self.db = MySQLdb.connect(host="ClimbingHoldsApe.db.8216949.hostedresource.com",user="ClimbingHoldsApe",passwd="Comply9879!",db="ClimbingHoldsApe")
+        self.db = pymysql.connect(host="ClimbingHoldsApe.db.8216949.hostedresource.com",user="ClimbingHoldsApe",passwd="Comply9879!",db="ClimbingHoldsApe")
         self.c = self.db.cursor()
 
     def get_rows(self,search = ""):
-        self.c.execute("SELECT * FROM Moonboard WHERE Author REGEXP '.*%s.*'limit 3" % search)
+        self.c.execute("SELECT * FROM Moonboard WHERE Author REGEXP '.*%s.*'limit 50" % search)
         return self.c.fetchall()
 
 
@@ -43,14 +43,12 @@ class Table(BoxLayout):
 
         self.add_widget(Label(text="Routes"))
 
-        self.table = GridLayout(cols=3,rows=6)
+        self.table = GridLayout(cols=3,rows=51)
         self.table.add_widget(Label(text="Problem"))
         self.table.add_widget(Label(text="Setter"))
         self.table.add_widget(Label(text="Grade"))
 
-        self.rows = [[Label(text="Problem"),Label(text="Setter"),Label(text="Grade")],
-                     [Label(text="Problem"),Label(text="Setter"),Label(text="Grade")],
-                     [Label(text="Problem"),Label(text="Setter"),Label(text="Grade")]]
+        self.rows = [[Label(text="Problem"),Label(text="Setter"),Label(text="Grade")] for x in range(50)]
 
         for Problem,Setter,Grade in self.rows:
             self.table.add_widget(Problem)

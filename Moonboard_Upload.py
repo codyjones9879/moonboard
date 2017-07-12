@@ -35,7 +35,8 @@ def connectDB():
                          user="ClimbingHoldsApe",         # your username
                          passwd="Comply9879!",  # your password
                          db="ClimbingHoldsApe",
-                         charset='utf8')        # name of the data base 
+                         charset='utf8mb4',
+                         autocommit=True)        # name of the data base 
     return db
 
 
@@ -67,6 +68,7 @@ def loadMainPage():
     for classes in problemsArray:
         problemInfo = [0] * 210
         title = classes.get('title')
+        problemInfo[0] = title
         if "%A3" in title:
             title = classes.get('rel')
             title = title.replace("[", "")
@@ -77,6 +79,28 @@ def loadMainPage():
             title = title.replace("[", "")
             title = title.replace("]", "")
             link = title
+        elif "%C2%BF" in title:
+            title = classes.get('rel')
+            title = title.replace("[", "")
+            title = title.replace("]", "")
+            link = title
+        elif "=/-" in title:
+            link = "222189"
+        elif "¿" in title:
+            title = classes.get('rel')
+            title = title.replace("[", "")
+            title = title.replace("]", "")
+            link = "title"
+        elif "Far-from-the-Madding-Crowd" in title:
+            link = "problem-1"
+        elif "Wuthering-Heights" in title:
+            link = "problem-2"
+        elif "Hard-Times" in title:
+            link = "problem-4"
+        elif "Vurt" in title:
+            link = "problem-8"
+        elif "Mark-and-Lard" in title:
+            link = "mark-lard"
         else:
             link = title.replace("ø", "o")
             link = title.replace(" ", "-")
@@ -85,39 +109,77 @@ def loadMainPage():
             link[2] = urllib.parse.quote(link[2])
             link = urllib.parse.urlunsplit(link)
             link = link.replace("?", "")
+            link = link.replace("¿", "")
+            link = link.replace("'", "")
+            link = link.replace("â€™", "")
+            link = link.replace("%20", "-")
             link = link.replace("%21", "!")
+            link = link.replace("%24", "")
+            link = link.replace("%26", "&")
             link = link.replace("%27", "")
+            link = link.replace("%28", "(")
+            link = link.replace("%29", ")")
+            link = link.replace("%2A", "*")
+            link = link.replace("%2B", "+")
             link = link.replace("%2C", "")
+            link = link.replace("%3A", ":")
+            link = link.replace("%3B", ";")
+            link = link.replace("%3D", "=")
+            link = link.replace("%40", "@")
+            link = link.replace("%5C", "\\")
+            link = link.replace("%5E", "")
             link = link.replace(".", "-")
             link = link.replace("/", "")
             link = link.replace("#", "")
             link = link.replace("%23", "")
+            link = link.replace("%C2%A1", "")
+            link = link.replace("%C2%B0", "")
+            link = link.replace("%C2%BF", "")
+            link = link.replace("%C3%85", "A")
+            link = link.replace("%C3%89", "E")
+            link = link.replace("%C3%90", "D")
+            link = link.replace("%C3%96", "O")
+            link = link.replace("%C3%97", "x")
+            link = link.replace("%C3%9F", "S")
+            link = link.replace("%C3%A0", "a")
+            link = link.replace("%C3%A3", "a")
             link = link.replace("%C3%A4", "a")
+            link = link.replace("%C3%A5", "a")
+            link = link.replace("%C3%A6", "a")
+            link = link.replace("%C3%A7", "c")
+            link = link.replace("%C3%A8", "e")
+            link = link.replace("%C3%A9", "e")
+            link = link.replace("%C3%AC", "i")
+            link = link.replace("%C3%AE", "i")
+            link = link.replace("%C3%B0", "d")
+            link = link.replace("%C3%B1", "n")
+            link = link.replace("%C3%B2", "o")
+            link = link.replace("%C3%B3", "o")
+            link = link.replace("%C3%B6", "o")
+            link = link.replace("%C3%B8", "o")
+            link = link.replace("%C3%BA", "u")
+            link = link.replace("%C3%BC", "u")
+            link = link.replace("%C4%97", "e")
+            link = link.replace("%C5%82", "l")
+            link = link.replace("%C5%9B", "s")
+            link = link.replace("%D1%80", "p")
+            link = link.replace("%DO%90", "A")
+            link = link.replace("%DO%92", "B")
+            link = link.replace("%DO%BF", "n")
+            link = link.replace("%E2%80%93", "")
+            link = link.replace("%E2%80%98", "")
             link = link.replace("%E2%80%99", "")
             link = link.replace("%E2%80%9C", "")
             link = link.replace("%E2%80%9D", "")
-            link = link.replace("\u201d", "")
-            link = link.replace("%2B", "+")
-            link = link.replace("%5C", "\\")
-            link = link.replace("%28", "(")
-            link = link.replace("%29", ")")
-            link = link.replace("%C5%82", "l")
-            link = link.replace("%C3%97", "x")
-            link = link.replace("'", "")
-            link = link.replace("â€™", "")
-            link = link.replace("%2A", "*")
-            link = link.replace("%3A", "")
-            link = link.replace("%3D", "=")
-            link = link.replace("%40", "@")
             link = link.replace("%E2%80%A6", "...")
             link = link.replace("%E2%80%B3", "")
-            link = link.replace("%26", "&")
+            link = link.replace("\u201d", "")
             logger.info('Link for Loading Page: %s' % link)
-            problemInfo[0] = link
+            # problemInfo[0] = link
             if problemInfo[0] == "":
                 logger.debug('Blank Link Name')
             else:
-                pageProblem  = requests.get("http://www.moonboard.com/problems/"+link)
+                pageProblem = requests.get("http://www.moonboard.com/problems/"+link)
                 logger.debug('pageContent = %s' % pageProblem.content)
                 soup = BeautifulSoup(pageProblem.content, 'html.parser')
                 # problemName = soup.find(class_='post-title')
@@ -128,18 +190,18 @@ def loadMainPage():
                     stringarray = re.split(r'\t+', string)
                     problemInfoIndex = 0
                     for elements in stringarray:
-                        logger.info('-----------------')
+                        logger.debug('-----------------')
                         if len(elements) > 2:
                             #TITLE
                             if problemInfoIndex == 0:
-                                problemInfo[0] = elements[1:len(elements)-1]
-                                logger.info('Problem Name = %s' % problemInfo[0])
+                                # problemInfo[0] = elements[1:len(elements)-1]
+                                logger.debug('Problem Name = %s' % problemInfo[0])
                             if problemInfoIndex == 1:
                                 problemInfo[1] = elements[9:len(elements)]
-                                logger.info('Setter = %s' % problemInfo[1])
+                                logger.debug('Setter = %s' % problemInfo[1])
                             if problemInfoIndex == 2:
                                 problemInfo[2] = elements[8:len(elements)]
-                                logger.info('Grade = %s' % problemInfo[2])
+                                logger.debug('Grade = %s' % problemInfo[2])
                             if problemInfoIndex == 8:
                                 if elements[4:6] == "Be":
                                     problemInfo[5] = 0
@@ -153,9 +215,9 @@ def loadMainPage():
                                         problemInfo[5] = elements[4:7]
                                     elif elements[8] == ' ':
                                         problemInfo[5] = elements[4:8]
-                                logger.info('Repeat: %s' % problemInfo[5])
+                                logger.debug('Repeat: %s' % problemInfo[5])
                             problemInfoIndex+=1
-                            logger.info('---------------')
+                            logger.debug('---------------')
                 # if problemInfoIndex == 3:
                 #     if elements[14:15] == ' ':
                 #         problemInfo[3] = 0
@@ -172,11 +234,11 @@ def loadMainPage():
                 for ids in startHold1:
                     if ids.string != None:
                         problemInfo[6] = ids.string
-                        logger.info('Start Hold 1: %s' % problemInfo[6])
+                        logger.debug('Start Hold 1: %s' % problemInfo[6])
                 for ids in startHold2:
                     if ids.string != None:
                         problemInfo[7] = ids.string
-                        logger.info('Start Hold 2: %s' % problemInfo[7])
+                        logger.debug('Start Hold 2: %s' % problemInfo[7])
                 holdNum = 0
                 moves = True
                 numMoves = 0
@@ -187,7 +249,7 @@ def loadMainPage():
                         if temp.string != None:
                             problemInfo[7+holdNum] = temp.string
                             numMoves+=1
-                            logger.info('Intermediate Hold: %s' % problemInfo[7+holdNum])
+                            logger.debug('Intermediate Hold: %s' % problemInfo[7+holdNum])
                     else:
                         moves = False
                 for ids in finishHold1:
@@ -195,13 +257,13 @@ def loadMainPage():
                     if ids.string != None:
                         problemInfo[208] = ids.string
                         numMoves+=1
-                        logger.info('Finish Hold 1: %s' % problemInfo[208])
+                        logger.debug('Finish Hold 1: %s' % problemInfo[208])
                 for ids in finishHold2:
                     #print(ids.prettify(encoding='utf-8'))
                     if ids.string != None:
                         problemInfo[209] = ids.string
                         numMoves+=1
-                        logger.info('Finish Hold 2: %s' % problemInfo[209])
+                        logger.debug('Finish Hold 2: %s' % problemInfo[209])
                 problemInfo[4] = numMoves
                 images = soup.find_all("img")
                 imageIndex = 0
@@ -218,7 +280,7 @@ def loadMainPage():
                         else:
                             problemInfo[3] = "0"
                     imageIndex+=1
-                logger.info("Stars: %s" % problemInfo[3])
+                logger.debug("Stars: %s" % problemInfo[3])
                 db = connectDB()
                 args = getArgs(problemInfo)
                 query = getQuery()

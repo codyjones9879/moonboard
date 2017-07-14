@@ -50,8 +50,14 @@ def connectDB():
 
 
 def getArgs(problemInfo):
-    args = (problemInfo[0], problemInfo[1], problemInfo[2], problemInfo[3], problemInfo[4], problemInfo[5], problemInfo[6], problemInfo[7], problemInfo[8], problemInfo[9], problemInfo[10], problemInfo[11], problemInfo[12], problemInfo[13], problemInfo[14], problemInfo[15], problemInfo[16], problemInfo[17], problemInfo[18], problemInfo[19], problemInfo[20], problemInfo[21], problemInfo[22], problemInfo[23], problemInfo[24], problemInfo[25], problemInfo[26], problemInfo[27], problemInfo[28], problemInfo[29], problemInfo[30], problemInfo[31], problemInfo[32], problemInfo[33], problemInfo[34], problemInfo[35], problemInfo[36], problemInfo[37], problemInfo[38], problemInfo[39], problemInfo[40], problemInfo[41], problemInfo[42], problemInfo[43], problemInfo[44], problemInfo[45], problemInfo[46], problemInfo[47], problemInfo[48], problemInfo[49], problemInfo[50], problemInfo[51], problemInfo[52], problemInfo[53], problemInfo[54], problemInfo[55], problemInfo[56], problemInfo[57], problemInfo[58], problemInfo[59], problemInfo[60], problemInfo[61], problemInfo[62], problemInfo[63], problemInfo[64], problemInfo[65], problemInfo[66], problemInfo[67], problemInfo[68], problemInfo[69], problemInfo[70], problemInfo[71], problemInfo[72], problemInfo[73], problemInfo[74], problemInfo[75], problemInfo[76], problemInfo[77], problemInfo[78], problemInfo[79], problemInfo[80], problemInfo[81], problemInfo[82], problemInfo[83], problemInfo[84], problemInfo[85], problemInfo[86], problemInfo[87], problemInfo[88], problemInfo[89], problemInfo[90], problemInfo[91], problemInfo[92], problemInfo[93], problemInfo[94], problemInfo[95], problemInfo[96], problemInfo[97], problemInfo[98], problemInfo[99], problemInfo[100], problemInfo[101], problemInfo[102], problemInfo[103], problemInfo[104], problemInfo[105], problemInfo[106], problemInfo[107], problemInfo[108], problemInfo[109], problemInfo[110], problemInfo[111], problemInfo[112], problemInfo[113], problemInfo[114], problemInfo[115], problemInfo[116], problemInfo[117], problemInfo[118], problemInfo[119], problemInfo[120], problemInfo[121], problemInfo[122], problemInfo[123], problemInfo[124], problemInfo[125], problemInfo[126], problemInfo[127], problemInfo[128], problemInfo[129], problemInfo[130], problemInfo[131], problemInfo[132], problemInfo[133], problemInfo[134], problemInfo[135], problemInfo[136], problemInfo[137], problemInfo[138], problemInfo[139], problemInfo[140], problemInfo[141], problemInfo[142], problemInfo[143], problemInfo[144], problemInfo[145], problemInfo[146], problemInfo[147], problemInfo[148], problemInfo[149], problemInfo[150], problemInfo[151], problemInfo[152], problemInfo[153], problemInfo[154], problemInfo[155], problemInfo[156], problemInfo[157], problemInfo[158], problemInfo[159], problemInfo[160], problemInfo[161], problemInfo[162], problemInfo[163], problemInfo[164], problemInfo[165], problemInfo[166], problemInfo[167], problemInfo[168], problemInfo[169], problemInfo[170], problemInfo[171], problemInfo[172], problemInfo[173], problemInfo[174], problemInfo[175], problemInfo[176], problemInfo[177], problemInfo[178], problemInfo[179], problemInfo[180], problemInfo[181], problemInfo[182], problemInfo[183], problemInfo[184], problemInfo[185], problemInfo[186], problemInfo[187], problemInfo[188], problemInfo[189], problemInfo[190], problemInfo[191], problemInfo[192], problemInfo[193], problemInfo[194], problemInfo[195], problemInfo[196], problemInfo[197], problemInfo[198], problemInfo[199], problemInfo[200], problemInfo[201], problemInfo[202], problemInfo[203], problemInfo[204], problemInfo[205], problemInfo[206], problemInfo[207], problemInfo[208], problemInfo[209])
-    return args         
+    return (problemInfo[0], problemInfo[1], problemInfo[2],
+            problemInfo[3], problemInfo[4], problemInfo[5],
+            problemInfo[6], problemInfo[7], problemInfo[8],
+            problemInfo[9], problemInfo[10], problemInfo[11],
+            problemInfo[12], problemInfo[13], problemInfo[14],
+            problemInfo[15], problemInfo[16], problemInfo[17],
+            problemInfo[18], problemInfo[19], problemInfo[20], problemInfo[21], problemInfo[22], problemInfo[23], problemInfo[24], problemInfo[25], problemInfo[26], problemInfo[27], problemInfo[28], problemInfo[29], problemInfo[30], problemInfo[31], problemInfo[32], problemInfo[33], problemInfo[34], problemInfo[35], problemInfo[36], problemInfo[37], problemInfo[38], problemInfo[39], problemInfo[40], problemInfo[41], problemInfo[42], problemInfo[43], problemInfo[44], problemInfo[45], problemInfo[46], problemInfo[47], problemInfo[48], problemInfo[49], problemInfo[50], problemInfo[51], problemInfo[52], problemInfo[53], problemInfo[54], problemInfo[55], problemInfo[56], problemInfo[57], problemInfo[58], problemInfo[59], problemInfo[60], problemInfo[61], problemInfo[62], problemInfo[63], problemInfo[64], problemInfo[65], problemInfo[66], problemInfo[67], problemInfo[68], problemInfo[69], problemInfo[70], problemInfo[71], problemInfo[72], problemInfo[73], problemInfo[74], problemInfo[75], problemInfo[76], problemInfo[77], problemInfo[78], problemInfo[79], problemInfo[80], problemInfo[81], problemInfo[82], problemInfo[83], problemInfo[84], problemInfo[85], problemInfo[86], problemInfo[87], problemInfo[88], problemInfo[89], problemInfo[90], problemInfo[91], problemInfo[92], problemInfo[93], problemInfo[94], problemInfo[95], problemInfo[96], problemInfo[97], problemInfo[98], problemInfo[99], problemInfo[100], problemInfo[101], problemInfo[102], problemInfo[103], problemInfo[104], problemInfo[105], problemInfo[106], problemInfo[107], problemInfo[108], problemInfo[109], problemInfo[110], problemInfo[111], problemInfo[112], problemInfo[113], problemInfo[114], problemInfo[115], problemInfo[116], problemInfo[117], problemInfo[118], problemInfo[119], problemInfo[120], problemInfo[121], problemInfo[122], problemInfo[123], problemInfo[124], problemInfo[125], problemInfo[126], problemInfo[127], problemInfo[128], problemInfo[129], problemInfo[130], problemInfo[131], problemInfo[132], problemInfo[133], problemInfo[134], problemInfo[135], problemInfo[136], problemInfo[137], problemInfo[138], problemInfo[139], problemInfo[140], problemInfo[141], problemInfo[142], problemInfo[143], problemInfo[144], problemInfo[145], problemInfo[146], problemInfo[147], problemInfo[148], problemInfo[149], problemInfo[150], problemInfo[151], problemInfo[152], problemInfo[153], problemInfo[154], problemInfo[155], problemInfo[156], problemInfo[157], problemInfo[158], problemInfo[159], problemInfo[160], problemInfo[161], problemInfo[162], problemInfo[163], problemInfo[164], problemInfo[165], problemInfo[166], problemInfo[167], problemInfo[168], problemInfo[169], problemInfo[170], problemInfo[171], problemInfo[172], problemInfo[173], problemInfo[174], problemInfo[175], problemInfo[176], problemInfo[177], problemInfo[178], problemInfo[179], problemInfo[180], problemInfo[181], problemInfo[182], problemInfo[183], problemInfo[184], problemInfo[185], problemInfo[186], problemInfo[187], problemInfo[188], problemInfo[189], problemInfo[190], problemInfo[191], problemInfo[192], problemInfo[193], problemInfo[194], problemInfo[195], problemInfo[196], problemInfo[197], problemInfo[198], problemInfo[199], problemInfo[200], problemInfo[201], problemInfo[202], problemInfo[203], problemInfo[204], problemInfo[205], problemInfo[206], problemInfo[207], problemInfo[208], problemInfo[209])
+    # return args    
 
 
 def getQuery():
@@ -64,7 +70,9 @@ def submitDB(db, query, args):
 
 ###################################
 #Allow the beautiful soup library to read the contents of the HTML
-################################### 
+###################################
+
+
 def loadMainPage():
     pageProblems = requests.get("http://www.moonboard.com/problems")
     soupProblems = BeautifulSoup(pageProblems.content, 'html.parser')
@@ -91,30 +99,71 @@ def loadMainPage():
             title = title.replace("]", "")
             link = title
         elif "=/-" in title:
-            link = "222189"
+            title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = title
         elif "¿" in title:
             title = classes.get('rel')
-            title = title.replace("[", "")
-            title = title.replace("]", "")
-            link = "title"
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = title
         elif "¿?¿" in title:
-            link = "115780"
-        elif "Far-from-the-Madding-Crowd" in title:
+            title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = title
+        elif ":))" in title:
+            title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = title
+        elif title == "Far from the Madding Crowd":
             link = "problem-1"
-        elif "Wuthering-Heights" in title:
+        elif title == "Wuthering Heights":
             link = "problem-2"
-        elif "Hard-Times" in title:
+        elif title == "Hard Times":
             link = "problem-4"
         elif "Vurt" in title:
             link = "problem-8"
-        elif "Mark-and-Lard" in title:
+        elif title == "Mark and Lard":
             link = "mark-lard"
         elif "???" in title:
-            title = "207982"
+            # title = "207982"
+            title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = title
         elif "??" in title:
-            title = "206103"
+            # title = "206103"
+            title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = title
         elif "?" in title:
-            title = "204447"
+            # title = "204447"
+            title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = title
+        elif title == "$$":
+            # title = "204447"
+            title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = title
+        elif title == "Warm up number two":
+            title = "warm-up-number-2"
+            #title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = title
+        elif title == "frigging fingers":
+            title = "fucking-fingers"
+            #title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = title
         else:
             link = title.replace("ø", "o")
             link = title.replace(" ", "-")
@@ -149,6 +198,7 @@ def loadMainPage():
             link = link.replace("%C2%A1", "")
             link = link.replace("%C2%B0", "")
             link = link.replace("%C2%BF", "")
+            link = link.replace("%C3%80", "A")
             link = link.replace("%C3%85", "A")
             link = link.replace("%C3%89", "E")
             link = link.replace("%C3%90", "D")
@@ -156,6 +206,8 @@ def loadMainPage():
             link = link.replace("%C3%97", "x")
             link = link.replace("%C3%9F", "S")
             link = link.replace("%C3%A0", "a")
+            link = link.replace("%C3%A1", "a")
+            link = link.replace("%C3%A2", "a")
             link = link.replace("%C3%A3", "a")
             link = link.replace("%C3%A4", "a")
             link = link.replace("%C3%A5", "a")
@@ -321,8 +373,3 @@ if __name__ == '__main__':
     logger.critical('critical message')
     problemsArray = loadMainPage()
     
-
-# http://www.moonboard.com/problems/applesauce-%F0%9F%8D%8E/
-
-
-# Men-g%C3%B6r-handbyte-d%C3%A5

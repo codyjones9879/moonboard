@@ -31,9 +31,15 @@ problemInfo = [0] * 205
 ###################################
 
 def connectDB():
-    db = pymysql.connect(host="ClimbingHoldsApe.db.8216949.hostedresource.com",    # your host, usually localhost
-                         user="ClimbingHoldsApe",         # your username
-                         passwd="Comply9879!",  # your password
+    # db = pymysql.connect(host="ClimbingHoldsApe.db.8216949.hostedresource.com",    # your host, usually localhost
+    #                      user="ClimbingHoldsApe",         # your username
+    #                      passwd="Comply9879!",  # your password
+    #                      db="ClimbingHoldsApe",
+    #                      charset='utf8mb4',
+    #                      autocommit=True)        # name of the data base 
+    db = pymysql.connect(host="localhost",    # your host, usually localhost
+                         user="root",         # your username
+                         passwd="root",  # your password
                          db="ClimbingHoldsApe",
                          charset='utf8mb4',
                          autocommit=True)        # name of the data base 
@@ -91,6 +97,8 @@ def loadMainPage():
             title = title.replace("[", "")
             title = title.replace("]", "")
             link = "title"
+        elif "¿?¿" in title:
+            link = "115780"
         elif "Far-from-the-Madding-Crowd" in title:
             link = "problem-1"
         elif "Wuthering-Heights" in title:
@@ -101,6 +109,12 @@ def loadMainPage():
             link = "problem-8"
         elif "Mark-and-Lard" in title:
             link = "mark-lard"
+        elif "???" in title:
+            title = "207982"
+        elif "??" in title:
+            title = "206103"
+        elif "?" in title:
+            title = "204447"
         else:
             link = title.replace("ø", "o")
             link = title.replace(" ", "-")
@@ -177,6 +191,10 @@ def loadMainPage():
             logger.info('Link for Loading Page: %s' % link)
             # problemInfo[0] = link
             if problemInfo[0] == "":
+                logger.debug('Blank Link Name')
+            elif problemInfo[0] == " ":
+                logger.debug('Blank Link Name')
+            elif problemInfo[0] == "\t":
                 logger.debug('Blank Link Name')
             else:
                 pageProblem = requests.get("http://www.moonboard.com/problems/"+link)

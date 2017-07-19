@@ -1,10 +1,14 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 #!/usr/bin/python
-import MySQLdb
+import pymysql
 
-db = MySQLdb.connect(host="ClimbingHoldsApe.db.8216949.hostedresource.com",    # your host, usually localhost
-                     user="ClimbingHoldsApe",         # your username
-                     passwd="Comply9879!",  # your password
-                     db="ClimbingHoldsApe")        # name of the data base
+db = pymysql.connect(host="localhost",    # your host, usually localhost
+                         user="root",         # your username
+                         passwd="root",  # your password
+                         db="ClimbingHoldsApe",
+                         charset='utf8mb4',
+                         autocommit=True)       # name of the data base
 
 # you must create a Cursor object. It will let
 #  you execute all the queries you need
@@ -14,13 +18,13 @@ cur = db.cursor()
 # Use all the SQL you like
 #try:
 	#cur.execute("INSERT INTO Persons (PersonID, LastName, FirstName, Address, City) VALUES ('2', 'Jonesy', 'Cody', '788 Taylor Ln', 'Stoughton');")
-cur.execute("ALTER TABLE Moonboard ADD repeats VARINT(5) AFTER Moves") 
+
 
 
 
 # print all the first cell of all the rows
 #except:
-print("DUPLICATE")
+
 	
 cur.execute("SELECT * FROM Moonboard")
 for row in cur.fetchall():

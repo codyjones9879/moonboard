@@ -1,0 +1,414 @@
+#:import ScrollEffect kivy.effects.scroll.ScrollEffect
+#:import randint random.randint
+
+<TextInputFocus>:
+    text: texti.text
+    texti: texti
+    orientation: 'tb-lr'
+    padding: 15
+    spacing: 15
+    FlatTextInput:
+        id: texti
+        height: 50
+        size_hint: (1.0, None)
+    FlatButton:
+        text: 'Submit'
+        on_release: root.close_callback()
+        size_hint: (1.0, .1)
+        color: (43./255., 153./255., 1.0)
+
+
+<-FlatTextInput>:
+    ripple_color: app.get_color(self.ripple_color_tuple)
+    canvas.before:
+        Color:
+            rgba: self.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+        Color:
+            rgba: self.cursor_color
+        Rectangle:
+            size: (self.size[0], sp(2))
+            pos: self.pos[0], self.cursor_pos[1] - self.line_height - sp(2)
+        Color:
+            rgba: (self.cursor_color if self.focus and not self.cursor_blink else (0, 0, 0, 0))
+        Rectangle:
+            pos: [int(x) for x in self.cursor_pos]
+            size: sp(2), -self.line_height
+        Color:
+            rgba: self.disabled_foreground_color if self.disabled else (self.hint_text_color if not self.text and not self.focus else self.foreground_color)
+
+
+
+<FlatLabel>:
+    font_size: '20dp'
+    color: app.get_color(self.color_tuple)
+    style_dict: app.get_style(self.style)
+    ramp_group: app.get_ramp_group(self.font_ramp_tuple)
+    disabled_color: (.3, .3, .3, .5)
+
+
+<FlatScrollView>:
+    scroll_timeout: 75
+    scroll_distance: 10
+    effect_cls: ScrollEffect
+
+
+<FlatButtonBase>:
+    color: app.get_color(self.color_tuple)
+    ripple_color: app.get_color(self.ripple_color_tuple)
+    canvas.before:
+        Color:
+            rgba: self.color_down[0:3] + [self.alpha] if self.state == 'down' or root.disabled else self.color[0:3] + [self.alpha]
+        Rectangle:
+            size: (self.width - self.border_size[1] - self.border_size[3], self.height - self.border_size[0] - self.border_size[2])
+            pos: (self.x + self.border_size[3], self.y + self.border_size[2])
+
+    FlatLabel:
+        size_hint: (1.0, 1.0)
+        color_tuple: root.font_color_tuple
+        text: root.text
+        style: root.style
+        text_size: root.size
+        font_ramp_tuple: root.font_ramp_tuple
+        valign: 'middle'
+        halign: 'center'
+        font_size: root.font_size
+
+
+<RaisedStyle>:
+    canvas.before:
+        BorderImage:
+            border: self.border
+            pos: self.pos
+            size: self.size
+            source: self.border_image
+
+
+<FlatIcon>:
+    text: app.get_icon(self.icon)
+    valign: 'middle'
+    font_name: app.get_font('data/font/fontawesome-webfont.ttf')
+    halign: 'center'
+    padding: ('5dp', '5dp')
+    color: app.get_color(root.color_tuple)
+    font_size: '64dp'
+
+
+<FlatImageButton>:
+    color: app.get_color(self.color_tuple) 
+    ripple_color: app.get_color(self.ripple_color_tuple)
+    canvas.before:
+        Color:
+            rgb: root.color_down if root.state == 'down' or root.disabled else root.color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    StackLayout:
+        orientation: 'tb-lr'
+        id: label_space
+        padding: root.content_padding
+        spacing: root.content_spacing
+        Image:
+            id: icon
+            size_hint: (.25, 1.0)
+            source: root.icon_source
+            opacity: label.color[3]
+        FlatLabel:
+            size_hint: (.75, 1.0)
+            text: root.text
+            style: root.style
+            id: label
+            color_tuple: root.font_color_tuple
+            font_ramp_tuple: root.font_ramp_tuple
+            valign: 'middle'
+            halign: 'left'
+            text_size: self.size
+            font_size: root.font_size
+
+
+<-FlatImageButtonLeft>:
+    color: app.get_color(self.color_tuple) 
+    ripple_color: app.get_color(self.ripple_color_tuple)
+    canvas.before:
+        Color:
+            rgb: root.color_down if root.state == 'down' or root.disabled else root.color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    StackLayout:
+        orientation: 'tb-lr'
+        id: label_space
+        padding: root.content_padding
+        spacing: root.content_spacing
+        FlatLabel:
+            size_hint: (.75, 1.0)
+            text: root.text
+            style: root.style
+            id: label
+            color_tuple: root.font_color_tuple
+            font_ramp_tuple: root.font_ramp_tuple
+            valign: 'middle'
+            halign: 'right'
+            text_size: self.size
+            font_size: root.font_size
+        Image:
+            id: icon
+            size_hint: (.25, 1.0)
+            source: root.icon_source
+            opacity: label.color[3]
+
+
+<FlatIconButton>:
+    color: app.get_color(self.color_tuple) 
+    ripple_color: app.get_color(self.ripple_color_tuple)
+    canvas.before:
+        Color:
+            rgb: root.color_down if root.state == 'down' or root.disabled else root.color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    StackLayout:
+        orientation: 'tb-lr'
+        id: label_space
+        padding: root.content_padding
+        spacing: root.content_spacing
+        FlatIcon:
+            id: icon
+            size_hint: (None, 1.0)
+            width: self.texture_size[0]
+            icon: root.icon
+            valign: 'middle'
+            halign: 'right'
+            opacity: label.color[3]
+            color_tuple: root.icon_color_tuple
+            text_size: self.size
+        FlatLabel:
+            width: root.size[0] - icon.size[0]
+            size_hint: (None, 1.0)
+            text: root.text
+            style: root.style
+            id: label
+            color_tuple: root.font_color_tuple
+            font_ramp_tuple: root.font_ramp_tuple
+            valign: 'middle'
+            halign: 'left'
+            text_size: self.size
+            font_size: root.font_size
+
+<-FlatIconButtonLeft>:
+    color: app.get_color(self.color_tuple) 
+    ripple_color: app.get_color(self.ripple_color_tuple)
+    canvas.before:
+        Color:
+            rgb: root.color_down if root.state == 'down' or root.disabled else root.color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    StackLayout:
+        orientation: 'tb-lr'
+        id: label_space
+        FlatLabel:
+            width: root.size[0] - icon.size[0]
+            size_hint: (None, 1.0)
+            text: root.text
+            style: root.style
+            id: label
+            color_tuple: root.font_color_tuple
+            valign: 'middle'
+            font_ramp_tuple: root.font_ramp_tuple
+            halign: 'right'
+            text_size: self.size
+            font_size: root.font_size
+        FlatIcon:
+            id: icon
+            size_hint: (None, 1.0)
+            width: self.texture_size[0]
+            icon: root.icon
+            valign: 'middle'
+            halign: 'left'
+            opacity: label.color[3]
+            color_tuple: root.icon_color_tuple
+            text_size: self.size
+
+
+<OptionContent>:
+    orientation: 'tb-lr'
+    size_hint: (1.0, 1.0)
+    cols: 1
+    padding: 5
+    spacing: 5
+    FlatLabel:
+        text_size: self.size
+        size_hint: (1.0, .8)
+        font_size: '14sp'
+        valign: 'top'
+        text: root.option_text
+
+
+<ErrorContent>:
+    orientation: 'tb-lr'
+    size_hint: (1.0, 1.0)
+    dismiss_button: dismiss_button
+    cols: 1
+    padding: 5
+    spacing: 5
+    FlatLabel:
+        text_size: self.size
+        size_hint: (1.0, .8)
+        font_ramp_tuple: ('error_content' + str(randint(1,10000)), '1')
+        valign: 'top'
+        text: root.error_text
+        color_tuple: ('Gray', '1000')
+    FlatButton:
+        id: dismiss_button
+        text: 'Ok'
+        size_hint: (1.0, .2)
+
+
+<-FlatPopup>:
+    _container: container
+
+    canvas.before:
+        Color:
+            rgba: root.background_color[:3] + [root.background_color[-1] * self._anim_alpha]
+        Rectangle:
+            size: self._window.size if self._window else (0, 0)
+        Color:
+            rgba: root.popup_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    GridLayout:
+        padding: 12
+        cols: 1
+        size_hint: None, None
+        pos: root.pos
+        size: root.size
+
+        FlatLabel:
+            text: root.title
+            color: app.get_color(root.title_color_tuple)
+            size_hint_y: None
+            height: self.texture_size[1] + 16
+            text_size: self.width - 16, None
+            font_size: root.title_size
+
+        Widget:
+            size_hint_y: None
+            height: 4
+            canvas:
+                Color:
+                    rgba: root.separator_color
+                Rectangle:
+                    pos: self.x, self.y + root.separator_height / 2.
+                    size: self.width, root.separator_height
+
+        BoxLayout:
+            id: container
+
+
+<-FlatCheckBox>:
+    ripple_color: app.get_color(self.ripple_color_tuple)
+    canvas.before:
+        Color:
+            rgba: app.get_color(self.outline_color_tuple)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+        Color:
+            rgba: app.get_color(self.color_tuple)
+        Rectangle:
+            size: self.size[0] - sp(self.outline_size), self.size[1] - sp(self.outline_size)
+            pos: self.pos[0] + sp(self.outline_size/2.), self.pos[1] + sp(self.outline_size/2.)
+        
+
+<Check>:
+    icon: 'fa-check'
+    halign: 'center'
+    font_size: (self.size[0] + self.size[1]/2.)*self.scale
+
+
+<FlatCheckBoxListItem>:
+    orientation: 'horizontal'
+    active: checkbox.active
+    ripple_color: app.get_color(self.ripple_color_tuple)
+    spacing: '5dp'
+    FlatLabel:
+        id: label
+        text: root.text
+        size_hint: (.8, 1.0)
+        color: app.get_color(root.font_color_tuple)
+        style: root.style
+        halign: root.halign
+        font_ramp_tuple: root.font_ramp_tuple
+        valign: root.valign
+        text_size: self.size
+    FlatCheckBox:
+        group: root.group
+        id: checkbox
+        no_interact: True
+        size_hint: (None, 1.0)
+        width: self.height
+        alpha: root.alpha
+        outline_color_tuple: root.outline_color_tuple
+        outline_size: root.outline_size
+        check_color_tuple: root.check_color_tuple
+        color_tuple: root.checkbox_color_tuple
+        check_scale: root.check_scale
+
+
+<FlatCard>:
+    orientation: 'vertical'
+    padding: [dp(5)]
+    color: app.get_color(self.color_tuple)
+    ripple_color: app.get_color(self.ripple_color_tuple)
+    canvas.before:
+        Color:
+            rgb: root.color_down if root.state == 'down' or root.disabled else root.color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    Image:
+        source: root.image_source
+        id: image
+        keep_ratio: True
+        allow_stretch: True
+        size_hint: (1., .7)
+    FlatLabel:
+        style: root.style
+        id: label
+        size_hint: (1., .3)
+        font_ramp_tuple: root.font_ramp_tuple
+        color_tuple: root.font_color_tuple
+        text_size: self.size
+        halign: 'center'
+        valign: 'top'
+        text: root.text
+
+
+<-FlatSlider>:
+    ripple_color: app.get_color(self.ripple_color_tuple)
+    canvas:
+        Color:
+            rgba: app.get_color(self.color_tuple)
+        Rectangle:
+            pos: (self.x + self.padding, self.center_y - sp(8)) if self.orientation == 'horizontal' else (self.center_x - sp(8), self.y + self.padding)
+            size: (self.width - self.padding * 2, sp(16)) if self.orientation == 'horizontal' else (sp(16), self.height - self.padding * 2)
+        Color:
+            rgba: app.get_color(self.outline_color_tuple)
+        Line:
+            rounded_rectangle: [self.x + self.padding, self.center_y - sp(8), self.width - self.padding * 2, sp(16), sp(4)] if self.orientation == 'horizontal' else [self.center_x - sp(8), self.y + self.padding, sp(16), self.height - self.padding * 2, sp(4)]
+            width: sp(2)
+        Color:
+            rgba: app.get_color(self.slider_color_tuple)
+        Ellipse:
+            pos: (self.value_pos[0] - sp(16), self.center_y - sp(17)) if self.orientation == 'horizontal' else (self.center_x - sp(16), self.value_pos[1] - sp(16))
+            size: (sp(32), sp(32))
+        Color:
+            rgba: app.get_color(self.slider_outline_color_tuple)
+        Line:
+            ellipse: [self.value_pos[0] - sp(16), self.center_y - sp(17), sp(32), sp(32)] if self.orientation == 'horizontal' else [self.center_x - sp(17), self.value_pos[1] - sp(16), sp(32), sp(32)]
+            width: sp(2)

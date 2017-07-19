@@ -1,7 +1,11 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 # encoding: utf-8
 # decoding: utf-8
 from bs4 import BeautifulSoup
-import MySQLdb
+#import MySQLdb
+import pymysql
+import pymysql.cursors
 import requests
 import urllib
 import time
@@ -268,7 +272,7 @@ def moonToLED(coord):
 
 
 for classes in problemsArray:
-	entry = [0] * 210
+	entry = [0] * 205
 	coordLED = [None] * 198
 	'''
 	# Example Array setup:   [SH1, SH2, SH3, SH4,IH1,.....IH196,FH1,FH2]   SH1-4  is a combination of 2 hands and 2 feet, Intermediate max is with only 1 hand hold to start and 1 finish 
@@ -304,365 +308,130 @@ for classes in problemsArray:
 		link = link.replace("%26", "&")
 		print("---------------Problem Name---------------")
 		entry[0] = link
-		print(link)
-		pageProblem  = requests.get("http://www.moonboard.com/problems/"+link)
+		if entry[0] == "":
+			print("BAD NAME")
+		else:
+			print(link)
+			pageProblem  = requests.get("http://www.moonboard.com/problems/"+link)
 
-		#print(page.content)
+			#print(page.content)
 
-		soup = BeautifulSoup(pageProblem.content, 'html.parser')
+			soup = BeautifulSoup(pageProblem.content, 'html.parser')
 
-		#print(soup.prettify(encoding='utf-8'))
-		
-		problemName = soup.find(class_='post-title')
-		#print(problemName.string)
+			#print(soup.prettify(encoding='utf-8'))
+			
+			problemName = soup.find(class_='post-title')
+			#print(problemName.string)
 
-		print("---------------Problem Summary---------------")
+			print("---------------Problem Summary---------------")
 
-		problemSummary = soup.find_all(class_='summary')
-		for ids in problemSummary:
-			#print(ids.getText().find("Set by : "))
-			string = ids.getText()
-			stringarray = re.split(r'\t+', string)
-			indexAnother = 0
-			for elements in stringarray:
-				print("-------------------")
-				if len(elements) > 2:
-					#getTitle
-					if indexAnother == 0:
-						title = elements[1:len(elements)-1]
-						#print("title: %s"  % title)
-					#getSetter
-					if indexAnother == 1:
-						author = elements[9:len(elements)]
-						print("author: %s" % author)
-					#getGrade
-					if indexAnother == 2:
-						grade = elements[8:len(elements)]
-						print("grade: %s" % grade)
-					#getStars
-					if indexAnother == 3:
-						if elements[13:14] == ' ':
-							stars = 0
-						else:
-							stars = int(elements[13:14])
-						repeats = 0
-						print("Stars: %d" % stars)
-					#if indexAnother == 5:
-					# #getRepeats
-					# 	repeats = elements
-					indexAnother+=1
+			problemSummary = soup.find_all(class_='summary')
+			for ids in problemSummary:
+				#print(ids.getText().find("Set by : "))
+				string = ids.getText()
+				stringarray = re.split(r'\t+', string)
+				indexAnother = 0
+				for elements in stringarray:
 					print("-------------------")
-			#print(ids.getText()+'\n')
+					if len(elements) > 2:
+						#getTitle
+						if indexAnother == 0:
+							title = elements[1:len(elements)-1]
+							#print("title: %s"  % title)
+						#getSetter
+						if indexAnother == 1:
+							author = elements[9:len(elements)]
+							print("author: %s" % author)
+						#getGrade
+						if indexAnother == 2:
+							grade = elements[8:len(elements)]
+							print("grade: %s" % grade)
+						#getStars
+						if indexAnother == 3:
+							if elements[13:14] == ' ':
+								stars = 0
+							else:
+								stars = int(elements[13:14])
+							repeats = 0
+							print("Stars: %d" % stars)
+						# if indexAnother == 5:
+						# #getRepeats
+						# 	repeats = elements
+						indexAnother+=1
+						print("-------------------")
+				#print(ids.getText()+'\n')
 
-		print("---------------Start Holds----------------")
-		startHold1 = soup.find_all(id="SH1")
-		startHold2 = soup.find_all(id="SH2")
+			print("---------------Start Holds----------------")
+			startHold1 = soup.find_all(id="SH1")
+			startHold2 = soup.find_all(id="SH2")
 
-		finishHold1 = soup.find_all(id="FH1")
-		finishHold2 = soup.find_all(id="FH2")
+			finishHold1 = soup.find_all(id="FH1")
+			finishHold2 = soup.find_all(id="FH2")
 
-		for ids in startHold1:
-			#print(ids.prettify(encoding='utf-8'))
-			if ids.string != None:
-				entry[1] = ids.string
-				print(ids.string)
-		for ids in startHold2:
-			#print(ids.prettify(encoding='utf-8'))
-			if ids.string != None:
-				entry[2] = ids.string
-				print(ids.string)
-		holdNum = 0
-		moves = True
-		numMoves = 0
-		print("---------------Intermediate Holds---------")
-		while moves == True:
-			holdNum+=1
-			temp = soup.find(id="IH"+str(holdNum))
-			if temp:
-				if temp.string != None:
-					entry[2+holdNum] = temp.string
+			for ids in startHold1:
+				#print(ids.prettify(encoding='utf-8'))
+				if ids.string != None:
+					entry[1] = ids.string
+					print(ids.string)
+			for ids in startHold2:
+				#print(ids.prettify(encoding='utf-8'))
+				if ids.string != None:
+					entry[2] = ids.string
+					print(ids.string)
+			holdNum = 0
+			moves = True
+			numMoves = 0
+			print("---------------Intermediate Holds---------")
+			while moves == True:
+				holdNum+=1
+				temp = soup.find(id="IH"+str(holdNum))
+				if temp:
+					if temp.string != None:
+						entry[2+holdNum] = temp.string
+						numMoves+=1
+						print(temp.string)
+				else:
+					moves = False
+			print("---------------Finish Holds---------------")
+			for ids in finishHold1:
+				#print(ids.prettify(encoding='utf-8'))
+				if ids.string != None:
+					entry[203] = ids.string
 					numMoves+=1
-					print(temp.string)
-			else:
-				moves = False
-		print("---------------Finish Holds---------------")
-		for ids in finishHold1:
-			#print(ids.prettify(encoding='utf-8'))
-			if ids.string != None:
-				entry[208] = ids.string
-				numMoves+=1
-				print(ids.string)
-		for ids in finishHold2:
-			#print(ids.prettify(encoding='utf-8'))
-			if ids.string != None:
-				entry[209] = ids.string
-				numMoves+=1
-				print(ids.string)
-	db = MySQLdb.connect(host="ClimbingHoldsApe.db.8216949.hostedresource.com",    # your host, usually localhost
-                     user="ClimbingHoldsApe",         # your username
-                     passwd="Comply9879!",  # your password
-                     db="ClimbingHoldsApe")        # name of the data base
-	db.set_character_set('utf8')
-	cur = db.cursor()
-	cur.execute("""
-        INSERT INTO Moonboard 
-            (
-            Name, 
-            Author, 
-            Grade, 
-            Stars, 
-            Moves,
-            Repeats, 
-            StartHold1, 
-            Starthold2,
-            IntermediateHold1,
-			IntermediateHold2,
-			IntermediateHold3,	
-			IntermediateHold4,	
-			IntermediateHold5,	
-			IntermediateHold6,	
-			IntermediateHold7,	
-			IntermediateHold8,	
-			IntermediateHold9,	
-			IntermediateHold10,	
-			IntermediateHold11,	
-			IntermediateHold12,	
-			IntermediateHold13,	
-			IntermediateHold14,	
-			IntermediateHold15,	
-			IntermediateHold16,	
-			IntermediateHold17,	
-			IntermediateHold18,	
-			IntermediateHold19,	
-			IntermediateHold20,	
-			IntermediateHold21,	
-			IntermediateHold22,	
-			IntermediateHold23,	
-			IntermediateHold24,	
-			IntermediateHold25,	
-			IntermediateHold26,	
-			IntermediateHold27,	
-			IntermediateHold28,	
-			IntermediateHold29,	
-			IntermediateHold30,	
-			IntermediateHold31,	
-			IntermediateHold32,	
-			IntermediateHold33,	
-			IntermediateHold34,	
-			IntermediateHold35,	
-			IntermediateHold36,	
-			IntermediateHold37,	
-			IntermediateHold38,	
-			IntermediateHold39,	
-			IntermediateHold40,	
-			IntermediateHold41,	
-			IntermediateHold42,	
-			IntermediateHold43,	
-			IntermediateHold44,	
-			IntermediateHold45,	
-			IntermediateHold46,	
-			IntermediateHold47,	
-			IntermediateHold48,	
-			IntermediateHold49,	
-			IntermediateHold50,	
-			IntermediateHold51,	
-			IntermediateHold52,	
-			IntermediateHold53,	
-			IntermediateHold54,	
-			IntermediateHold55,	
-			IntermediateHold56,	
-			IntermediateHold57,	
-			IntermediateHold58,	
-			IntermediateHold59,	
-			IntermediateHold60,	
-			IntermediateHold61,	
-			IntermediateHold62,	
-			IntermediateHold63,	
-			IntermediateHold64,	
-			IntermediateHold65,	
-			IntermediateHold66,	
-			IntermediateHold67,	
-			IntermediateHold68,	
-			IntermediateHold69,	
-			IntermediateHold70,	
-			IntermediateHold71,	
-			IntermediateHold72,	
-			IntermediateHold73,
-			IntermediateHold74,	
-			IntermediateHold75,	
-			IntermediateHold76,	
-			IntermediateHold77,	
-			IntermediateHold78,	
-			IntermediateHold79,	
-			IntermediateHold80,	
-			IntermediateHold81,	
-			IntermediateHold82,
-			IntermediateHold83,	
-			IntermediateHold84,	
-			IntermediateHold85,	
-			IntermediateHold86,
-			IntermediateHold87,	
-			IntermediateHold88,	
-			IntermediateHold89,	
-			IntermediateHold90,	
-			IntermediateHold91,	
-			IntermediateHold92,	
-			IntermediateHold93,	
-			IntermediateHold94,	
-			IntermediateHold95,
-			IntermediateHold96,	
-			IntermediateHold97,	
-			IntermediateHold98,	
-			IntermediateHold99,
-			IntermediateHold100,	
-            IntermediateHold101,
-			IntermediateHold102,
-			IntermediateHold103,	
-			IntermediateHold104,	
-			IntermediateHold105,	
-			IntermediateHold106,	
-			IntermediateHold107,	
-			IntermediateHold108,	
-			IntermediateHold109,	
-			IntermediateHold110,	
-			IntermediateHold111,	
-			IntermediateHold112,	
-			IntermediateHold113,	
-			IntermediateHold114,	
-			IntermediateHold115,	
-			IntermediateHold116,	
-			IntermediateHold117,	
-			IntermediateHold118,	
-			IntermediateHold119,	
-			IntermediateHold120,	
-			IntermediateHold121,	
-			IntermediateHold122,	
-			IntermediateHold123,	
-			IntermediateHold124,	
-			IntermediateHold125,	
-			IntermediateHold126,	
-			IntermediateHold127,	
-			IntermediateHold128,	
-			IntermediateHold129,	
-			IntermediateHold130,	
-			IntermediateHold131,	
-			IntermediateHold132,	
-			IntermediateHold133,	
-			IntermediateHold134,	
-			IntermediateHold135,	
-			IntermediateHold136,	
-			IntermediateHold137,	
-			IntermediateHold138,	
-			IntermediateHold139,	
-			IntermediateHold140,	
-			IntermediateHold141,	
-			IntermediateHold142,	
-			IntermediateHold143,	
-			IntermediateHold144,	
-			IntermediateHold145,	
-			IntermediateHold146,	
-			IntermediateHold147,	
-			IntermediateHold148,	
-			IntermediateHold149,	
-			IntermediateHold150,	
-			IntermediateHold151,	
-			IntermediateHold152,	
-			IntermediateHold153,	
-			IntermediateHold154,	
-			IntermediateHold155,	
-			IntermediateHold156,	
-			IntermediateHold157,	
-			IntermediateHold158,	
-			IntermediateHold159,	
-			IntermediateHold160,	
-			IntermediateHold161,	
-			IntermediateHold162,	
-			IntermediateHold163,	
-			IntermediateHold164,	
-			IntermediateHold165,	
-			IntermediateHold166,	
-			IntermediateHold167,	
-			IntermediateHold168,	
-			IntermediateHold169,	
-			IntermediateHold170,	
-			IntermediateHold171,	
-			IntermediateHold172,	
-			IntermediateHold173,
-			IntermediateHold174,	
-			IntermediateHold175,	
-			IntermediateHold176,	
-			IntermediateHold177,	
-			IntermediateHold178,	
-			IntermediateHold179,	
-			IntermediateHold180,	
-			IntermediateHold181,	
-			IntermediateHold182,
-			IntermediateHold183,	
-			IntermediateHold184,	
-			IntermediateHold185,	
-			IntermediateHold186,
-			IntermediateHold187,	
-			IntermediateHold188,	
-			IntermediateHold189,	
-			IntermediateHold190,	
-			IntermediateHold191,	
-			IntermediateHold192,	
-			IntermediateHold193,	
-			IntermediateHold194,	
-			IntermediateHold195,
-			IntermediateHold196,	
-			IntermediateHold197,	
-			IntermediateHold198,	
-			IntermediateHold199,
-			IntermediateHold200,		
-			FinishHold1,	
-			FinishHold2
-			)
-        VALUES 
-            (
-			title, author, grade, stars, numMoves, repeats, entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8], entry[9], entry[10],
-            entry[11], entry[12], entry[13], entry[14], entry[15], entry[16], entry[17], entry[18], entry[19], entry[20], entry[21], entry[22], 
-            entry[23], entry[24], entry[25], entry[26], entry[27], entry[28], entry[29], entry[30], entry[31], entry[32], entry[33], entry[34], 
-            entry[35], entry[36], entry[37], entry[38], entry[39], entry[40], entry[41], entry[42], entry[43], entry[44], entry[45], entry[46], 
-            entry[47], entry[48], entry[49], entry[50], entry[51], entry[52], entry[53], entry[54], entry[55], entry[56], entry[57], entry[58], 
-            entry[59], entry[60], entry[61], entry[62], entry[63], entry[64], entry[65], entry[66], entry[67], entry[68], entry[69], entry[70], 
-            entry[71], entry[72], entry[73], entry[74], entry[75], entry[76], entry[77], entry[78], entry[79], entry[80], entry[81], entry[82], 
-            entry[83], entry[84], entry[85], entry[86], entry[87], entry[88], entry[89], entry[90], entry[91], entry[92], entry[93], entry[94], 
-            entry[95], entry[96], entry[97], entry[98], entry[99], entry[100], entry[101], entry[102], entry[103], entry[104], entry[105], entry[106], 
-            entry[107], entry[108], entry[109], entry[110], entry[111], entry[112], entry[113], entry[114], entry[115], entry[116], entry[117], 
-            entry[118], entry[119], entry[120], entry[121], entry[122], entry[123], entry[124], entry[125], entry[126], entry[127], entry[128], 
-            entry[129], entry[130], entry[131], entry[132], entry[133], entry[134], entry[135], entry[136], entry[137], entry[138], entry[139], 
-            entry[140], entry[141], entry[142], entry[143], entry[144], entry[145], entry[146], entry[147], entry[148], entry[149], entry[150], 
-            entry[151], entry[152], entry[153], entry[154], entry[155], entry[156], entry[157], entry[158], entry[159], entry[160], entry[161], 
-            entry[162], entry[163], entry[164], entry[165], entry[166], entry[167], entry[168], entry[169], entry[170], entry[171], entry[172], 
-            entry[173], entry[174], entry[175], entry[176], entry[177], entry[178], entry[179], entry[180], entry[181], entry[182], entry[183], 
-            entry[184], entry[185], entry[186], entry[187], entry[188], entry[189], entry[190], entry[191], entry[192], entry[193], entry[194], 
-            entry[195], entry[196], entry[197], entry[198], entry[199], entry[200], entry[201], entry[202], entry[203], entry[204], entry[205], 
-            entry[206], entry[207], entry[208], entry[209]
-            ) 
-        ON DUPLICATE KEY UPDATE 
-      		#no need to update the name, author, moves, or climbing holds JUST repeats and star rating
-            Stars  = VALUES(stars), 
-            Repeats   = VALUES(repeats) ;
-                   """
-    )
-	#start holds
-	coordLED[0] = moonToLED(entry[4])
-	coordLED[1] = moonToLED(entry[5])
-	coordLED[2] = None #only because of moonboard only having 2 start holds
-	coordLED[3] = None #only because of moonboard only having 2 start holds
+					print(ids.string)
+			for ids in finishHold2:
+				#print(ids.prettify(encoding='utf-8'))
+				if ids.string != None:
+					entry[204] = ids.string
+					numMoves+=1
+					print(ids.string)
+			db = pymysql.connect(host="ClimbingHoldsApe.db.8216949.hostedresource.com",    # your host, usually localhost
+	                     user="ClimbingHoldsApe",         # your username
+	                     passwd="Comply9879!",  # your password
+	                     db="ClimbingHoldsApe",
+	                     charset='utf8')        # name of the data base
+
+			args = (title, author, grade, stars, numMoves, repeats, entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8], entry[9], entry[10], entry[11], entry[12], entry[13], entry[14], entry[15], entry[16], entry[17], entry[18], entry[19], entry[20], entry[21], entry[22], entry[23], entry[24], entry[25], entry[26], entry[27], entry[28], entry[29], entry[30], entry[31], entry[32], entry[33], entry[34], entry[35], entry[36], entry[37], entry[38], entry[39], entry[40], entry[41], entry[42], entry[43], entry[44], entry[45], entry[46], entry[47], entry[48], entry[49], entry[50], entry[51], entry[52], entry[53], entry[54], entry[55], entry[56], entry[57], entry[58], entry[59], entry[60], entry[61], entry[62], entry[63], entry[64], entry[65], entry[66], entry[67], entry[68], entry[69], entry[70], entry[71], entry[72], entry[73], entry[74], entry[75], entry[76], entry[77], entry[78], entry[79], entry[80], entry[81], entry[82], entry[83], entry[84], entry[85], entry[86], entry[87], entry[88], entry[89], entry[90], entry[91], entry[92], entry[93], entry[94], entry[95], entry[96], entry[97], entry[98], entry[99], entry[100], entry[101], entry[102], entry[103], entry[104], entry[105], entry[106], entry[107], entry[108], entry[109], entry[110], entry[111], entry[112], entry[113], entry[114], entry[115], entry[116], entry[117], entry[118], entry[119], entry[120], entry[121], entry[122], entry[123], entry[124], entry[125], entry[126], entry[127], entry[128], entry[129], entry[130], entry[131], entry[132], entry[133], entry[134], entry[135], entry[136], entry[137], entry[138], entry[139], entry[140], entry[141], entry[142], entry[143], entry[144], entry[145], entry[146], entry[147], entry[148], entry[149], entry[150], entry[151], entry[152], entry[153], entry[154], entry[155], entry[156], entry[157], entry[158], entry[159], entry[160], entry[161], entry[162], entry[163], entry[164], entry[165], entry[166], entry[167], entry[168], entry[169], entry[170], entry[171], entry[172], entry[173], entry[174], entry[175], entry[176], entry[177], entry[178], entry[179], entry[180], entry[181], entry[182], entry[183], entry[184], entry[185], entry[186], entry[187], entry[188], entry[189], entry[190], entry[191], entry[192], entry[193], entry[194], entry[195], entry[196], entry[197], entry[198], entry[199], entry[200], entry[201], entry[202], entry[203], entry[204])
+			query = "INSERT INTO Moonboard (Name, Author, Grade, Stars, Moves, Repeats, StartHold1, Starthold2,IntermediateHold1,IntermediateHold2,IntermediateHold3,	IntermediateHold4,	IntermediateHold5,	IntermediateHold6,	IntermediateHold7,	IntermediateHold8,	IntermediateHold9,	IntermediateHold10,	IntermediateHold11,	IntermediateHold12,	IntermediateHold13,	IntermediateHold14,	IntermediateHold15,	IntermediateHold16,	IntermediateHold17,	IntermediateHold18,	IntermediateHold19,	IntermediateHold20,	IntermediateHold21,	IntermediateHold22,	IntermediateHold23,	IntermediateHold24,	IntermediateHold25,	IntermediateHold26,	IntermediateHold27,	IntermediateHold28,	IntermediateHold29,	IntermediateHold30,	IntermediateHold31,	IntermediateHold32,	IntermediateHold33,	IntermediateHold34,	IntermediateHold35,	IntermediateHold36,	IntermediateHold37,	IntermediateHold38,	IntermediateHold39,	IntermediateHold40,	IntermediateHold41,	IntermediateHold42,	IntermediateHold43,	IntermediateHold44,	IntermediateHold45,	IntermediateHold46,	IntermediateHold47,	IntermediateHold48,	IntermediateHold49,	IntermediateHold50,	IntermediateHold51,	IntermediateHold52,	IntermediateHold53,	IntermediateHold54,	IntermediateHold55,	IntermediateHold56,	IntermediateHold57,	IntermediateHold58,	IntermediateHold59,	IntermediateHold60,	IntermediateHold61,	IntermediateHold62,	IntermediateHold63,	IntermediateHold64,	IntermediateHold65,	IntermediateHold66,	IntermediateHold67,	IntermediateHold68,	IntermediateHold69,	IntermediateHold70,	IntermediateHold71,	IntermediateHold72,	IntermediateHold73,IntermediateHold74,	IntermediateHold75,	IntermediateHold76,	IntermediateHold77,	IntermediateHold78,	IntermediateHold79,	IntermediateHold80,	IntermediateHold81,	IntermediateHold82,IntermediateHold83,	IntermediateHold84,	IntermediateHold85,	IntermediateHold86,IntermediateHold87,	IntermediateHold88,	IntermediateHold89,	IntermediateHold90,	IntermediateHold91,	IntermediateHold92,	IntermediateHold93,	IntermediateHold94,	IntermediateHold95,IntermediateHold96,	IntermediateHold97,	IntermediateHold98,	IntermediateHold99,IntermediateHold100,	IntermediateHold101,IntermediateHold102,IntermediateHold103,	IntermediateHold104,	IntermediateHold105,	IntermediateHold106,	IntermediateHold107,	IntermediateHold108,	IntermediateHold109,	IntermediateHold110,	IntermediateHold111,	IntermediateHold112,	IntermediateHold113,	IntermediateHold114,	IntermediateHold115,	IntermediateHold116,	IntermediateHold117,	IntermediateHold118,	IntermediateHold119,	IntermediateHold120,	IntermediateHold121,	IntermediateHold122,	IntermediateHold123,	IntermediateHold124,	IntermediateHold125,	IntermediateHold126,	IntermediateHold127,	IntermediateHold128,	IntermediateHold129,	IntermediateHold130,	IntermediateHold131,	IntermediateHold132,	IntermediateHold133,	IntermediateHold134,	IntermediateHold135,	IntermediateHold136,	IntermediateHold137,	IntermediateHold138,	IntermediateHold139,	IntermediateHold140,	IntermediateHold141,	IntermediateHold142,	IntermediateHold143,	IntermediateHold144,	IntermediateHold145,	IntermediateHold146,	IntermediateHold147,	IntermediateHold148,	IntermediateHold149,	IntermediateHold150,	IntermediateHold151,	IntermediateHold152,	IntermediateHold153,	IntermediateHold154,	IntermediateHold155,	IntermediateHold156,	IntermediateHold157,	IntermediateHold158,	IntermediateHold159,	IntermediateHold160,	IntermediateHold161,	IntermediateHold162,	IntermediateHold163,	IntermediateHold164,	IntermediateHold165,	IntermediateHold166,	IntermediateHold167,	IntermediateHold168,	IntermediateHold169,	IntermediateHold170,	IntermediateHold171,	IntermediateHold172,	IntermediateHold173,IntermediateHold174,	IntermediateHold175,	IntermediateHold176,	IntermediateHold177,	IntermediateHold178,	IntermediateHold179,	IntermediateHold180,	IntermediateHold181,	IntermediateHold182,IntermediateHold183,	IntermediateHold184,	IntermediateHold185,	IntermediateHold186,IntermediateHold187,	IntermediateHold188,	IntermediateHold189,	IntermediateHold190,	IntermediateHold191,	IntermediateHold192,	IntermediateHold193,	IntermediateHold194,	IntermediateHold195,IntermediateHold196,	IntermediateHold197,	IntermediateHold198,	IntermediateHold199,IntermediateHold200,		FinishHold1,	FinishHold2) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE Stars  = VALUES(stars), Repeats   = VALUES(repeats)"
+			cur = db.cursor()
+			cur.execute(query, args)
+        	#start holds
+		# coordLED[0] = moonToLED(entry[4])
+		# coordLED[1] = moonToLED(entry[5])
+		# coordLED[2] = None #only because of moonboard only having 2 start holds
+		# coordLED[3] = None #only because of moonboard only having 2 start holds
 
 
-	#finish Holds
-	coordLED[196] = moonToLED(entry[28])
-	coordLED[197] = moonToLED(entry[29])
-	temp = 6
-	temp2 = 4
-	#print(*entry)
-	#intermediate holds
-	while entry[temp] != None:
-		coordLED[temp-2] = moonToLED(entry[temp])
-		temp+=1
+		# #finish Holds
+		# coordLED[196] = moonToLED(entry[28])
+		# coordLED[197] = moonToLED(entry[29])
+		# temp = 6
+		# temp2 = 4
+		# #print(*entry)
+		# #intermediate holds
+		# while entry[temp] != None:
+		# 	coordLED[temp-2] = moonToLED(entry[temp])
+		# 	temp+=1
 		#print(temp)
 
 	#print(*entry)

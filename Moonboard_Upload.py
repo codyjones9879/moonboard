@@ -88,36 +88,35 @@ def loadMainPage():
             title = title.replace("[", "")
             title = title.replace("]", "")
             link = title
-        elif "%2C" in title:
-            title = classes.get('rel')
-            title = title.replace("[", "")
-            title = title.replace("]", "")
-            link = title
+        # elif "%2C" in title:
+        #     title = classes.get('rel')
+        #     title = title.replace("[", "")
+        #     title = title.replace("]", "")
+        #     link = title
         elif "%C2%BF" in title:
             title = classes.get('rel')
             title = title.replace("[", "")
             title = title.replace("]", "")
             link = title
-        elif "=/-" in title:
+        elif title == "=/-":
+            title = classes.get('rel')
+            # title = title.replace("'", "")222189
+            link = str(title)
+        elif title == "¿":
             title = classes.get('rel')
             # title = title.replace("[", "")
             # title = title.replace("]", "")
-            link = title
-        elif "¿" in title:
+            link = str(title)
+        elif title == "¿?¿":
             title = classes.get('rel')
             # title = title.replace("[", "")
             # title = title.replace("]", "")
-            link = title
-        elif "¿?¿" in title:
+            link = str(title)
+        elif title == ":))": 
             title = classes.get('rel')
             # title = title.replace("[", "")
             # title = title.replace("]", "")
-            link = title
-        elif ":))" in title:
-            title = classes.get('rel')
-            # title = title.replace("[", "")
-            # title = title.replace("]", "")
-            link = title
+            link = str(title)
         elif title == "Far from the Madding Crowd":
             link = "problem-1"
         elif title == "Wuthering Heights":
@@ -133,25 +132,25 @@ def loadMainPage():
             title = classes.get('rel')
             # title = title.replace("[", "")
             # title = title.replace("]", "")
-            link = title
-        elif "??" in title:
+            link = str(title)
+        elif title == "??":
             # title = "206103"
             title = classes.get('rel')
             # title = title.replace("[", "")
             # title = title.replace("]", "")
-            link = title
-        elif "?" in title:
+            link = str(title)
+        elif title == "?":
             # title = "204447"
             title = classes.get('rel')
             # title = title.replace("[", "")
             # title = title.replace("]", "")
-            link = title
+            link = str(title)
         elif title == "$$":
             # title = "204447"
             title = classes.get('rel')
             # title = title.replace("[", "")
             # title = title.replace("]", "")
-            link = title
+            link = str(title)
         elif title == "Warm up number two":
             title = "warm-up-number-2"
             #title = classes.get('rel')
@@ -165,6 +164,7 @@ def loadMainPage():
             # title = title.replace("]", "")
             link = title
         else:
+            logger.info("Into final ELSE")
             link = title.replace("ø", "o")
             link = title.replace(" ", "-")
             link = urllib.parse.urlsplit(link)
@@ -240,121 +240,121 @@ def loadMainPage():
             link = link.replace("%E2%80%A6", "...")
             link = link.replace("%E2%80%B3", "")
             link = link.replace("\u201d", "")
-            logger.info('Link for Loading Page: %s' % link)
-            # problemInfo[0] = link
-            if problemInfo[0] == "":
-                logger.debug('Blank Link Name')
-            elif problemInfo[0] == " ":
-                logger.debug('Blank Link Name')
-            elif problemInfo[0] == "\t":
-                logger.debug('Blank Link Name')
-            else:
-                pageProblem = requests.get("http://www.moonboard.com/problems/"+link)
-                logger.debug('pageContent = %s' % pageProblem.content)
-                soup = BeautifulSoup(pageProblem.content, 'html.parser')
-                # problemName = soup.find(class_='post-title')
-                # logger.debug('problemName = %s' % problemName.string)
-                problemSummary = soup.find_all(class_='summary')
-                for ids in problemSummary:
-                    string = ids.getText()
-                    stringarray = re.split(r'\t+', string)
-                    problemInfoIndex = 0
-                    for elements in stringarray:
-                        logger.debug('-----------------')
-                        if len(elements) > 2:
-                            #TITLE
-                            if problemInfoIndex == 0:
-                                # problemInfo[0] = elements[1:len(elements)-1]
-                                logger.debug('Problem Name = %s' % problemInfo[0])
-                            if problemInfoIndex == 1:
-                                problemInfo[1] = elements[9:len(elements)]
-                                logger.debug('Setter = %s' % problemInfo[1])
-                            if problemInfoIndex == 2:
-                                problemInfo[2] = elements[8:len(elements)]
-                                logger.debug('Grade = %s' % problemInfo[2])
-                            if problemInfoIndex == 8:
-                                if elements[4:6] == "Be":
-                                    problemInfo[5] = 0
-                                    #logger.info('Repeat: %s' % problemInfo[5])
-                                else:
-                                    if elements[5] == ' ':
-                                        problemInfo[5] = elements[4]
-                                    elif elements[6] == ' ':
-                                        problemInfo[5] = elements[4:5]
-                                    elif elements[7] == ' ':
-                                        problemInfo[5] = elements[4:7]
-                                    elif elements[8] == ' ':
-                                        problemInfo[5] = elements[4:8]
-                                logger.debug('Repeat: %s' % problemInfo[5])
-                            problemInfoIndex+=1
-                            logger.debug('---------------')
-                # if problemInfoIndex == 3:
-                #     if elements[14:15] == ' ':
-                #         problemInfo[3] = 0
-                #         logger.info('Stars = %s' % elements[0:15])
-                #     else:
-                #         problemInfo[3] = elements[14:15]
-                #         logger.info('Stars = %s' % elements[0:15])
-                
-                # logger.info('Stars = %s' % problemInfo[3])
-                startHold1 = soup.find_all(id="SH1")
-                startHold2 = soup.find_all(id="SH2")
-                finishHold1 = soup.find_all(id="FH1")
-                finishHold2 = soup.find_all(id="FH2")
-                for ids in startHold1:
-                    if ids.string != None:
-                        problemInfo[6] = ids.string
-                        logger.debug('Start Hold 1: %s' % problemInfo[6])
-                for ids in startHold2:
-                    if ids.string != None:
-                        problemInfo[7] = ids.string
-                        logger.debug('Start Hold 2: %s' % problemInfo[7])
-                holdNum = 0
-                moves = True
-                numMoves = 0
-                while moves == True:
-                    holdNum+=1
-                    temp = soup.find(id="IH"+str(holdNum))
-                    if temp:
-                        if temp.string != None:
-                            problemInfo[7+holdNum] = temp.string
-                            numMoves+=1
-                            logger.debug('Intermediate Hold: %s' % problemInfo[7+holdNum])
+        logger.info('Link for Loading Page: %s' % link)
+        # problemInfo[0] = link
+        if problemInfo[0] == "":
+            logger.debug('Blank Link Name')
+        elif problemInfo[0] == " ":
+            logger.debug('Blank Link Name')
+        elif problemInfo[0] == "\t":
+            logger.debug('Blank Link Name')
+        else:
+            pageProblem = requests.get("http://www.moonboard.com/problems/"+link)
+            logger.debug('pageContent = %s' % pageProblem.content)
+            soup = BeautifulSoup(pageProblem.content, 'html.parser')
+            # problemName = soup.find(class_='post-title')
+            # logger.debug('problemName = %s' % problemName.string)
+            problemSummary = soup.find_all(class_='summary')
+            for ids in problemSummary:
+                string = ids.getText()
+                stringarray = re.split(r'\t+', string)
+                problemInfoIndex = 0
+                for elements in stringarray:
+                    logger.debug('-----------------')
+                    if len(elements) > 2:
+                        #TITLE
+                        if problemInfoIndex == 0:
+                            # problemInfo[0] = elements[1:len(elements)-1]
+                            logger.debug('Problem Name = %s' % problemInfo[0])
+                        if problemInfoIndex == 1:
+                            problemInfo[1] = elements[9:len(elements)]
+                            logger.debug('Setter = %s' % problemInfo[1])
+                        if problemInfoIndex == 2:
+                            problemInfo[2] = elements[8:len(elements)]
+                            logger.debug('Grade = %s' % problemInfo[2])
+                        if problemInfoIndex == 8:
+                            if elements[4:6] == "Be":
+                                problemInfo[5] = 0
+                                #logger.info('Repeat: %s' % problemInfo[5])
+                            else:
+                                if elements[5] == ' ':
+                                    problemInfo[5] = elements[4]
+                                elif elements[6] == ' ':
+                                    problemInfo[5] = elements[4:5]
+                                elif elements[7] == ' ':
+                                    problemInfo[5] = elements[4:7]
+                                elif elements[8] == ' ':
+                                    problemInfo[5] = elements[4:8]
+                            logger.debug('Repeat: %s' % problemInfo[5])
+                        problemInfoIndex+=1
+                        logger.debug('---------------')
+            # if problemInfoIndex == 3:
+            #     if elements[14:15] == ' ':
+            #         problemInfo[3] = 0
+            #         logger.info('Stars = %s' % elements[0:15])
+            #     else:
+            #         problemInfo[3] = elements[14:15]
+            #         logger.info('Stars = %s' % elements[0:15])
+            
+            # logger.info('Stars = %s' % problemInfo[3])
+            startHold1 = soup.find_all(id="SH1")
+            startHold2 = soup.find_all(id="SH2")
+            finishHold1 = soup.find_all(id="FH1")
+            finishHold2 = soup.find_all(id="FH2")
+            for ids in startHold1:
+                if ids.string != None:
+                    problemInfo[6] = ids.string
+                    logger.debug('Start Hold 1: %s' % problemInfo[6])
+            for ids in startHold2:
+                if ids.string != None:
+                    problemInfo[7] = ids.string
+                    logger.debug('Start Hold 2: %s' % problemInfo[7])
+            holdNum = 0
+            moves = True
+            numMoves = 0
+            while moves == True:
+                holdNum+=1
+                temp = soup.find(id="IH"+str(holdNum))
+                if temp:
+                    if temp.string != None:
+                        problemInfo[7+holdNum] = temp.string
+                        numMoves+=1
+                        logger.debug('Intermediate Hold: %s' % problemInfo[7+holdNum])
+                else:
+                    moves = False
+            for ids in finishHold1:
+                #print(ids.prettify(encoding='utf-8'))
+                if ids.string != None:
+                    problemInfo[208] = ids.string
+                    numMoves+=1
+                    logger.debug('Finish Hold 1: %s' % problemInfo[208])
+            for ids in finishHold2:
+                #print(ids.prettify(encoding='utf-8'))
+                if ids.string != None:
+                    problemInfo[209] = ids.string
+                    numMoves+=1
+                    logger.debug('Finish Hold 2: %s' % problemInfo[209])
+            problemInfo[4] = numMoves
+            images = soup.find_all("img")
+            imageIndex = 0
+            for ids in images:
+                if imageIndex == 0:
+                    logger.debug("Images: %s" % ids)
+                    
+                    if "3stars-small.png" in str(ids):
+                        problemInfo[3] = "3"
+                    elif "2stars-small.png" in str(ids):
+                        problemInfo[3] = "2"
+                    elif "1stars-small.png" in str(ids):
+                        problemInfo[3] = "1"
                     else:
-                        moves = False
-                for ids in finishHold1:
-                    #print(ids.prettify(encoding='utf-8'))
-                    if ids.string != None:
-                        problemInfo[208] = ids.string
-                        numMoves+=1
-                        logger.debug('Finish Hold 1: %s' % problemInfo[208])
-                for ids in finishHold2:
-                    #print(ids.prettify(encoding='utf-8'))
-                    if ids.string != None:
-                        problemInfo[209] = ids.string
-                        numMoves+=1
-                        logger.debug('Finish Hold 2: %s' % problemInfo[209])
-                problemInfo[4] = numMoves
-                images = soup.find_all("img")
-                imageIndex = 0
-                for ids in images:
-                    if imageIndex == 0:
-                        logger.debug("Images: %s" % ids)
-                        
-                        if "3stars-small.png" in str(ids):
-                            problemInfo[3] = "3"
-                        elif "2stars-small.png" in str(ids):
-                            problemInfo[3] = "2"
-                        elif "1stars-small.png" in str(ids):
-                            problemInfo[3] = "1"
-                        else:
-                            problemInfo[3] = "0"
-                    imageIndex+=1
-                logger.debug("Stars: %s" % problemInfo[3])
-                db = connectDB()
-                args = getArgs(problemInfo)
-                query = getQuery()
-                submitDB(db, query, args)
+                        problemInfo[3] = "0"
+                imageIndex+=1
+            logger.debug("Stars: %s" % problemInfo[3])
+            db = connectDB()
+            args = getArgs(problemInfo)
+            query = getQuery()
+            submitDB(db, query, args)
                      
 
 

@@ -102,6 +102,22 @@ def loadMainPage():
             title = classes.get('rel')
             # title = title.replace("'", "")222189
             link = str(title)
+        elif title == "…":
+            title = classes.get('rel')
+            # title = title.replace("'", "")222189
+            link = str(title)
+        elif title == "…….!":
+            title = classes.get('rel')
+            # title = title.replace("'", "")222189
+            link = str(title)
+        elif title == "…….":
+            title = classes.get('rel')
+            # title = title.replace("'", "")222189
+            link = str(title)
+        elif title == "…………..":
+            title = classes.get('rel')
+            # title = title.replace("'", "")222189
+            link = str(title)
         elif title == "¿":
             title = classes.get('rel')
             # title = title.replace("[", "")
@@ -112,11 +128,25 @@ def loadMainPage():
             # title = title.replace("[", "")
             # title = title.replace("]", "")
             link = str(title)
-        elif title == ":))": 
+        elif title == ":))":
             title = classes.get('rel')
             # title = title.replace("[", "")
             # title = title.replace("]", "")
             link = str(title)
+        elif title == ":)":
+            title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = str(title)
+        elif title == "///\\":
+            title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = str(title)
+        elif title == "%D0%90%D0%BFp%D0%B8%D0%BB%D1%81%D0%BA%D0%B0 %D0%B7%D0%B8%D0%BC%D0%B0":
+            link = "априлска-зима"
+        elif title == "%D0%A1%D0%BD%D1%8F%D0%B3 %D0%BFp%D0%B5%D0%B7 %D0%90%D0%BFp%D0%B8%D0%BB":
+            link = "сняг-през-април"
         elif title == "Far from the Madding Crowd":
             link = "problem-1"
         elif title == "Wuthering Heights":
@@ -139,6 +169,9 @@ def loadMainPage():
             # title = title.replace("[", "")
             # title = title.replace("]", "")
             link = str(title)
+        elif title == ".":
+            title = classes.get('rel')
+            link = str(title)
         elif title == "?":
             # title = "204447"
             title = classes.get('rel')
@@ -153,6 +186,18 @@ def loadMainPage():
             link = str(title)
         elif title == "Warm up number two":
             title = "warm-up-number-2"
+            #title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = title
+        elif title == "NĚCO PRO OLIFSONA! :-D":
+            title = "neco-pro-olifsona-d"
+            #title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = title
+        elif title == "6%DO%90":
+            #title = "neco-pro-olifsona-d"
             #title = classes.get('rel')
             # title = title.replace("[", "")
             # title = title.replace("]", "")
@@ -178,6 +223,7 @@ def loadMainPage():
             link = link.replace("%20", "-")
             link = link.replace("%21", "!")
             link = link.replace("%24", "")
+            link = link.replace("%25", "")
             link = link.replace("%26", "&")
             link = link.replace("%27", "")
             link = link.replace("%28", "(")
@@ -191,6 +237,7 @@ def loadMainPage():
             link = link.replace("%40", "@")
             link = link.replace("%5C", "\\")
             link = link.replace("%5E", "")
+            link = link.replace("%60", "")
             link = link.replace(".", "-")
             link = link.replace("/", "")
             link = link.replace("#", "")
@@ -201,6 +248,7 @@ def loadMainPage():
             link = link.replace("%C3%80", "A")
             link = link.replace("%C3%85", "A")
             link = link.replace("%C3%89", "E")
+            link = link.replace("%C3%8F", "i")
             link = link.replace("%C3%90", "D")
             link = link.replace("%C3%96", "O")
             link = link.replace("%C3%97", "x")
@@ -211,11 +259,12 @@ def loadMainPage():
             link = link.replace("%C3%A3", "a")
             link = link.replace("%C3%A4", "a")
             link = link.replace("%C3%A5", "a")
-            link = link.replace("%C3%A6", "a")
+            link = link.replace("%C3%A6", "ae")
             link = link.replace("%C3%A7", "c")
             link = link.replace("%C3%A8", "e")
             link = link.replace("%C3%A9", "e")
             link = link.replace("%C3%AC", "i")
+            link = link.replace("%C3%AD", "i")
             link = link.replace("%C3%AE", "i")
             link = link.replace("%C3%B0", "d")
             link = link.replace("%C3%B1", "n")
@@ -223,9 +272,14 @@ def loadMainPage():
             link = link.replace("%C3%B3", "o")
             link = link.replace("%C3%B6", "o")
             link = link.replace("%C3%B8", "o")
+            link = link.replace("%C3%B9", "u")
             link = link.replace("%C3%BA", "u")
             link = link.replace("%C3%BC", "u")
+            link = link.replace("%C4%8D", "c")
             link = link.replace("%C4%97", "e")
+            link = link.replace("%C4%9B", "e")
+            link = link.replace("%C4%AE", "i")
+            link = link.replace("%C4%AF", "i")
             link = link.replace("%C5%82", "l")
             link = link.replace("%C5%9B", "s")
             link = link.replace("%D1%80", "p")

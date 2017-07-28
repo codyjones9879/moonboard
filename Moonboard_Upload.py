@@ -102,8 +102,8 @@ def getVGrade(fontGrade):
         "8b": "V13",
         "8B+": "V14",
         "8b+": "V14",
-        "8C" : "V15",
-        "8c" : "V15"
+        "8C": "V15",
+        "8c": "V15"
     }
     return switcher.get(fontGrade, None)
 
@@ -149,6 +149,9 @@ def loadMainPage():
             title = classes.get('rel')
             # title = title.replace("'", "")222189
             link = str(title)
+        elif title == "…..":
+            title = classes.get('rel')
+            link = str(title)
         elif title == "…….":
             title = classes.get('rel')
             # title = title.replace("'", "")222189
@@ -182,10 +185,17 @@ def loadMainPage():
             # title = title.replace("[", "")
             # title = title.replace("]", "")
             link = str(title)
-        elif title == "%D0%90%D0%BFp%D0%B8%D0%BB%D1%81%D0%BA%D0%B0 %D0%B7%D0%B8%D0%BC%D0%B0":
+        elif title == "//)":
+            title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = str(title)
+        elif title == "Априлска зима":
             link = "априлска-зима"
-        elif title == "%D0%A1%D0%BD%D1%8F%D0%B3 %D0%BFp%D0%B5%D0%B7 %D0%90%D0%BFp%D0%B8%D0%BB":
+        elif title == "Сняг през Април":
             link = "сняг-през-април"
+        elif title == "Слатинска загрявка":
+            link = "слатинска-загрявка"
         elif title == "Far from the Madding Crowd":
             link = "problem-1"
         elif title == "Wuthering Heights":
@@ -259,12 +269,27 @@ def loadMainPage():
             # title = title.replace("[", "")
             # title = title.replace("]", "")
             link = title
+        elif title == "Бял ЩЪрк":
+            #title = "neco-pro-olifsona-d"
+            #title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            #time.sleep(100000)
+            link = "бял-щърк"
+        elif title == "Андрюха":
+            link = "андрюха"
         elif title == "6%DO%90":
             #title = "neco-pro-olifsona-d"
             #title = classes.get('rel')
             # title = title.replace("[", "")
             # title = title.replace("]", "")
             link = title
+        elif title == "6В":
+            link = "6в"
+        elif title == "Цв Цв":
+            link = "цв-цв"
+        elif title == "добрый крест":
+            link = "добрый-крест"
         elif title == "frigging fingers":
             title = "fucking-fingers"
             #title = classes.get('rel')
@@ -357,6 +382,7 @@ def loadMainPage():
             link = link.replace("%C4%AE", "i")
             link = link.replace("%C4%AF", "i")
             link = link.replace("%C5%82", "l")
+            link = link.replace("%C5%99", "r")
             link = link.replace("%C5%9B", "s")
             link = link.replace("%C5%BE", "z")
             link = link.replace("%D1%80", "p")

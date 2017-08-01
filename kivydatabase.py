@@ -16,11 +16,11 @@ from kivy.app import runTouchApp
 class DbCon:
 
     def __init__(self):
-        self.db = pymysql.connect(host="ClimbingHoldsApe.db.8216949.hostedresource.com",user="ClimbingHoldsApe",passwd="Comply9879!",db="ClimbingHoldsApe")
+        self.db = pymysql.connect(host="localhost",user="root",passwd="root",db="climbingholdsape")
         self.c = self.db.cursor()
 
-    def get_rows(self,search = ""):
-        self.c.execute("SELECT * FROM Moonboard WHERE Author REGEXP '.*%s.*'limit 50" % search)
+    def get_rows(self):
+        self.c.execute("SELECT * FROM Moonboard")
         return self.c.fetchall()
 
 
@@ -41,25 +41,21 @@ class Table(BoxLayout):
 
         self.add_widget(self.search_field)
 
-        self.add_widget(Label(text="Routes"))
-
-        self.table = GridLayout(cols=3,rows=51)
-        self.table.add_widget(Label(text="Problem"))
-        self.table.add_widget(Label(text="Setter"))
-        self.table.add_widget(Label(text="Grade"))
-
-        self.rows = [[Label(text="Problem"),Label(text="Setter"),Label(text="Grade")] for x in range(50)]
-
-        for Problem,Setter,Grade in self.rows:
-            self.table.add_widget(Problem)
-            self.table.add_widget(Setter)
-            self.table.add_widget(Grade)
-
-        self.add_widget(self.table)
-
-
         self.db = DbCon()
-        self.update_table()
+        self.Routes = self.db.get_rows()
+
+        self.grid = GridLayout(cols=1, size_hint_y=None)
+
+        for i in range(50):
+            btn = Button(text=str(self.Routes[i][0]+'\n'+self.Routes[i][1])+'\n'+"Font Grade: "+self.Routes[i][2], size_hint_y=None)
+            self.grid.add_widget(btn)
+        self.scrolling = ScrollView(size_hint=(1, None), size=(Window.width, Window.height))
+        self.scrolling.add_widget(self.grid)
+        self.add_widget(self.scrolling)
+
+
+
+
 
 
     def update_table(self,search=""):

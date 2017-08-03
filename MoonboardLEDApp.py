@@ -300,7 +300,7 @@ class Problem(Button):
             # Example Array setup:   [SH1, SH2, SH3, SH4,IH1,.....IH196,FH1,FH2]   SH1-4  is a combination of 2 hands and 2 feet, Intermediate max is with only 1 hand hold to start and 1 finish 
             # hold max making a remaining 196 Intermediate holds potentially if the wall is filled We need designated locations for these combinations
             '''
-        colorLED = [0] * 198
+        self.colorLED = [0] * 198
         # start holds
         self.coordLED[0] = moonToLED(self.route[0])
         self.coordLED[1] = moonToLED(self.route[1])
@@ -315,6 +315,40 @@ class Problem(Button):
             self.coordLED[temp2] = moonToLED(self.route[temp])
             temp2+=1
             temp+=1
+        '''
+        	# Color Choice:
+        	# 0. Off
+        	# 1. Blue - Start Hold
+        	# 2. Red - Intermediate Hold
+        	# 3. Green - Finish Hold
+        	'''
+        index = 0
+        while index < len(self.coordLED):
+            if index < 4:
+                # start Holds
+                if self.coordLED[index] != None:
+                    self.colorLED[self.coordLED[index]] = 1
+                    #strip.setPixelColorRGB(coordLED[index], 0, 255, 0)
+            elif index > 3 and index < 196:
+                if self.coordLED[index] != None:
+                    self.colorLED[self.coordLED[index]] = 2
+                    #strip.setPixelColorRGB(coordLED[index], 255, 0, 0)
+                    # else:
+                    # 	#colorLED[coordLED[index]] = 0
+            else:
+                if self.coordLED[index] != None:
+                    self.colorLED[self.coordLED[index]] = 3
+                    #strip.setPixelColorRGB(coordLED[index], 0, 0, 255)
+                    # else:
+                    # 	#colorLED[coordLED[index]] = 0
+            index += 1
+        index = 0
+        while index < len(self.colorLED):
+            if self.colorLED[index] == None:
+                self.colorLED[index] = 0
+                #strip.setPixelColorRGB(index, 0, 0, 0)
+            index += 1
+        #strip.show()
         print(self.routeName)
         print(self.setterName)
         print(self.gradeUK)
@@ -324,7 +358,9 @@ class Problem(Button):
         print(self.repeats)
         print(*self.route)
         print(*self.coordLED)
+        print(*self.colorLED)
 
+        
 class MoonboardAppLayout(GridLayout):
     def __init__(self, **kwargs):
         super(MoonboardAppLayout, self).__init__(**kwargs)

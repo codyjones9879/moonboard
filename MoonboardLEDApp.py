@@ -7,8 +7,13 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.checkbox import CheckBox
+from kivy.uix.textinput import TextInput
+from kivy.properties import BooleanProperty, StringProperty, ListProperty
+from kivy.uix.behaviors import ToggleButtonBehavior
+from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.config import Config
 from kivy.uix.label import Label
+from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.button import Button
 from kivy.core.text import LabelBase
 import pymysql
@@ -283,7 +288,9 @@ class DbCon:
     def get_rows(self):
         self.c.execute("SELECT * FROM Moonboard")
         return self.c.fetchall()
-
+class SearchButton(Button):
+    def on_press(self):
+        print("TODO mySQL search")
 class Problem(Button):
     route = [None] * 205
     routeName = ""
@@ -360,18 +367,21 @@ class Problem(Button):
         print(*self.coordLED)
         print(*self.colorLED)
 
-        
+class FilterBox(CheckBox):
+        text=""
+
 class MoonboardAppLayout(GridLayout):
     def __init__(self, **kwargs):
         super(MoonboardAppLayout, self).__init__(**kwargs)
-        self.cols = 1
-        self.rows = 3
+        self.cols = 2
         self.db = DbCon()
         self.Routes = self.db.get_rows()
         problemButton = [None] * len(self.Routes)
         self.problemList = GridLayout(cols=1, size_hint_y=None)
         self.problemList.bind(minimum_height=self.problemList.setter('height'))
-        for i in range(len(self.Routes)):
+        toggleText=["6B+", "6C", "6C+", "7A", "7A+", "7B", "7B+", "7C", "7C+", "8A", "8A+", "8B", "3 Stars", "2 Stars", "1 Star", "No Stars"]
+        # for i in range(len(self.Routes)):
+        for i in range(50):
             problemButton[i] = Problem(text=str(self.Routes[i][0]+'\n'+self.Routes[i][1])+'\n'+"Font Grade: "+self.Routes[i][2], size_hint_y=None)
             problemButton[i].route = self.Routes[i][7:211]
             problemButton[i].routeName = str(self.Routes[i][0])
@@ -382,18 +392,33 @@ class MoonboardAppLayout(GridLayout):
             problemButton[i].moves = self.Routes[i][5]
             problemButton[i].repeats = self.Routes[i][6]
             self.problemList.add_widget(problemButton[i])
-        self.moonboardProblemsScroll = ScrollView(size_hint=(1, None), size=(Window.width, Window.height))
-        self.filters = CheckBox()
-        self.filtered = CheckBox()
+        self.moonboardProblemsScroll = ScrollView()
+        self.search_field = BoxLayout(orientation="horizontal", size_hint_y=None)
+        self.search_input = TextInput(text="Search for anything", multiline=False)
+        self.search_button = SearchButton(text="search")
+        self.searchGrid = GridLayout(cols=1)
+        self.filterGroup = GridLayout(cols=2)
+
         self.moonboardProblemsScroll.add_widget(self.problemList)
         self.add_widget(self.moonboardProblemsScroll)
-        self.add_widget(self.filters)
-        self.add_widget(self.filtered)
+        for i in range(16):
+            filterBox = FilterBox()
+            FilterLabel = Label()
+            FilterLabel.text = toggleText[i]
+            self.filterGroup.add_widget(filterBox)
+            self.filterGroup.add_widget(FilterLabel)
+
+        self.search_field.add_widget(self.search_input)
+        self.search_field.add_widget(self.search_button)
+        self.searchGrid.add_widget(self.search_field)
+        self.searchGrid.add_widget(self.filterGroup)
+        self.add_widget(self.searchGrid)
 
 
 class DatabaseApp(App):
 
     def build(self):
+        self.title="MOONBOARD"
         parent = BoxLayout(size=(Window.width, Window.height))
         self.gridsDisplay = MoonboardAppLayout()
         parent.add_widget(self.gridsDisplay)

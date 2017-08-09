@@ -384,6 +384,7 @@ def loadMainPage():
             link = link.replace("%C5%82", "l")
             link = link.replace("%C5%99", "r")
             link = link.replace("%C5%9B", "s")
+            link = link.replace("%C5%A1", "s")
             link = link.replace("%C5%BE", "z")
             link = link.replace("%D1%80", "p")
             link = link.replace("%DO%90", "A")

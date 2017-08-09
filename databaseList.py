@@ -21,7 +21,7 @@ LabelBase.register(name="NotoSans",
                    fn_italic="NotoSans-hinted/NotoSansUI-Italic.ttf",
                    fn_bolditalic="NotoSans-hinted/NotoSansUI-BoldItalic.ttf")
 count = 0
-Window.fullscreen = 'auto'
+#Window.fullscreen = 'auto'
 class DbCon:
     def __init__(self):
         self.db = pymysql.connect(host="localhost",user="root",passwd="root",db="climbingholdsape")

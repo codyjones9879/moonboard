@@ -2,7 +2,9 @@
 from __future__ import unicode_literals
 import kivy
 #from neopixel import *
+import sys
 from kivy.app import App
+from kivy.uix.image import Image
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
@@ -20,6 +22,8 @@ import pymysql
 import pymysql.cursors
 from kivy.core.window import Window
 
+reload(sys)
+sys.setdefaultencoding('utf8')
 LabelBase.register(name="NotoSans",
                    fn_regular="NotoSans-hinted/NotoSansUI-Regular.ttf",
                    fn_bold="NotoSans-hinted/NotoSansUI-Bold.ttf",
@@ -290,7 +294,8 @@ class DbCon:
         return self.c.fetchall()
 class SearchButton(Button):
     def on_press(self):
-        print("TODO mySQL search")
+        return 0#print("TODO mySQL search")
+
 class Problem(Button):
     route = [None] * 205
     routeName = ""
@@ -356,19 +361,22 @@ class Problem(Button):
                 #strip.setPixelColorRGB(index, 0, 0, 0)
             index += 1
         #strip.show()
-        print(self.routeName)
-        print(self.setterName)
-        print(self.gradeUK)
-        print(self.gradeUS)
-        print(self.stars)
-        print(self.moves)
-        print(self.repeats)
-        print(*self.route)
-        print(*self.coordLED)
-        print(*self.colorLED)
+        #print(self.routeName)
+        #print(self.setterName)
+        #print(self.gradeUK)
+        ##print(self.gradeUS)
+        #print(self.stars)
+        #print(self.moves)
+        #print(self.repeats)
+        #print(*self.route)
+        #print(*self.coordLED)
+        #print(*self.colorLED)
 
 class FilterBox(CheckBox):
         text=""
+
+class moonBoardImage(Image):
+    pass
 
 class MoonboardAppLayout(GridLayout):
     def __init__(self, **kwargs):
@@ -377,6 +385,8 @@ class MoonboardAppLayout(GridLayout):
         self.db = DbCon()
         self.Routes = self.db.get_rows()
         problemButton = [None] * len(self.Routes)
+        moonImages = [None] * 240
+        blankImage = Image(source='images/Blank_Moonboard.png')
         self.problemList = GridLayout(cols=1, size_hint_y=None)
         self.problemList.bind(minimum_height=self.problemList.setter('height'))
         toggleText=["6B+", "6C", "6C+", "7A", "7A+", "7B", "7B+", "7C", "7C+", "8A", "8A+", "8B", "3 Stars", "2 Stars", "1 Star", "No Stars"]
@@ -398,6 +408,7 @@ class MoonboardAppLayout(GridLayout):
         self.search_button = SearchButton(text="search")
         self.searchGrid = GridLayout(cols=1)
         self.filterGroup = GridLayout(cols=2)
+        self.moonImageGroup = GridLayout(orientation="horizontal", cols=12, padding=0, spacing=0)
 
         self.moonboardProblemsScroll.add_widget(self.problemList)
         self.add_widget(self.moonboardProblemsScroll)
@@ -407,11 +418,21 @@ class MoonboardAppLayout(GridLayout):
             FilterLabel.text = toggleText[i]
             self.filterGroup.add_widget(filterBox)
             self.filterGroup.add_widget(FilterLabel)
+        index=0
+        for i in range(19):
+            for j in range(12):
+                imageStr = str("images/moon-"+str(i)+"-"+str(j)+".png")
+                print imageStr
+                moonImages[index] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1, allow_stretch=True, keep_ratio=False)
+                index+=1
+        for i in range(228):
+            self.moonImageGroup.add_widget(moonImages[i])
 
         self.search_field.add_widget(self.search_input)
         self.search_field.add_widget(self.search_button)
         self.searchGrid.add_widget(self.search_field)
         self.searchGrid.add_widget(self.filterGroup)
+        self.searchGrid.add_widget(self.moonImageGroup)
         self.add_widget(self.searchGrid)
 
 

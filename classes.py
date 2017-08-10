@@ -62,6 +62,7 @@ M			G1=6     G2=15    G3=28    G4=37    G5=50    G6=59    G7=72    G8=81    G9=9
 Globals
 '''
 count = 0
+LED_ROUTE_IMAGES = [None] * 228
 #Window.fullscreen = 'auto'
 LED_COUNT                = 196
 LED_PIN                  = 18
@@ -309,6 +310,7 @@ class SearchButton(Button):
 
 class Problem(Button):
     route = [None] * 205
+
     routeName = ""
     setterName = ""
     gradeUK = ""
@@ -373,6 +375,106 @@ class Problem(Button):
                 #strip.setPixelColorRGB(index, 0, 0, 0)
             index += 1
         #strip.show()
+        self.tmp = 0 #running index for 228 images
+        self.TEMP = 0 #running index for 197 LEDs
+        for i in range(19):
+            for j in range(12):
+                if self.tmp < 13:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 24:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 36:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 48:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 60:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 72:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 84:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 96:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 108:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 120:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 132:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 144:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 156:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 168:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 180:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 192:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 204:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                elif self.tmp == 216:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                          allow_stretch=True, keep_ratio=False)
+                else:
+                    if self.colorLED[self.TEMP] == 0:
+                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                        LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                                  allow_stretch=True, keep_ratio=False)
+                    elif self.colorLED[self.TEMP] == 1:
+                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-blue-square.png")
+                        LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                                                allow_stretch=True, keep_ratio=False)
+                    elif self.colorLED[self.TEMP] == 2:
+                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-red-square.png")
+                        LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                                                allow_stretch=True, keep_ratio=False)
+                    else:
+                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-green-square.png")
+                        LED_ROUTE_IMAGES[self.tmp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
+                                                                allow_stretch=True, keep_ratio=False)
+                    self.TEMP+=1
+                # self.moonImagesArray[temp]
+                self.tmp += 1
+                print(self.tmp)
+                print(self.TEMP)
+
+        #global LED_ROUTE_IMAGES = colorLED[]
         print(self.routeName)
         print(self.setterName)
         print(self.gradeUK)
@@ -395,23 +497,13 @@ class moonBoardProblemImage(GridLayout):
         self.cols = 12
         self.padding = 0
         self.spacing = 0
-        self.moonImagesArray = [None] * 228
-        self.temp = 0
-        for i in range(19):
-            for j in range(12):
-                self.imageStr = str("images/moon-"+str(i)+"-"+str(j)+".png")
-                self.moonImagesArray[self.temp] = moonBoardImage(source=self.imageStr, size_hint_y=1, size_hint_x=1, allow_stretch=True, keep_ratio=False)
-                #self.moonImagesArray[temp]
-                self.temp+=1
-        for i in range(228):
-            self.add_widget(self.moonImagesArray[i])
-
-        #Clock.schedule_interval(self.update, .1)
 
 
-    def update(self, dt):
-        self.moonImagesArray[13].source = "images/moon-1-1-red-square.png"
-        self.moonImagesArray[13].reload()
+
+    # def update(self, dt):
+    #
+    #     self.moonImagesArray[13].source = "images/moon-1-1-red-square.png"
+    #     self.moonImagesArray[13].reload()
 
 
 class moonBoardImage(Image):
@@ -425,6 +517,7 @@ class moonBoardImage(Image):
 class MoonboardAppLayout(GridLayout):
     def __init__(self, **kwargs):
         super(MoonboardAppLayout, self).__init__(**kwargs)
+        self.moonImagesArray = [None] * 228
         self.cols = 2
         self.db = DbCon()
         self.Routes = self.db.get_rows()
@@ -445,13 +538,26 @@ class MoonboardAppLayout(GridLayout):
             problemButton[i].moves = self.Routes[i][5]
             problemButton[i].repeats = self.Routes[i][6]
             self.problemList.add_widget(problemButton[i])
+        self.moonImageGroup = moonBoardProblemImage()
+        self.temp = 0
+        for i in range(19):
+            for j in range(12):
+                self.imageStr = str("images/moon-"+str(i)+"-"+str(j)+".png")
+                self.moonImagesArray[self.temp] = moonBoardImage(source=self.imageStr, size_hint_y=1, size_hint_x=1, allow_stretch=True, keep_ratio=False)
+                #self.moonImagesArray[temp]
+                self.temp+=1
+        for i in range(228):
+            self.moonImageGroup.add_widget(self.moonImagesArray[i])
+
+
+
         self.moonboardProblemsScroll = ScrollView()
         self.search_field = BoxLayout(orientation="horizontal", size_hint_y=None)
         self.search_input = TextInput(text="Search for anything", multiline=False)
         self.search_button = SearchButton(text="search")
         self.searchGrid = GridLayout(cols=1)
         self.filterGroup = GridLayout(cols=2)
-        self.moonImageGroup = moonBoardProblemImage()
+
 
         self.moonboardProblemsScroll.add_widget(self.problemList)
         self.add_widget(self.moonboardProblemsScroll)
@@ -467,6 +573,12 @@ class MoonboardAppLayout(GridLayout):
         self.searchGrid.add_widget(self.filterGroup)
         self.searchGrid.add_widget(self.moonImageGroup)
         self.add_widget(self.searchGrid)
+
+
+
+        # self.moonImagesArray[13].source = "images/moon-1-1-blue-square.png"
+        # self.moonImagesArray[14].source = "images/moon-1-1-blue-square.png"
+        # self.moonImagesArray.reload()
 
 
 

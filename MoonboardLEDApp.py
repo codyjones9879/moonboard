@@ -433,6 +433,8 @@ class MoonboardAppLayout(GridLayout):
         self.problemList = GridLayout(cols=1, size_hint_y=None)
         self.problemList.bind(minimum_height=self.problemList.setter('height'))
         toggleText=["6B+", "6C", "6C+", "7A", "7A+", "7B", "7B+", "7C", "7C+", "8A", "8A+", "8B", "3 Stars", "2 Stars", "1 Star", "No Stars"]
+        self.coordLED = [None] * 198
+        self.colorLED = [0] * 198
         # for i in range(len(self.Routes)):
         for i in range(50):
             problemButton[i] = Problem(text=str(self.Routes[i][0]+'\n'+self.Routes[i][1])+'\n'+"Font Grade: "+self.Routes[i][2], size_hint_y=None)

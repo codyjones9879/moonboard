@@ -62,6 +62,8 @@ M			G1=6     G2=15    G3=28    G4=37    G5=50    G6=59    G7=72    G8=81    G9=9
 Globals
 '''
 count = 0
+global LED_ROUTE_IMAGES
+LED_ROUTE_IMAGES = [None] * 228
 #Window.fullscreen = 'auto'
 LED_COUNT                = 196
 LED_PIN                  = 18
@@ -81,17 +83,7 @@ def colorWipe(strip, color, wait_ms=50):
         strip.show()
         # time.sleep(wait_ms/1000.0)
 
-def updateImages(route, imageArray):
-    temp = 0
-    for i in range(19):
-        for j in range(12):
-            imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
-            imageArray[temp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
-                                                             allow_stretch=True, keep_ratio=False)
-            # self.moonImagesArray[temp]
-            temp += 1
-    print(route)
-    pass
+
 def moonToLED(coord):
     switcher = {
         "A1": 0,
@@ -295,6 +287,231 @@ def moonToLED(coord):
     }
     return switcher.get(coord, None)
 
+def picIndexLookUp(index):
+    switcher = {
+        #REVERSE
+        0: 10,
+        1: 9,
+        2: 8,
+        3: 7,
+        4: 6,
+        5: 5,
+        6: 4,
+        7: 3,
+        8: 2,
+        9: 1,
+        10: 0,
+        #NORMAL
+        11: 11,
+        12: 12,
+        13: 13,
+        14: 14,
+        15: 15,
+        16: 16,
+        17: 17,
+        18: 18,
+        19: 19,
+        20: 20,
+        21: 21,
+        #REVERSE
+        22: 32,
+        23: 31,
+        24: 30,
+        25: 29,
+        26: 28,
+        27: 27,
+        28: 26,
+        29: 25,
+        30: 24,
+        31: 23,
+        32: 22,
+        #NORMAL
+        33: 33,
+        34: 34,
+        35: 35,
+        36: 36,
+        37: 37,
+        38: 38,
+        39: 39,
+        40: 40,
+        41: 41,
+        42: 42,
+        43: 43,
+        #REVERSE
+        44: 54,
+        45: 53,
+        46: 52,
+        47: 51,
+        48: 50,
+        49: 49,
+        50: 48,
+        51: 47,
+        52: 46,
+        53: 45,
+        54: 44,
+        #NORMAL
+        55: 55,
+        56: 56,
+        57: 57,
+        58: 58,
+        59: 59,
+        60: 60,
+        61: 61,
+        62: 62,
+        63: 63,
+        64: 64,
+        65: 65,
+        #REVERSE
+        66: 76,
+        67: 75,
+        68: 74,
+        69: 73,
+        70: 72,
+        71: 71,
+        72: 70,
+        73: 69,
+        74: 68,
+        75: 67,
+        76: 66,
+        #NORMAL
+        77: 77,
+        78: 78,
+        79: 79,
+        80: 80,
+        81: 81,
+        82: 82,
+        83: 83,
+        84: 84,
+        85: 85,
+        86: 86,
+        87: 87,
+        #REVERSE
+        88: 98,
+        89: 97,
+        90: 96,
+        91: 95,
+        92: 94,
+        93: 93,
+        94: 92,
+        95: 91,
+        96: 90,
+        97: 89,
+        98: 88,
+        #NORMAL
+        99: 99,
+        100: 100,
+        101: 101,
+        102: 102,
+        103: 103,
+        104: 104,
+        105: 105,
+        106: 106,
+        107: 107,
+        108: 108,
+        109: 109,
+        #REVERSE
+        110: 120,
+        111: 119,
+        112: 118,
+        113: 117,
+        114: 116,
+        115: 115,
+        116: 114,
+        117: 113,
+        118: 112,
+        119: 111,
+        120: 110,
+        #NORMAL
+        121: 121,
+        122: 122,
+        123: 123,
+        124: 124,
+        125: 125,
+        126: 126,
+        127: 127,
+        128: 128,
+        129: 129,
+        130: 130,
+        131: 131,
+        #REVERSE
+        132: 142,
+        133: 141,
+        134: 140,
+        135: 139,
+        136: 138,
+        137: 137,
+        138: 136,
+        139: 135,
+        140: 134,
+        141: 133,
+        142: 132,
+        #NORMAL
+        143: 143,
+        144: 144,
+        145: 145,
+        146: 146,
+        147: 147,
+        148: 148,
+        149: 149,
+        150: 150,
+        151: 151,
+        152: 152,
+        153: 153,
+        # REVERSE
+        154: 164,
+        155: 163,
+        156: 162,
+        157: 161,
+        158: 160,
+        159: 159,
+        160: 158,
+        161: 157,
+        162: 156,
+        163: 155,
+        164: 154,
+        # NORMAL
+        165: 165,
+        166: 166,
+        167: 167,
+        168: 168,
+        169: 169,
+        170: 170,
+        171: 171,
+        172: 172,
+        173: 173,
+        174: 174,
+        175: 175,
+        # REVERSE
+        176: 186,
+        177: 185,
+        178: 184,
+        179: 183,
+        180: 182,
+        181: 181,
+        182: 180,
+        183: 179,
+        184: 178,
+        185: 177,
+        186: 176,
+        # NORMAL
+        187: 187,
+        188: 188,
+        189: 189,
+        190: 190,
+        191: 191,
+        192: 192,
+        193: 193,
+        194: 194,
+        195: 195,
+        196: 196,
+        197: 197,
+    }
+    print(index)
+    return switcher.get(index, None)
+
+
+
+
 class DbCon:
     def __init__(self):
         self.db = pymysql.connect(host="localhost",user="root",passwd="root",db="climbingholdsape")
@@ -309,6 +526,7 @@ class SearchButton(Button):
 
 class Problem(Button):
     route = [None] * 205
+    global LED_ROUTE_IMAGES
     routeName = ""
     setterName = ""
     gradeUK = ""
@@ -337,6 +555,7 @@ class Problem(Button):
         temp2 = 4
         while self.route[temp] != '0':
             self.coordLED[temp2] = moonToLED(self.route[temp])
+            print(self.coordLED[temp2])
             temp2+=1
             temp+=1
         '''
@@ -373,6 +592,116 @@ class Problem(Button):
                 #strip.setPixelColorRGB(index, 0, 0, 0)
             index += 1
         #strip.show()
+
+        self.tmp = 0 #running index for 228 images
+        self.TEMP = 197 #running index for 197 LEDs
+        self.REVERSE = True
+        for i in range(19):
+            for j in range(12):
+                print("i=&s", i)
+                print("j=&s", j)
+                if self.tmp < 13:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 24:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 36:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 48:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 60:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 72:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 84:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 96:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 108:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 120:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 132:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 144:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 156:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 168:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 180:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 192:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 204:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                elif self.tmp == 216:
+                    imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                    LED_ROUTE_IMAGES[self.tmp].reload()
+                else:
+                    #since LED's go in zig zags, we need to adjust mirror numbers.
+                    if self.colorLED[picIndexLookUp(self.TEMP)] == 0:
+                        #print("NO COLOR")
+                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
+                        LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                        LED_ROUTE_IMAGES[self.tmp].reload()
+                    elif self.colorLED[picIndexLookUp(self.TEMP)] == 1:
+                        #print("BLUE")
+                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-blue-square.png")
+                        LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                        LED_ROUTE_IMAGES[self.tmp].reload()
+                    elif self.colorLED[picIndexLookUp(self.TEMP)] == 2:
+                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-red-square.png")
+                        LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                        LED_ROUTE_IMAGES[self.tmp].reload()
+                        #print("RED")
+                    elif self.colorLED[picIndexLookUp(self.TEMP)] == 3:
+                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-green-square.png")
+                        LED_ROUTE_IMAGES[self.tmp].source = imageStr
+                        LED_ROUTE_IMAGES[self.tmp].reload()
+                        #print("GREEN")
+                    else:
+                        print("WE HAVE A PROBLEM")
+
+                    print(self.tmp)
+                    print(self.TEMP)
+                    self.TEMP-=1
+                self.tmp += 1
+
         print(self.routeName)
         print(self.setterName)
         print(self.gradeUK)
@@ -395,36 +724,15 @@ class moonBoardProblemImage(GridLayout):
         self.cols = 12
         self.padding = 0
         self.spacing = 0
-        self.moonImagesArray = [None] * 228
-        self.temp = 0
-        for i in range(19):
-            for j in range(12):
-                self.imageStr = str("images/moon-"+str(i)+"-"+str(j)+".png")
-                self.moonImagesArray[self.temp] = moonBoardImage(source=self.imageStr, size_hint_y=1, size_hint_x=1, allow_stretch=True, keep_ratio=False)
-                #self.moonImagesArray[temp]
-                self.temp+=1
-        for i in range(228):
-            self.add_widget(self.moonImagesArray[i])
-
-        #Clock.schedule_interval(self.update, .1)
-
-
-    def update(self, dt):
-        self.moonImagesArray[13].source = "images/moon-1-1-red-square.png"
-        self.moonImagesArray[13].reload()
 
 
 class moonBoardImage(Image):
-
-    def update(self):
-        self.source = "images/moon-1-1-blue-square.png"
-        self.reload()
-
     pass
 
 class MoonboardAppLayout(GridLayout):
     def __init__(self, **kwargs):
         super(MoonboardAppLayout, self).__init__(**kwargs)
+        #self.moonImagesArray = [None] * 228
         self.cols = 2
         self.db = DbCon()
         self.Routes = self.db.get_rows()
@@ -433,8 +741,6 @@ class MoonboardAppLayout(GridLayout):
         self.problemList = GridLayout(cols=1, size_hint_y=None)
         self.problemList.bind(minimum_height=self.problemList.setter('height'))
         toggleText=["6B+", "6C", "6C+", "7A", "7A+", "7B", "7B+", "7C", "7C+", "8A", "8A+", "8B", "3 Stars", "2 Stars", "1 Star", "No Stars"]
-        self.coordLED = [None] * 198
-        self.colorLED = [0] * 198
         # for i in range(len(self.Routes)):
         for i in range(50):
             problemButton[i] = Problem(text=str(self.Routes[i][0]+'\n'+self.Routes[i][1])+'\n'+"Font Grade: "+self.Routes[i][2], size_hint_y=None)
@@ -447,13 +753,26 @@ class MoonboardAppLayout(GridLayout):
             problemButton[i].moves = self.Routes[i][5]
             problemButton[i].repeats = self.Routes[i][6]
             self.problemList.add_widget(problemButton[i])
+        self.moonImageGroup = moonBoardProblemImage()
+        self.temp = 0
+        for i in range(19):
+            for j in range(12):
+                self.imageStr = str("images/moon-"+str(i)+"-"+str(j)+".png")
+                global LED_ROUTE_IMAGES
+                LED_ROUTE_IMAGES[self.temp] = moonBoardImage(source=self.imageStr, size_hint_y=1, size_hint_x=1, allow_stretch=True, keep_ratio=False)
+                self.temp+=1
+        for i in range(228):
+            self.moonImageGroup.add_widget(LED_ROUTE_IMAGES[i])
+
+
+
         self.moonboardProblemsScroll = ScrollView()
         self.search_field = BoxLayout(orientation="horizontal", size_hint_y=None)
         self.search_input = TextInput(text="Search for anything", multiline=False)
         self.search_button = SearchButton(text="search")
         self.searchGrid = GridLayout(cols=1)
         self.filterGroup = GridLayout(cols=2)
-        self.moonImageGroup = moonBoardProblemImage()
+
 
         self.moonboardProblemsScroll.add_widget(self.problemList)
         self.add_widget(self.moonboardProblemsScroll)
@@ -469,6 +788,7 @@ class MoonboardAppLayout(GridLayout):
         self.searchGrid.add_widget(self.filterGroup)
         self.searchGrid.add_widget(self.moonImageGroup)
         self.add_widget(self.searchGrid)
+
 
 
 

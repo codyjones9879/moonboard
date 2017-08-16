@@ -190,6 +190,12 @@ def loadMainPage():
             # title = title.replace("[", "")
             # title = title.replace("]", "")
             link = str(title)
+        elif title == " なみかなやなたはなやまはのやらわなやなやはららはさ":
+            link = "なみかなやなたはなやまはのやらわなやなやはら"
+        elif title == " なゆにのろやぬののこのやにこのののののなですけれど":
+            link = "なゆにのろやぬののこのやにこのののののなです"
+        elif title == " **6**+-%1:%]+31+?))(+#3":
+            link = "6-1313"
         elif title == "Априлска зима":
             link = "априлска-зима"
         elif title == "Сняг през Април":

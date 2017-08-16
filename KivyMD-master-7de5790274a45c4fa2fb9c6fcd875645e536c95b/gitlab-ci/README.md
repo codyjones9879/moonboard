@@ -1,1 +1,0 @@
-These files are here to help with building with Python-for-android Gitlab CI

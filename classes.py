@@ -593,6 +593,8 @@ class Problem(Button):
             index += 1
         #strip.show()
 
+        #picturesAdjusted(LED_ROUTE_IMAGES)
+
         self.tmp = 0 #running index for 228 images
         self.TEMP = 197 #running index for 197 LEDs
         self.REVERSE = True
@@ -673,14 +675,17 @@ class Problem(Button):
                     LED_ROUTE_IMAGES[self.tmp].source = imageStr
                     LED_ROUTE_IMAGES[self.tmp].reload()
                 else:
+                    # imageIndex = picIndexLookUp(self.tmp)
                     #since LED's go in zig zags, we need to adjust mirror numbers.
                     if self.colorLED[picIndexLookUp(self.TEMP)] == 0:
-                        #print("NO COLOR")
+                        print("NO COLOR")
                         imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
                     elif self.colorLED[picIndexLookUp(self.TEMP)] == 1:
-                        #print("BLUE")
+                        print("i=&s", i)
+                        print("j=&s", j)
+                        print("BLUE")
                         imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-blue-square.png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
@@ -688,20 +693,27 @@ class Problem(Button):
                         imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-red-square.png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
-                        #print("RED")
+                        print("RED")
                     elif self.colorLED[picIndexLookUp(self.TEMP)] == 3:
                         imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-green-square.png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
-                        #print("GREEN")
+                        print("GREEN")
                     else:
                         print("WE HAVE A PROBLEM")
 
                     print(self.tmp)
                     print(self.TEMP)
                     self.TEMP-=1
-                self.tmp += 1
+                    #adjust Row and Column
 
+
+                # self.moonImagesArray[temp]
+                self.tmp += 1
+                # print(self.tmp)
+                # print(self.TEMP)
+
+        #global LED_ROUTE_IMAGES = colorLED[]
         print(self.routeName)
         print(self.setterName)
         print(self.gradeUK)
@@ -726,7 +738,20 @@ class moonBoardProblemImage(GridLayout):
         self.spacing = 0
 
 
+
+    # def update(self, dt):
+    #
+    #     self.moonImagesArray[13].source = "images/moon-1-1-red-square.png"
+    #     self.moonImagesArray[13].reload()
+
+
 class moonBoardImage(Image):
+
+    def update(self):
+        self.source = "images/moon-1-1-blue-square.png"
+        print("Call to Update")
+        self.reload()
+
     pass
 
 class MoonboardAppLayout(GridLayout):
@@ -760,6 +785,7 @@ class MoonboardAppLayout(GridLayout):
                 self.imageStr = str("images/moon-"+str(i)+"-"+str(j)+".png")
                 global LED_ROUTE_IMAGES
                 LED_ROUTE_IMAGES[self.temp] = moonBoardImage(source=self.imageStr, size_hint_y=1, size_hint_x=1, allow_stretch=True, keep_ratio=False)
+                #self.moonImagesArray[temp]
                 self.temp+=1
         for i in range(228):
             self.moonImageGroup.add_widget(LED_ROUTE_IMAGES[i])
@@ -789,6 +815,11 @@ class MoonboardAppLayout(GridLayout):
         self.searchGrid.add_widget(self.moonImageGroup)
         self.add_widget(self.searchGrid)
 
+
+
+        # self.moonImagesArray[13].source = "images/moon-1-1-blue-square.png"
+        # self.moonImagesArray[14].source = "images/moon-1-1-blue-square.png"
+        # self.moonImagesArray.reload()
 
 
 

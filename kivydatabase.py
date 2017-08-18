@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from kivy.app import App
 import pymysql
 import pymysql.cursors
-
+import sys
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
@@ -12,16 +12,22 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 from kivy.app import runTouchApp
-
+reload(sys)
+sys.setdefaultencoding('utf8')
 class DbCon:
 
     def __init__(self):
-        self.db = pymysql.connect(host="localhost",user="root",passwd="root",db="climbingholdsape")
+        self.db = pymysql.connect(host="localhost",user="root",passwd="root",db="ClimbingHoldsApe")
         self.c = self.db.cursor()
 
-    def get_rows(self):
-        self.c.execute("SELECT * FROM Moonboard")
+    def get_rows(self, search=""):
+        self.c.execute("SELECT * FROM Moonboard WHERE Author REGEXP '.*%s.*' LIMIT 3" % search)
         return self.c.fetchall()
+
+class Button(Button):
+
+    def on_press(self):
+        print(self.text)
 
 
 class Table(BoxLayout):
@@ -45,10 +51,10 @@ class Table(BoxLayout):
         self.Routes = self.db.get_rows()
 
         self.grid = GridLayout(cols=1, size_hint_y=None)
-
-        for i in range(50):
-            btn = Button(text=str(self.Routes[i][0]+'\n'+self.Routes[i][1])+'\n'+"Font Grade: "+self.Routes[i][2], size_hint_y=None)
-            self.grid.add_widget(btn)
+        self.btn = [None] * 3
+        for i in range(len(self.btn)):
+            self.btn[i] = Button(text=str(self.Routes[i][0]+'\n'+self.Routes[i][1])+'\n'+"Font Grade: "+self.Routes[i][2], size_hint_y=None)
+            self.grid.add_widget(self.btn[i])
         self.scrolling = ScrollView(size_hint=(1, None), size=(Window.width, Window.height))
         self.scrolling.add_widget(self.grid)
         self.add_widget(self.scrolling)
@@ -60,15 +66,12 @@ class Table(BoxLayout):
 
     def update_table(self,search=""):
         for index,row in enumerate(self.db.get_rows(search)):
-            self.rows[index][0].text = row[0]
-            self.rows[index][1].text = str(row[1])
-            self.rows[index][2].text = str(row[2])
-
+            print(row)
+            self.btn[index].text = str(row[0])
+            #self.btn[index].canvas.ask_update()
     def clear_table(self):
         for index in range(3):
-            self.rows[index][0].text = ""
-            self.rows[index][1].text = ""
-            self.rows[index][2].text = ""
+            self.btn[index].text = ""
 
     def search(self, *args):
         self.clear_table()

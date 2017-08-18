@@ -520,9 +520,17 @@ class DbCon:
     def get_rows(self):
         self.c.execute("SELECT * FROM Moonboard")
         return self.c.fetchall()
+
+    def get_rows_searched(self, search=""):
+        self.c.execute("SELECT * FROM Moonboard WHERE Author REGEXP '.*%s.*' LIMIT 3" % search)
+        return self.c.fetchall()
+
+
+
 class SearchButton(Button):
-    def on_press(self):
-        return 0#print("TODO mySQL search")
+
+    pass
+
 
 class Problem(Button):
     route = [None] * 205
@@ -742,7 +750,7 @@ class MoonboardAppLayout(GridLayout):
         self.problemList.bind(minimum_height=self.problemList.setter('height'))
         toggleText=["6B+", "6C", "6C+", "7A", "7A+", "7B", "7B+", "7C", "7C+", "8A", "8A+", "8B", "3 Stars", "2 Stars", "1 Star", "No Stars"]
         # for i in range(len(self.Routes)):
-        for i in range(50):
+        for i in range(len(self.Routes)):
             problemButton[i] = Problem(text=str(self.Routes[i][0]+'\n'+self.Routes[i][1])+'\n'+"Font Grade: "+self.Routes[i][2], size_hint_y=None)
             problemButton[i].route = self.Routes[i][7:211]
             problemButton[i].routeName = str(self.Routes[i][0])
@@ -769,7 +777,7 @@ class MoonboardAppLayout(GridLayout):
         self.moonboardProblemsScroll = ScrollView()
         self.search_field = BoxLayout(orientation="horizontal", size_hint_y=None)
         self.search_input = TextInput(text="Search for anything", multiline=False)
-        self.search_button = SearchButton(text="search")
+        self.search_button = SearchButton(text="search", on_press=self.search)
         self.searchGrid = GridLayout(cols=1)
         self.filterGroup = GridLayout(cols=2)
 
@@ -788,6 +796,21 @@ class MoonboardAppLayout(GridLayout):
         self.searchGrid.add_widget(self.filterGroup)
         self.searchGrid.add_widget(self.moonImageGroup)
         self.add_widget(self.searchGrid)
+
+    def update_table(self, search=""):
+        global problemButton
+        for index, row in enumerate(self.db.get_rows_searched(search)):
+            print(row)
+            problemButton[index].text = str(row[0])
+            # self.btn[index].canvas.ask_update()
+
+    def clear_table(self):
+        for index in range(3):
+            self.btn[index].text = ""
+
+    def search(self, *args):
+        self.clear_table()
+        self.update_table(self.search_input.text)
 
 
 

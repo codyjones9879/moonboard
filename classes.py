@@ -22,7 +22,7 @@ from kivy.core.text import LabelBase
 import pymysql
 import pymysql.cursors
 from kivy.core.window import Window
-
+Config.set('kivy', 'keyboard_mode', 'systemandmulti')
 reload(sys)
 sys.setdefaultencoding('cp1252')
 LabelBase.register(name="NotoSans",

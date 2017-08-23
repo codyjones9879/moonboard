@@ -822,7 +822,7 @@ class Problem(Button):
                         LED_ROUTE_IMAGES[self.tmp].reload()
                         #print("GREEN")
                     else:
-                        #print("WE HAVE A PROBLEM")
+                        print("WE HAVE A PROBLEM")
 
                     #print(self.tmp)
                     #print(self.TEMP)

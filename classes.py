@@ -636,7 +636,7 @@ class DbCon:
         # self.c.execute("SELECT * FROM Moonboard WHERE Author REGEXP '.*%s.*' LIMIT 30" % search)
         #print("SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search)
         self.c.execute(
-            "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' LIMIT 100" % search)
+            "SELECT * from Moonboard" + filteredCommandStr + " AND concat(Author, '', Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' LIMIT 100" % search)
         return self.c.fetchall()
 
 

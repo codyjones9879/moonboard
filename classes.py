@@ -518,11 +518,11 @@ def picIndexLookUp(index):
 class DbCon:
     def __init__(self):
         self.filteredCommandStr = ""
-        self.db = pymysql.connect(host="localhost", user="root", passwd="root", db="climbingholdsape")
+        self.db = pymysql.connect(host="localhost", user="root", passwd="root", db="ClimbingHoldsApe")
         self.c = self.db.cursor()
 
     def get_rows(self):
-        self.c.execute("SELECT * FROM Moonboard")
+        self.c.execute("SELECT * FROM Moonboard LIMIT 100")
         return self.c.fetchall()
 
     def get_rows_filtered(self, v4plus, v5, v5plus, v6, v7, v8, v8plus, v9, v10, v11, v12, v13, v14, star3, star2, star1,
@@ -629,14 +629,14 @@ class DbCon:
         if star0 or star1 or star2 or star3:
             filteredCommandStr += ")"
         #print(self.filteredCommandStr)
-        self.c.execute("SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search)
+        self.c.execute("SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' LIMIT 100" % search)
         return self.c.fetchall()
 
     def get_rows_searched(self, search=""):
         # self.c.execute("SELECT * FROM Moonboard WHERE Author REGEXP '.*%s.*' LIMIT 30" % search)
         #print("SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search)
         self.c.execute(
-            "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search)
+            "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' LIMIT 100" % search)
         return self.c.fetchall()
 
 
@@ -677,7 +677,7 @@ class Problem(Button):
         temp2 = 4
         while self.route[temp] != '0':
             self.coordLED[temp2] = moonToLED(self.route[temp])
-            print(self.coordLED[temp2])
+            #print(self.coordLED[temp2])
             temp2 += 1
             temp += 1
         '''
@@ -722,8 +722,8 @@ class Problem(Button):
         self.REVERSE = True
         for i in range(19):
             for j in range(12):
-                print("i=&s", i)
-                print("j=&s", j)
+                #print("i=&s", i)
+                #print("j=&s", j)
                 if self.tmp < 13:
                     imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
                     LED_ROUTE_IMAGES[self.tmp].source = imageStr
@@ -800,14 +800,14 @@ class Problem(Button):
                     # imageIndex = picIndexLookUp(self.tmp)
                     # since LED's go in zig zags, we need to adjust mirror numbers.
                     if self.colorLED[picIndexLookUp(self.TEMP)] == 0:
-                        print("NO COLOR")
+                        #print("NO COLOR")
                         imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
                     elif self.colorLED[picIndexLookUp(self.TEMP)] == 1:
-                        print("i=&s", i)
-                        print("j=&s", j)
-                        print("BLUE")
+                        #print("i=&s", i)
+                        #print("j=&s", j)
+                        #print("BLUE")
                         imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-blue-square.png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
@@ -815,17 +815,17 @@ class Problem(Button):
                         imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-red-square.png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
-                        print("RED")
+                        #print("RED")
                     elif self.colorLED[picIndexLookUp(self.TEMP)] == 3:
                         imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-green-square.png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
-                        print("GREEN")
+                        #print("GREEN")
                     else:
                         print("WE HAVE A PROBLEM")
 
-                    print(self.tmp)
-                    print(self.TEMP)
+                    #print(self.tmp)
+                    #print(self.TEMP)
                     self.TEMP -= 1
                     # adjust Row and Column
 
@@ -835,16 +835,16 @@ class Problem(Button):
                 # print(self.TEMP)
 
         # global LED_ROUTE_IMAGES = colorLED[]
-        print(self.routeName)
-        print(self.setterName)
-        print(self.gradeUK)
-        print(self.gradeUS)
-        print(self.stars)
-        print(self.moves)
-        print(self.repeats)
-        print(self.route)
-        print(self.coordLED)
-        print(self.colorLED)
+        #print(self.routeName)
+        #print(self.setterName)
+        #print(self.gradeUK)
+        #print(self.gradeUS)
+        #print(self.stars)
+        #print(self.moves)
+        #print(self.repeats)
+        #print(self.route)
+        #print(self.coordLED)
+        #print(self.colorLED)
 
 
 class FilterBox(CheckBox):
@@ -898,7 +898,7 @@ class MoonboardAppLayout(GridLayout):
         self.cols = 2
         self.db = DbCon()
         global Routes, problemButton, filterBox, FilterLabel, filteredCommandStr
-        filteredCommandStr = " WHERE (GradeUS = 'V4+' OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3)"
+        filteredCommandStr = " WHERE (GradeUS = 'V4+' OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) LIMIT 100"
         Routes = self.db.get_rows()
         problemButton = [None] * len(Routes)
         filterBox = [None] * 17
@@ -906,12 +906,12 @@ class MoonboardAppLayout(GridLayout):
         self.moonImages = [None] * 240
         self.problemList = GridLayout(cols=1, size_hint_y=None)
         self.problemList.bind(minimum_height=self.problemList.setter('height'))
-        toggleText = ["6B+", "6C", "6C+", "7A", "7A+", "7B", "7B+", "7C", "7C+", "8A", "8A+", "8B", "8B+", "3 Stars",
+        toggleText = ["6B+/V4+", "6C/V5", "6C+/V5+", "7A/V6", "7A+/V7", "7B/V8", "7B+/V8+", "7C/V9", "7C+/V10", "8A/V11", "8A+/V12", "8B/V13", "8B+/V14", "3 Stars",
                       "2 Stars", "1 Star", "No Stars"]
         for i in range(len(Routes)):
         #for i in range(10):
             problemButton[i] = Problem(
-                text=str(Routes[i][0] + '\n' + "Set By: " + Routes[i][1]) + '\n' + "Grade: " + Routes[i][2] + '/' +
+                text=str(Routes[i][0] + '\n' + "Set By: " + Routes[i][1]) + " Stars: " + str(Routes[i][4]) +'\n' + "Grade: " + Routes[i][2] + '/' +
                      Routes[i][3] + '\n' + "Moves: " + str(Routes[i][5]) + '     ' + "Repeats: " + str(Routes[i][6]),
                 size_hint_y=None)
             problemButton[i].route = Routes[i][7:211]
@@ -972,7 +972,7 @@ class MoonboardAppLayout(GridLayout):
             #print(Routes[index])
             #print(len(Routes[index]))
             problemButton[index] = Problem(
-                text=str(Routes[index][0] + '\n' + "Set By: " + Routes[index][1]) + '\n' + "Grade: " + Routes[index][
+                text=str(Routes[index][0] + '\n' + "Set By: " + Routes[index][1]) + " Stars: " + str(Routes[index][4])+ '\n' + "Grade: " + Routes[index][
                     2] + '/' + Routes[index][3] + '\n' + "Moves: " + str(
                     Routes[index][5]) + '     ' + "Repeats: " + str(Routes[index][6]), size_hint_y=None)
             problemButton[index].route = Routes[index][7:211]
@@ -994,7 +994,7 @@ class MoonboardAppLayout(GridLayout):
             #print(Routes[index])
             #print(len(Routes[index]))
             problemButton[index] = Problem(
-                text=str(Routes[index][0] + '\n' + "Set By: " + Routes[index][1]) + '\n' + "Grade: " + Routes[index][
+                text=str(Routes[index][0] + '\n' + "Set By: " + Routes[index][1]) + " Stars: " + str(Routes[index][4])+'\n' + "Grade: " + Routes[index][
                     2] + '/' + Routes[index][3] + '\n' + "Moves: " + str(
                     Routes[index][5]) + '     ' + "Repeats: " + str(Routes[index][6]), size_hint_y=None)
             problemButton[index].route = Routes[index][7:211]

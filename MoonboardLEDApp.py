@@ -522,7 +522,7 @@ class DbCon:
         self.c = self.db.cursor()
 
     def get_rows(self):
-        self.c.execute("SELECT * FROM Moonboard LIMIT 100")
+        self.c.execute("SELECT * FROM Moonboard ORDER BY DateAdded ASC LIMIT 100")
         return self.c.fetchall()
 
     def get_rows_filtered(self, v4plus, v5, v5plus, v6, v7, v8, v8plus, v9, v10, v11, v12, v13, v14, star3, star2, star1,
@@ -629,14 +629,14 @@ class DbCon:
         if star0 or star1 or star2 or star3:
             filteredCommandStr += ")"
         #print(self.filteredCommandStr)
-        self.c.execute("SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' LIMIT 100" % search)
+        self.c.execute("SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 100" % search)
         return self.c.fetchall()
 
     def get_rows_searched(self, search=""):
         # self.c.execute("SELECT * FROM Moonboard WHERE Author REGEXP '.*%s.*' LIMIT 30" % search)
         #print("SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search)
         self.c.execute(
-            "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' LIMIT 100" % search)
+            "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 100" % search)
         return self.c.fetchall()
 
 
@@ -852,24 +852,6 @@ class FilterBox(CheckBox):
         super(FilterBox, self).__init__(**kwargs)
         self.active = True
 
-    # def on_press(self):
-    #     for i in range(5):
-    #         problemButton[i] = Problem(
-    #             text=str(Routes[i][0] + '\n' + "Set By: " + Routes[i][1]) + '\n' + "Grade: " + Routes[i][2] + '/' +
-    #                  Routes[i][3] + '\n' + "Moves: " + str(Routes[i][5]) + '     ' + "Repeats: " + str(Routes[i][6]),
-    #             size_hint_y=None)
-    #         problemButton[i].route = Routes[i][7:211]
-    #         problemButton[i].routeName = str(Routes[i][0])
-    #         problemButton[i].setterName = str(Routes[i][1])
-    #         problemButton[i].gradeUK = str(Routes[i][2])
-    #         problemButton[i].gradeUS = str(Routes[i][3])
-    #         problemButton[i].stars = Routes[i][4]
-    #         problemButton[i].moves = Routes[i][5]
-    #         problemButton[i].repeats = Routes[i][6]
-    #
-    #     print("PRESSED")
-    #     print(self.active)
-
     text = ""
 
 
@@ -898,7 +880,7 @@ class MoonboardAppLayout(GridLayout):
         self.cols = 2
         self.db = DbCon()
         global Routes, problemButton, filterBox, FilterLabel, filteredCommandStr
-        filteredCommandStr = " WHERE (GradeUS = 'V4+' OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) LIMIT 100"
+        filteredCommandStr = " WHERE (GradeUS = 'V4+' OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) ORDER BY DateAdded ASC LIMIT 100"
         Routes = self.db.get_rows()
         problemButton = [None] * len(Routes)
         filterBox = [None] * 17
@@ -911,8 +893,8 @@ class MoonboardAppLayout(GridLayout):
         for i in range(len(Routes)):
         #for i in range(10):
             problemButton[i] = Problem(
-                text=str(Routes[i][0] + '\n' + "Set By: " + Routes[i][1]) + " Stars: " + str(Routes[i][4]) +'\n' + "Grade: " + Routes[i][2] + '/' +
-                     Routes[i][3] + '\n' + "Moves: " + str(Routes[i][5]) + '     ' + "Repeats: " + str(Routes[i][6]),
+                text=str(Routes[i][0] + '\n' + "Set By: " + Routes[i][1]) + '\n' + "Grade: " + Routes[i][2] + '/' +
+                     Routes[i][3] + " Stars: " + str(Routes[i][4]) + '\n' + "Moves: " + str(Routes[i][5]) + '     ' + "Repeats: " + str(Routes[i][6]),
                 size_hint_y=None)
             problemButton[i].route = Routes[i][7:211]
             problemButton[i].routeName = str(Routes[i][0])
@@ -972,9 +954,9 @@ class MoonboardAppLayout(GridLayout):
             #print(Routes[index])
             #print(len(Routes[index]))
             problemButton[index] = Problem(
-                text=str(Routes[index][0] + '\n' + "Set By: " + Routes[index][1]) + " Stars: " + str(Routes[index][4])+ '\n' + "Grade: " + Routes[index][
-                    2] + '/' + Routes[index][3] + '\n' + "Moves: " + str(
-                    Routes[index][5]) + '     ' + "Repeats: " + str(Routes[index][6]), size_hint_y=None)
+                text=str(Routes[index][0] + '\n' + "Set By: " + Routes[index][1]) + '\n' + "Grade: " + Routes[index][2] + '/' +
+                     Routes[index][3] + " Stars: " + str(Routes[index][4]) + '\n' + "Moves: " + str(Routes[index][5]) + '     ' + "Repeats: " + str(Routes[index][6]),
+                size_hint_y=None)
             problemButton[index].route = Routes[index][7:211]
             problemButton[index].routeName = str(Routes[index][0])
             problemButton[index].setterName = str(Routes[index][1])
@@ -994,9 +976,9 @@ class MoonboardAppLayout(GridLayout):
             #print(Routes[index])
             #print(len(Routes[index]))
             problemButton[index] = Problem(
-                text=str(Routes[index][0] + '\n' + "Set By: " + Routes[index][1]) + " Stars: " + str(Routes[index][4])+'\n' + "Grade: " + Routes[index][
-                    2] + '/' + Routes[index][3] + '\n' + "Moves: " + str(
-                    Routes[index][5]) + '     ' + "Repeats: " + str(Routes[index][6]), size_hint_y=None)
+                text=str(Routes[index][0] + '\n' + "Set By: " + Routes[index][1]) + '\n' + "Grade: " + Routes[index][2] + '/' +
+                     Routes[index][3] + " Stars: " + str(Routes[index][4]) + '\n' + "Moves: " + str(Routes[index][5]) + '     ' + "Repeats: " + str(Routes[index][6]),
+                size_hint_y=None)
             problemButton[index].route = Routes[index][7:211]
             problemButton[index].routeName = str(Routes[index][0])
             problemButton[index].setterName = str(Routes[index][1])

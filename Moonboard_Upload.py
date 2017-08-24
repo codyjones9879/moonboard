@@ -11,6 +11,7 @@ import urllib
 import time
 import re
 import logging
+import os
 import sys
 ###################################
 #Logging levels Setup
@@ -201,7 +202,9 @@ def loadMainPage():
     problems = soupProblems.find(class_='ProblemList')
     logger.debug(problems.prettify(encoding='utf-8'))
     problemsArray = problems.find_all('a')
+    problemNumber = 0
     for classes in problemsArray:
+        problemNumber += 1
         problemInfo = [0] * 211
         title = classes.get('title')
         problemInfo[0] = title
@@ -398,7 +401,7 @@ def loadMainPage():
             # title = title.replace("]", "")
             link = title
         else:
-            logger.info("Into final ELSE")
+            logger.debug("Into final ELSE")
             link = title.replace("ø", "o")
             link = title.replace(" ", "-")
             link = urllib.parse.urlsplit(link)
@@ -487,7 +490,7 @@ def loadMainPage():
             link = link.replace("%E2%80%A6", "...")
             link = link.replace("%E2%80%B3", "")
             link = link.replace("\u201d", "")
-        logger.info('Link for Loading Page: %s' % link)
+        logger.debug('Link for Loading Page: %s' % link)
         # problemInfo[0] = link
         if problemInfo[0] == "":
             logger.debug('Blank Link Name')
@@ -604,6 +607,9 @@ def loadMainPage():
             args = getArgs(problemInfo)
             query = getQuery()
             submitDB(db, query, args)
+            clear = lambda: os.system('cls')
+            clear()
+            logger.info("Updating and Added Route:" + str(problemNumber))
                      
 
 

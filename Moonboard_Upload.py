@@ -16,9 +16,9 @@ import sys
 ###################################
 #Logging levels Setup
 logger = logging.getLogger('Loading HTTP Page APP')
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
+ch.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
@@ -252,6 +252,11 @@ def loadMainPage():
             # title = title.replace("]", "")
             link = str(title)
         elif title == "¿?¿":
+            title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = str(title)
+        elif title == "$$$":
             title = classes.get('rel')
             # title = title.replace("[", "")
             # title = title.replace("]", "")

@@ -37,13 +37,13 @@ def connectDB():
     #                      passwd="Comply9879!",  # your password
     #                      db="ClimbingHoldsApe",
     #                      charset='utf8mb4',
-    #                      autocommit=True)        # name of the data base 
+    #                      autocommit=True)        # name of the data base
     db = pymysql.connect(host="localhost",    # your host, usually localhost
                          user="root",         # your username
                          passwd="root",  # your password
                          db="ClimbingHoldsApe",
                          charset='utf8mb4',
-                         autocommit=True)        # name of the data base 
+                         autocommit=True)        # name of the data base
     return db
 
 
@@ -255,6 +255,9 @@ def loadMainPage():
             title = classes.get('rel')
             # title = title.replace("[", "")
             # title = title.replace("]", "")
+            link = str(title)
+        elif title == "¿?¿?¿?¿?":
+            title = classes.get('rel')
             link = str(title)
         elif title == "$$$":
             title = classes.get('rel')

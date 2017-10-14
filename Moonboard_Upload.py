@@ -16,9 +16,9 @@ import sys
 ###################################
 #Logging levels Setup
 logger = logging.getLogger('Loading HTTP Page APP')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
@@ -41,7 +41,7 @@ def connectDB():
     db = pymysql.connect(host="localhost",    # your host, usually localhost
                          user="root",         # your username
                          passwd="root",  # your password
-                         db="ClimbingHoldsApe",
+                         db="climbingholdsape",
                          charset='utf8mb4',
                          autocommit=True)        # name of the data base
     return db
@@ -91,7 +91,7 @@ def getArgs(problemInfo):
 
 
 def getQuery():
-    query = "INSERT INTO Moonboard (Name, Author, GradeUK, GradeUS, Stars, Moves, Repeats, StartHold1, Starthold2," \
+    query = "INSERT INTO moonboard (Name, Author, GradeUK, GradeUS, Stars, Moves, Repeats, StartHold1, Starthold2," \
             "IntermediateHold1,IntermediateHold2,IntermediateHold3,   IntermediateHold4,  IntermediateHold5,  " \
             "IntermediateHold6,  IntermediateHold7,  IntermediateHold8,  IntermediateHold9,  IntermediateHold10, " \
             "IntermediateHold11, IntermediateHold12, IntermediateHold13, IntermediateHold14, IntermediateHold15, " \

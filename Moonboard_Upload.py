@@ -16,9 +16,9 @@ import sys
 ###################################
 #Logging levels Setup
 logger = logging.getLogger('Loading HTTP Page APP')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
@@ -274,6 +274,11 @@ def loadMainPage():
             # title = title.replace("[", "")
             # title = title.replace("]", "")
             link = str(title)
+        elif title == "-.-":
+            title = classes.get('rel')
+            # title = title.replace("[", "")
+            # title = title.replace("]", "")
+            link = str(title)
         elif title == "///\\":
             title = classes.get('rel')
             # title = title.replace("[", "")
@@ -284,9 +289,9 @@ def loadMainPage():
             # title = title.replace("[", "")
             # title = title.replace("]", "")
             link = str(title)
-        elif title == " なみかなやなたはなやまはのやらわなやなやはららはさ":
+        elif title == "なみかなやなたはなやまはのやらわなやなやはららはさ":
             link = "なみかなやなたはなやまはのやらわなやなやはら"
-        elif title == " なゆにのろやぬののこのやにこのののののなですけれど":
+        elif title == "なゆにのろやぬののこのやにこのののののなですけれど":
             link = "なゆにのろやぬののこのやにこのののののなです"
         elif title == " **6**+-%1:%]+31+?))(+#3":
             link = "6-1313"
@@ -296,6 +301,10 @@ def loadMainPage():
             link = "сняг-през-април"
         elif title == "Слатинска загрявка":
             link = "слатинска-загрявка"
+        elif title == "приехал Валя- будем пить вино!":
+            link = "приехал-валя-будем-пить-вино"
+        elif title == "РАЗМИНОЧКА":
+            link = "разминочка"
         elif title == "Far from the Madding Crowd":
             link = "problem-1"
         elif title == "Wuthering Heights":
@@ -306,6 +315,8 @@ def loadMainPage():
             link = "problem-8"
         elif title == "Mark and Lard":
             link = "mark-lard"
+        elif title == "SHORTPEEPSPROBLEMS#2 @20°":
+            link = "shortpeepsproblems2-20"
         elif "???" in title:
             # title = "207982"
             title = classes.get('rel')
@@ -486,6 +497,7 @@ def loadMainPage():
             link = link.replace("%C5%9B", "s")
             link = link.replace("%C5%A1", "s")
             link = link.replace("%C5%BE", "z")
+            link = link.replace("%C8%9B", "t")
             link = link.replace("%D1%80", "p")
             link = link.replace("%DO%90", "A")
             link = link.replace("%DO%92", "B")

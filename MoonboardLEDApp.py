@@ -527,7 +527,7 @@ class DbCon:
         return self.c.fetchall()
 
     def get_rows_filtered(self, v4plus, v5, v5plus, v6, v7, v8, v8plus, v9, v10, v11, v12, v13, v14, star3, star2, star1,
-                          star0, popular, search):
+                          random, popular, search):
         global filteredCommandStr, orderCommandStr
         filteredCommandStr = ""
         orderCommandStr = ""
@@ -619,6 +619,7 @@ class DbCon:
             filteredCommandStr += " WHERE ("
         if star0:
             filteredCommandStr += "Stars = 0"
+            orderCommandStr = " ORDER BY RAND() "
         if star1:
             if star0:
                 filteredCommandStr += " OR "
@@ -892,19 +893,24 @@ class moonBoardImage(Image):
         print("Call to Update")
         self.reload()
 
+    def on_press(self):
+        print("Hello")
     pass
 
 
 class MoonboardAppLayout(GridLayout):
+
+
     def __init__(self, **kwargs):
         super(MoonboardAppLayout, self).__init__(**kwargs)
         # self.moonImagesArray = [None] * 228
         self.cols = 2
+        self.rows = 2
         self.db = DbCon()
         global Routes, problemButton, filterBox, FilterLabel, filteredCommandStr, orderCommandStr
         #filteredCommandStr = " WHERE (GradeUS = 'V4+' OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) ORDER BY DateAdded ASC LIMIT 100"
         filteredCommandStr = ""
-        orderCommandStr = "ORDER BY DateAdded ASC "
+        orderCommandStr = "ORDER BY RAND() "
         Routes = self.db.get_rows()
         problemButton = [None] * len(Routes)
         filterBox = [None] * 18
@@ -913,7 +919,7 @@ class MoonboardAppLayout(GridLayout):
         self.problemList = GridLayout(cols=1, size_hint_y=None)
         self.problemList.bind(minimum_height=self.problemList.setter('height'))
         toggleText = ["6B+/V4+", "6C/V5", "6C+/V5+", "7A/V6", "7A+/V7", "7B/V8", "7B+/V8+", "7C/V9", "7C+/V10", "8A/V11", "8A+/V12", "8B/V13", "8B+/V14", "3 Stars",
-                      "2 Stars", "1 Star", "No Stars", "Popular"]
+                      "2 Stars", "1 Star", "Random", "Popular"]
         for i in range(len(Routes)):
         #for i in range(10):
             problemButton[i] = Problem(
@@ -946,13 +952,18 @@ class MoonboardAppLayout(GridLayout):
         self.search_field = BoxLayout(orientation="horizontal", size_hint_y=None)
         self.search_input = TextInput(text="", multiline=False)
         self.search_button = SearchButton(text="search", on_press=self.search)
+        self.nextPage = SearchButton(text="search", on_press=self.search)
         self.searchGrid = GridLayout(cols=1)
         self.filterGroup = GridLayout(cols=4)
 
         self.moonboardProblemsScroll.add_widget(self.problemList)
         self.add_widget(self.moonboardProblemsScroll)
+
         for i in range(len(toggleText)):
-            filterBox[i] = FilterBox(on_press=self.filter)
+            if toggleText[i] == "Random":
+                filterBox[i] = FilterBox(on_press=self.filter, active=False)
+            else:
+                filterBox[i] = FilterBox(on_press=self.filter)
             #print(filterBox[i])
             FilterLabel[i] = Label()
             FilterLabel[i].text = toggleText[i]
@@ -964,7 +975,7 @@ class MoonboardAppLayout(GridLayout):
         self.searchGrid.add_widget(self.filterGroup)
         self.searchGrid.add_widget(self.moonImageGroup)
         self.add_widget(self.searchGrid)
-
+        #self.add_widget(self.nextPage)
 
 
         # self.moonImagesArray[13].source = "images/moon-1-1-blue-square.png"

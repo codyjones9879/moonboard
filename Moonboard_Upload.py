@@ -16,9 +16,9 @@ import sys
 ###################################
 #Logging levels Setup
 logger = logging.getLogger('Loading HTTP Page APP')
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
+ch.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
@@ -197,8 +197,10 @@ def getVGrade(fontGrade):
 
 
 def loadMainPage():
-    pageProblems = requests.get("http://www.moonboard.com/problems")
+    pageProblems = requests.get("http://web.archive.org/web/20170314150132/www.moonboard.com/problems")
+    #logger.info(pageProblems.content)
     soupProblems = BeautifulSoup(pageProblems.content, 'html.parser')
+    #logger.info(soupProblems)
     problems = soupProblems.find(class_='ProblemList')
     logger.debug(problems.prettify(encoding='utf-8'))
     problemsArray = problems.find_all('a')
@@ -207,6 +209,12 @@ def loadMainPage():
         problemNumber += 1
         problemInfo = [0] * 211
         title = classes.get('title')
+        problemNum = classes.get('rel')
+        problemNum = str(problemNum)
+        problemNum = problemNum.replace("[", "")
+        problemNum = problemNum.replace("]", "")
+        problemNum = problemNum.replace("'", "")
+        logger.info(problemNum)
         problemInfo[0] = title
         if "%A3" in title:
             title = classes.get('rel')
@@ -510,7 +518,7 @@ def loadMainPage():
             link = link.replace("%E2%80%A6", "...")
             link = link.replace("%E2%80%B3", "")
             link = link.replace("\u201d", "")
-        logger.debug('Link for Loading Page: %s' % link)
+        logger.info('Link for Loading Page: %s' % link)
         # problemInfo[0] = link
         if problemInfo[0] == "":
             logger.debug('Blank Link Name')
@@ -519,8 +527,8 @@ def loadMainPage():
         elif problemInfo[0] == "\t":
             logger.debug('Blank Link Name')
         else:
-            pageProblem = requests.get("http://www.moonboard.com/problems/"+link)
-            logger.debug('pageContent = %s' % pageProblem.content)
+            pageProblem = requests.get("http://www.moonboard.com/problems/View/"+problemNum+"/"+link)
+            logger.info('pageContent = %s' % pageProblem.content)
             soup = BeautifulSoup(pageProblem.content, 'html.parser')
             # problemName = soup.find(class_='post-title')
             # logger.debug('problemName = %s' % problemName.string)

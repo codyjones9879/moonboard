@@ -21,7 +21,7 @@ import os
 import sys
 
 
-driver = webdriver.Chrome('D:/chromedriver.exe')
+driver = webdriver.Chrome('C:\Python27\selenium\webdriver\chromedriver.exe')
 # load the page
 driver.get("https://moonboard.com/Account/Login")
 

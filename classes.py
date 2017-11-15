@@ -672,7 +672,7 @@ class Problem(Button):
     repeats = 0
 
     def on_press(self):
-        #colorWipe(strip, Color(0, 0, 0))
+        colorWipe(strip, Color(0, 0, 0))
         self.coordLED = [None] * 198
         '''
             # Example Array setup:   [SH1, SH2, SH3, SH4,IH1,.....IH196,FH1,FH2]   SH1-4  is a combination of 2 hands and 2 feet, Intermediate max is with only 1 hand hold to start and 1 finish 

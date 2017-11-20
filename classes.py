@@ -708,7 +708,7 @@ class Problem(Button):
                 # start Holds
                 if self.coordLED[index] != None:
                     self.colorLED[self.coordLED[index]] = 1
-                    strip.setPixelColorRGB(self.coordLED[index], 0, 255, 0)
+                    strip.setPixelColorRGB(self.coordLED[index], 0, 0, 255)
             elif index > 3 and index < 196:
                 if self.coordLED[index] != None:
                     self.colorLED[self.coordLED[index]] = 2
@@ -718,7 +718,7 @@ class Problem(Button):
             else:
                 if self.coordLED[index] != None:
                     self.colorLED[self.coordLED[index]] = 3
-                    strip.setPixelColorRGB(self.coordLED[index], 0, 0, 255)
+                    strip.setPixelColorRGB(self.coordLED[index], 0, 255, 0)
                     # else:
                     # 	#colorLED[coordLED[index]] = 0
             index += 1

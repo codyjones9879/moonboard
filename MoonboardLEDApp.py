@@ -664,8 +664,8 @@ class DbCon:
 
         #execute = "SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '')"  "REGEXP '.*%s.*'" + orderCommandStr + "LIMIT 0,100" % search
         #print(execute)
-        print("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT"  + str(pageIndex) + ",100)" + addedCommandStr)
-        self.c.execute("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT " + str(pageIndex) + ",100)" + addedCommandStr)
+        print("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT "  + str(pageIndex*100) + ",100)" + addedCommandStr)
+        self.c.execute("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT " + str(pageIndex*100) + ",100)" + addedCommandStr)
         return self.c.fetchall()
 
     def get_rows_searched(self, search=""):
@@ -675,7 +675,7 @@ class DbCon:
         if filteredCommandStr == "":
             print(filteredCommandStr)
             self.c.execute(
-                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 0,100" % search)
+                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT " + str(pageIndex*100) + ",100" % search)
 
         else:
             print(filteredCommandStr)
@@ -982,9 +982,9 @@ class MoonboardAppLayout(GridLayout):
         self.customizeBox = GridLayout(cols=1, size_hint_y=None)
         self.search_input = TextInput(text="", multiline=False)
         self.search_button = SearchButton(text="search", on_press=self.search)
-        self.next_page_button = Button(text=">")
+        self.next_page_button = Button(text=">", on_press=self.pageIncrease)
         self.random_button = Button(text="Random", on_press=self.randomPressed)
-        self.prev_page_button = Button(text="<")
+        self.prev_page_button = Button(text="<", on_press=self.pageDecrease)
         self.customize = Button(text="Create Your Own!")
         self.nextPage = SearchButton(text="search", on_press=self.search)
         self.searchGrid = GridLayout(cols=1)
@@ -1031,25 +1031,42 @@ class MoonboardAppLayout(GridLayout):
         # self.moonImagesArray.reload()
     def randomPressed(self, random):
 
-        global filterBox
+        global filterBox, pageIndex
         if filterBox[19] == False:
             filterBox[19] = True
+        pageIndex = 0
 
         self.filter()
-    def pageIncrease(self):  #TODO account for something like remaining 99 if there isn't an even search
-        global Routes, pageIndex
-        if ((pageIndex+1)*100) < len(Routes):
+
+
+    def pageIncrease(self, pageNum):  #TODO account for something like remaining 99 if there isn't an even search
+        global Routes, pageIndex, filterBox
+        print(pageIndex)
+        print(len(Routes))
+        #filterBox[19] = False
+        if (len(Routes) > 99):
             pageIndex+=1
         else:
             pageIndex+=0
+        self.filter()
 
 
-    def pageDecrease(self, pageNumber):
+    def pageDecrease(self, pageNum):  #TODO account for something like remaining 99 if there isn't an even search
+        global Routes, pageIndex, filterBox
+        print(pageIndex)
+        print(len(Routes))
+
+        #filterBox[19] = False
+        if (pageIndex > 0):
+            pageIndex-=1
+        else:
+            pageIndex+=0
+        self.filter()
 
 
 
     def filter_table(self, search=""):
-        global Routes, filterBox
+        global Routes, filterBox, pageIndex
         #Routes = self.db.get_rows_filtered(filterBox[0].active, filterBox[1].active, filterBox[2].active, filterBox[3].active, filterBox[4].active, filterBox[5].active, filterBox[6].active, filterBox[7].active, filterBox[8].active, filterBox[9].active, filterBox[10].active, filterBox[11].active, filterBox[12].active, filterBox[13].active, filterBox[14].active, filterBox[15].active, filterBox[16].active, filterBox[17].active, filterBox[18].active, filterBox[19].active, search)
         Routes = self.db.get_rows_filtered(filterBox[0].active, filterBox[1].active, filterBox[2].active,
                                            filterBox[3].active, filterBox[4].active, filterBox[5].active,

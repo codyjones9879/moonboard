@@ -4,6 +4,7 @@ import kivy
 # from neopixel import *
 import sys
 from kivy.app import App
+from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.uix.image import Image
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
@@ -31,8 +32,6 @@ LabelBase.register(name="NotoSans",
                    fn_bold="NotoSans-hinted/NotoSansUI-Bold.ttf",
                    fn_italic="NotoSans-hinted/NotoSansUI-Italic.ttf",
                    fn_bolditalic="NotoSans-hinted/NotoSansUI-BoldItalic.ttf")
-
-
 
 '''
 Coordinate Key: This is for color value
@@ -926,45 +925,6 @@ class moonBoardImage(Image):
 
     def on_press(self):
         print("Hello")
-
-    pass
-
-
-class moonBoardButton(Button):
-    route = [None] * 205
-    global LED_ROUTE_IMAGES
-    def __init__(self, **kwargs):
-        super(moonBoardButton, self).__init__(**kwargs)
-        self.index = 0
-        self.regularImage = self.background_normal
-
-    def update(self):
-        self.source = "images/moon-1-1-blue-square.png"
-        print("Call to Update")
-        self.reload()
-
-    def on_press(self):
-        # self.coordLED = [None] * 198
-        # self.colorLED = [0] * 198
-
-        print(self.index)
-        print(self.background_normal)
-
-        imageStrTemp = self.regularImage
-        imageStrTemp = imageStrTemp.split('.',1)[0]
-        self.index+=1
-        if self.index == 4:
-            self.index = 0
-        if self.index == 0:
-            self.background_normal = self.regularImage
-            print(self.index)
-        if self.index == 1:
-            self.background_normal = imageStrTemp + "-blue-square.png"
-        if self.index == 2:
-            self.background_normal = imageStrTemp + "-red-square.png"
-        if self.index == 3:
-            self.background_normal = imageStrTemp + "-green-square.png"
-        print(self.background_normal)
     pass
 
 
@@ -977,7 +937,7 @@ class MoonboardAppLayout(GridLayout):
         self.cols = 2
         self.rows = 2
         self.db = DbCon()
-        global Routes, problemButton, filterBox, FilterLabel, filteredCommandStr, orderCommandStr, pageIndex
+        global Routes, problemButton, filterBox, FilterLabel, filteredCommandStr, orderCommandStr, pageIndex, screen1, screen2
         #filteredCommandStr = " WHERE (GradeUS = 'V4+' OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) ORDER BY DateAdded ASC LIMIT 0,100"
         filteredCommandStr = ""
         orderCommandStr = "ORDER BY RAND() "
@@ -1029,8 +989,7 @@ class MoonboardAppLayout(GridLayout):
         self.next_page_button = Button(text=">", on_press=self.pageIncrease)
         self.random_button = Button(text="Random", on_press=self.randomPressed)
         self.prev_page_button = Button(text="<", on_press=self.pageDecrease)
-        self.customize = Button(text="Create Your Own!", on_press=self.custom_screen)
-        self.return_home = Button(text="Return Home", on_press=self.home_screen)
+        self.customize = Button(text="Create Your Own!", on_press=screen1.changer)
         #self.nextPage = SearchButton(text="search", on_press=self.search)
         self.searchGrid = GridLayout(cols=1)
         self.navigateGrid = GridLayout(rows=2, orientation="vertical", size_hint_y=None)
@@ -1083,6 +1042,10 @@ class MoonboardAppLayout(GridLayout):
 
         self.filter()
 
+    def dump(obj, *args):
+        for attr in dir(obj):
+            print("obj.%s = %s" % (attr, getattr(obj, attr)))
+
 
     def pageIncrease(self, pageNum):  #TODO account for something like remaining 99 if there isn't an even search
         global Routes, pageIndex, filterBox
@@ -1108,8 +1071,8 @@ class MoonboardAppLayout(GridLayout):
             pageIndex+=0
         self.filter()
 
-    def creationScreen(self, *args):
-        return 0
+    def creationScreen(self):
+        self.clear_widgets()
 
     def filter_table(self, search=""):
         global Routes, filterBox, pageIndex
@@ -1158,7 +1121,7 @@ class MoonboardAppLayout(GridLayout):
                 size_hint_y=None)
             problemButton[index].route = Routes[index][7:211]
             problemButton[index].routeName = str(Routes[index][0])
-            problemButton[index].setterName = str(Routes[index][1])
+            problemButton[index].setterName = str(Routes[index][1])# -*- coding: utf-8 -*-
             problemButton[index].gradeUK = str(Routes[index][2])
             problemButton[index].gradeUS = str(Routes[index][3])
             problemButton[index].stars = Routes[index][4]
@@ -1169,37 +1132,6 @@ class MoonboardAppLayout(GridLayout):
     def clear_table(self):
         self.problemList.clear_widgets()
 
-    def custom_screen(self, custom):
-        self.clear_widgets()
-        self.cols = 1
-        self.return_home.size_hint_y = None
-        self.moonImageGroup = moonBoardProblemImage()
-        self.temp = 0
-        for i in range(19):
-            for j in range(12):
-                self.imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
-                global LED_ROUTE_IMAGES
-                LED_ROUTE_IMAGES[self.temp] = moonBoardButton(background_normal=self.imageStr, background_down=self.imageStr, size_hint_y=1, size_hint_x=1,
-                                                             allow_stretch=False, keep_ratio=True, border=(0,0,0,0))
-                # self.moonImagesArray[temp]
-                self.temp += 1
-        for i in range(228):
-            self.moonImageGroup.add_widget(LED_ROUTE_IMAGES[i])
-
-        self.add_widget(self.moonImageGroup)
-        self.add_widget(self.return_home)
-        #dataApp.build()
-
-    def home_screen(self, home):
-        self.clear_widgets()
-        self.__init__()
-
-    # def change_button_image(self, random):
-    #     print(self.imageStr)
-
-
-
-
     def search(self, *args):
         self.clear_table()
         self.update_table(self.search_input.text)
@@ -1208,15 +1140,51 @@ class MoonboardAppLayout(GridLayout):
         self.clear_table()
         self.filter_table(self.search_input.text)
 
+    def changer(self, *args):
+        self.manager.current = 'screen1'
 
-class DatabaseApp(App):
-    def build(self):
-        self.title = "MOONBOARD"
+class ScreenOne(Screen):
+
+    def __init__ (self,**kwargs):
+        super (ScreenOne, self).__init__(**kwargs)
+        global Screen1
+        Screen1=self
         parent = BoxLayout(size=(Window.width, Window.height))
         self.gridsDisplay = MoonboardAppLayout()
         parent.add_widget(self.gridsDisplay)
-        return parent
+        self.add_widget(parent)
 
+    def changer(self,*args):
+        manager.current = 'screen2'
+
+class ScreenTwo(Screen):
+
+    def __init__(self,**kwargs):
+        super (ScreenTwo,self).__init__(**kwargs)
+
+        my_box1 = BoxLayout(orientation='vertical')
+        my_label1 = Label(text="BlaBlaBla on screen 2",font_size='24dp')
+        my_button1 = Button(text="Go to screen 1",size_hint_y=None, size_y=100)
+        my_button1.bind(on_press=self.changer)
+        my_box1.add_widget(my_label1)
+        my_box1.add_widget(my_button1)
+        self.add_widget(my_box1)
+
+    def changer(self,*args):
+        self.manager.current = 'screen1'
+
+# changeToScreenTwo = 'changer'
+# methodChangeToScreenTwo = getattr(ScreenOne, changeToScreenTwo)
+class DatabaseApp(App):
+    def build(self):
+        self.title = "MOONBOARD"
+        global screen1, screen2
+        my_screenmanager = ScreenManager()
+        screen1 = ScreenOne(name='screen1')
+        screen2 = ScreenTwo(name='screen2')
+        my_screenmanager.add_widget(screen1)
+        my_screenmanager.add_widget(screen2)
+        return my_screenmanager
 
 
 

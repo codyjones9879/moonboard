@@ -951,20 +951,31 @@ class moonBoardButton(Button):
         print(self.background_normal)
 
         imageStrTemp = self.regularImage
+        coordinates = imageStrTemp.split('-',1)[1]
+        xcoordinate = coordinates.split('-', 1)[0]
+        ycoordinate = coordinates.split('-', 1)[1].split('.', 1)[0]
+        print(coordinates)
+        print(xcoordinate)
+        print(ycoordinate)
         imageStrTemp = imageStrTemp.split('.',1)[0]
-        self.index+=1
-        if self.index == 4:
-            self.index = 0
-        if self.index == 0:
-            self.background_normal = self.regularImage
-            print(self.index)
-        if self.index == 1:
-            self.background_normal = imageStrTemp + "-blue-square.png"
-        if self.index == 2:
-            self.background_normal = imageStrTemp + "-red-square.png"
-        if self.index == 3:
-            self.background_normal = imageStrTemp + "-green-square.png"
-        print(self.background_normal)
+        if not xcoordinate == str(0) and not ycoordinate == str(0):
+
+            self.index+=1
+            if self.index == 4:
+                self.index = 0
+            if self.index == 0:
+                self.background_normal = self.regularImage
+                print(self.index)
+            if self.index == 1:
+                self.background_normal = imageStrTemp + "-blue-square.png"
+            if self.index == 2:
+                self.background_normal = imageStrTemp + "-red-square.png"
+            if self.index == 3:
+                self.background_normal = imageStrTemp + "-green-square.png"
+            print(self.background_normal)
+
+
+
     pass
 
 

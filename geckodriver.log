@@ -1,0 +1,82 @@
+1508952447709	geckodriver	INFO	geckodriver 0.19.0
+1508952447724	geckodriver	INFO	Listening on 127.0.0.1:50451
+1508952448270	mozrunner::runner	INFO	Running command: "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.XwwLe3rgJY9K"
+1508952449125	Marionette	INFO	Listening on port 2828
+[Child 6532] WARNING: pipe error: 109: file c:/builds/moz2_slave/m-esr52-w32-000000000000000000/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 345
+[Child 3196] WARNING: pipe error: 109: file c:/builds/moz2_slave/m-esr52-w32-000000000000000000/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 345
+1508938754394	geckodriver	INFO	geckodriver 0.19.0
+1508938754400	geckodriver	INFO	Listening on 127.0.0.1:49408
+1508938754962	mozrunner::runner	INFO	Running command: "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.1NLRTvfBt7aj"
+1508938755851	Marionette	INFO	Listening on port 2828
+*************************
+A coding exception was thrown and uncaught in a Task.
+
+Full message: TypeError: NetworkError when attempting to fetch resource.
+Full stack: 
+*************************
+[Child 6120] WARNING: pipe error: 109: file c:/builds/moz2_slave/m-esr52-w32-000000000000000000/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 345
+[Child 6120] WARNING: pipe error: 109: file c:/builds/moz2_slave/m-esr52-w32-000000000000000000/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 345
+ionette	INFO	Listening on port 2828
+[Child 1832] WARNING: pipe error: 109: file c:/builds/moz2_slave/m-esr52-w32-000000000000000000/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 345
+[Child 1832] WARNING: pipe error: 109: file c:/builds/moz2_slave/m-esr52-w32-000000000000000000/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 345
+1508948528857	geckodriver	INFO	geckodriver 0.19.0
+1508948528863	geckodriver	INFO	Listening on 127.0.0.1:51235
+1508948529424	mozrunner::runner	INFO	Running command: "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.rU5aI2N3aUJW"
+1508948576636	geckodriver	INFO	geckodriver 0.19.0
+1508948576642	geckodriver	INFO	Listening on 127.0.0.1:51330
+1508948577191	mozrunner::runner	INFO	Running command: "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.ikPXLX7T8ZPP"
+1508949057501	geckodriver	INFO	geckodriver 0.19.0
+1508949057507	geckodriver	INFO	Listening on 127.0.0.1:52350
+1508949058069	mozrunner::runner	INFO	Running command: "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.BkPEPQmDvndr"
+1508951383808	geckodriver	INFO	geckodriver 0.19.0
+1508951383808	geckodriver	INFO	Listening on 127.0.0.1:49472
+1508951384385	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Waterfox\\waterfox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.TEQ3ilJntonm"
+1508951384899	addons.xpi	WARN	Error parsing extensions state: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [amIAddonManagerStartup.readStartupData]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/addons/XPIProvider.jsm :: loadExtensionState :: line 1596"  data: no] Stack trace: loadExtensionState()@resource://gre/modules/addons/XPIProvider.jsm:1596 < getInstallState()@resource://gre/modules/addons/XPIProvider.jsm:1631 < checkForChanges()@resource://gre/modules/addons/XPIProvider.jsm:3152 < startup()@resource://gre/modules/addons/XPIProvider.jsm:2246 < callProvider()@resource://gre/modules/AddonManager.jsm:271 < _startProvider()@resource://gre/modules/AddonManager.jsm:741 < startup()@resource://gre/modules/AddonManager.jsm:908 < startup()@resource://gre/modules/AddonManager.jsm:3122 < observe()@jar:file:///C:/Program%20Files/Waterfox/omni.ja!/components/addonManager.js:65
+1508951386651	Marionette	INFO	Enabled via --marionette
+1508951388730	Marionette	INFO	Listening on port 49476
+1508951388801	Marionette	INFO	Listening on port 49476
+1508951435913	geckodriver	INFO	geckodriver 0.19.0
+1508951435929	geckodriver	INFO	Listening on 127.0.0.1:49490
+1508951436453	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Waterfox\\waterfox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.YFkOZxoeX0iL"
+1508951436670	addons.xpi	WARN	Error parsing extensions state: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [amIAddonManagerStartup.readStartupData]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/addons/XPIProvider.jsm :: loadExtensionState :: line 1596"  data: no] Stack trace: loadExtensionState()@resource://gre/modules/addons/XPIProvider.jsm:1596 < getInstallState()@resource://gre/modules/addons/XPIProvider.jsm:1631 < checkForChanges()@resource://gre/modules/addons/XPIProvider.jsm:3152 < startup()@resource://gre/modules/addons/XPIProvider.jsm:2246 < callProvider()@resource://gre/modules/AddonManager.jsm:271 < _startProvider()@resource://gre/modules/AddonManager.jsm:741 < startup()@resource://gre/modules/AddonManager.jsm:908 < startup()@resource://gre/modules/AddonManager.jsm:3122 < observe()@jar:file:///C:/Program%20Files/Waterfox/omni.ja!/components/addonManager.js:65
+1508951438331	Marionette	INFO	Enabled via --marionette
+1508951439897	Marionette	INFO	Listening on port 49494
+1508951439914	Marionette	INFO	Listening on port 49494
+1508951575443	geckodriver	INFO	geckodriver 0.19.0
+1508951575449	geckodriver	INFO	Listening on 127.0.0.1:49582
+1508951575987	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Waterfox\\waterfox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.JxPm2UO2cXJo"
+1508951576280	addons.xpi	WARN	Error parsing extensions state: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [amIAddonManagerStartup.readStartupData]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/addons/XPIProvider.jsm :: loadExtensionState :: line 1596"  data: no] Stack trace: loadExtensionState()@resource://gre/modules/addons/XPIProvider.jsm:1596 < getInstallState()@resource://gre/modules/addons/XPIProvider.jsm:1631 < checkForChanges()@resource://gre/modules/addons/XPIProvider.jsm:3152 < startup()@resource://gre/modules/addons/XPIProvider.jsm:2246 < callProvider()@resource://gre/modules/AddonManager.jsm:271 < _startProvider()@resource://gre/modules/AddonManager.jsm:741 < startup()@resource://gre/modules/AddonManager.jsm:908 < startup()@resource://gre/modules/AddonManager.jsm:3122 < observe()@jar:file:///C:/Program%20Files/Waterfox/omni.ja!/components/addonManager.js:65
+1508951577910	Marionette	INFO	Enabled via --marionette
+1508951579634	Marionette	INFO	Listening on port 49586
+1508951579653	Marionette	INFO	Listening on port 49586
+1508951604294	geckodriver	INFO	geckodriver 0.19.0
+1508951604300	geckodriver	INFO	Listening on 127.0.0.1:49611
+1508951604844	mozrunner::runner	INFO	Running command: "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.pKrl6MxXkFLa"
+1508951623048	geckodriver	INFO	geckodriver 0.19.0
+1508951623054	geckodriver	INFO	Listening on 127.0.0.1:49636
+1508951623605	mozrunner::runner	INFO	Running command: "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.a1YRTz6gKO3a"
+1508951624672	Marionette	INFO	Listening on port 2828
+[Child 6980] WARNING: pipe error: 109: file c:/builds/moz2_slave/m-esr52-w32-000000000000000000/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 345
+[Child 6980] WARNING: pipe error: 109: file c:/builds/moz2_slave/m-esr52-w32-000000000000000000/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 345
+1508951746178	geckodriver	INFO	geckodriver 0.19.0
+1508951746178	geckodriver	INFO	Listening on 127.0.0.1:49673
+1508951746771	mozrunner::runner	INFO	Running command: "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.Q1p1IALQrDwt"
+1508951747695	Marionette	INFO	Listening on port 2828
+1508951763605	geckodriver	INFO	geckodriver 0.19.0
+1508951763605	geckodriver	INFO	Listening on 127.0.0.1:49706
+1508951764151	mozrunner::runner	INFO	Running command: "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.buP7zsThcyIQ"
+1508951765069	Marionette	INFO	Listening on port 2828
+1508952086971	geckodriver	INFO	geckodriver 0.19.0
+1508952086971	geckodriver	INFO	Listening on 127.0.0.1:50063
+1508952087534	mozrunner::runner	INFO	Running command: "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.Gulw3MLg91q6"
+1508952088519	Marionette	INFO	Listening on port 2828
+1508952092325	geckodriver	INFO	geckodriver 0.19.0
+1508952092325	geckodriver	INFO	Listening on 127.0.0.1:50085
+1508952092887	mozrunner::runner	INFO	Running command: "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.ichUYoCclZX9"
+1508952093790	Marionette	INFO	Listening on port 2828
+1508952201585	geckodriver	INFO	geckodriver 0.19.0
+1508952201585	geckodriver	INFO	Listening on 127.0.0.1:50170
+1508952202131	mozrunner::runner	INFO	Running command: "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" "-marionette" "-profile" "C:\\Users\\cjones\\AppData\\Local\\Temp\\rust_mozprofile.6z1DRaFwWCQ5"
+1508952203054	Marionette	INFO	Listening on port 2828
+[Child 1176] WARNING: pipe error: 109: file c:/builds/moz2_slave/m-esr52-w32-000000000000000000/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 345
+[Child 1176] WARNING: pipe error: 109: file c:/builds/moz2_slave/m-esr52-w32-000000000000000000/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 345

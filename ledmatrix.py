@@ -15,7 +15,7 @@ from neopixel import * # See https://learn.adafruit.com/neopixels-on-raspberry-p
 from PIL import Image  # Use apt-get install python-imaging to install this
 
 # LED strip configuration:
-LED_COUNT      = 96      # Number of LED pixels.
+LED_COUNT      = 197      # Number of LED pixels.
 LED_PIN        = 18      # GPIO pin connected to the pixels (must support PWM!).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 5       # DMA channel to use for generating signal (try 5)
@@ -26,8 +26,8 @@ LED_INVERT     = False   # True to invert the signal (when using NPN transistor 
 SPEED=0.075
 
 # Size of your matrix
-MATRIX_WIDTH=12
-MATRIX_HEIGHT=8
+MATRIX_WIDTH=11
+MATRIX_HEIGHT=18
 
 # LED matrix layout
 # A list converting LED string number to physical grid layout
@@ -43,10 +43,12 @@ MATRIX_HEIGHT=8
 # The first LED is number 0                       |
 # Mine starts at the bottom left here: -----------/
 
-myMatrix=[95,94,93,92,91,90,89,88,87,86,85,
-          72,73,74,75,76,77,78,79,80,81,82,
-          71,70,69,68,67,66,65,64,63,62,61,
-          44,45,46,47,48,49,54,55,56,57,58,
+myMatrix=[
+	  88,89,90,91,92,101,102,103,104,105,106,
+	  87,86,85,84,83,82,81,80,79,78,77,95,94,93,92,91,90,89,88,87,86,85,
+          66,67,68,69,70,71,72,73,74,75,76,
+          65,64,63,62,61,60,59,58,57,56,55,
+          44,45,46,47,48,49,50,51,52,53,54,
           43,42,41,40,39,38,37,36,35,34,33,
           22,23,24,25,26,27,28,29,30,31,32,
           21,20,19,18,17,16,15,14,13,12,11,

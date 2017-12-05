@@ -1,0 +1,46 @@
+## Synopsis
+
+At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+
+## Code Example
+
+All that is required is to first upload routes to your own personal *local* database using MySQL and then running the command below for the GUI:
+
+sudo python MoonboardLEDApp.py
+
+## Motivation
+
+I wanted to utilize an LED system that kept track of all Moonboard routes.  Since I could not bring myself to spend money on theirs, I created a cheap DIY way. The software I have written requires ALOT of extra libraries and some hardware but I should be able to showcase it here for replication purposes.
+
+## Installation
+
+### Requirements
+
+#### Hardware
+Raspberry pi 3 (any should work here)
+Adafruit NeoPixels
+
+#### Software - easier to follow the tutorial
+Python 3  AND Python 2.7.13
+MySQL
+rpi_ws281x (python 2 library for neopixel)
+kivy (Python GUI)
+pymysql (Python library to use mysql commands)
+beautifulsoup4 (Python 3)
+
+
+## API Reference
+
+Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+
+## Tests
+
+Describe and show how to run the tests with code examples.
+
+## Contributors
+
+Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+
+## License
+
+A short snippet describing the license (MIT, Apache, etc.)

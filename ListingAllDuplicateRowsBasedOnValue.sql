@@ -1,1 +1,0 @@
-SELECT  * FROM moonboard WHERE StartHold1="D3" AND StartHold2="B4" AND IntermediateHold1="C12"; AND IntermediateHold2="D13" AND IntermediateHold3="0" AND FinishHold1="C18" AND FinishHold2="0";

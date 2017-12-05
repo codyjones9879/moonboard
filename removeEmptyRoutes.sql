@@ -1,1 +1,0 @@
-DELETE FROM moonboard WHERE Moves = 0;

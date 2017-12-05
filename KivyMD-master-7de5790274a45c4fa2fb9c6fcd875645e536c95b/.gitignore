@@ -1,7 +1,0 @@
-*.pyc
-*.swp
-bin
-.buildozer
-.idea
-build
-docs/_build

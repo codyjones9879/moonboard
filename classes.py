@@ -83,17 +83,7 @@ def colorWipe(strip, color, wait_ms=50):
         strip.show()
         # time.sleep(wait_ms/1000.0)
 
-def updateImages(route, imageArray):
-    temp = 0
-    for i in range(19):
-        for j in range(12):
-            imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
-            imageArray[temp] = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
-                                                             allow_stretch=True, keep_ratio=False)
-            # self.moonImagesArray[temp]
-            temp += 1
-    print(route)
-    pass
+
 def moonToLED(coord):
     switcher = {
         "A1": 0,
@@ -299,225 +289,226 @@ def moonToLED(coord):
 
 def picIndexLookUp(index):
     switcher = {
-        "217": 0,
-        "218": 1,
-        "219": 2,
-        "220": 3,
-        "221": 4,
-        "222": 5,
-        "223": 6,
-        "224": 7,
-        "225": 8,
-        "226": 9,
-        "227": 10,
-        "215": 11,
-        "214": 12,
-        "213": 13,
-        "212": 14,
-        "211": 15,
-        "210": 16,
-        "209": 17,
-        "208": 18,
-        "207": 19,
-        "206": 20,
-        "205": 21,
-        "193": 22,
-        "194": 23,
-        "195": 24,
-        "196": 25,
-        "197": 26,
-        "198": 27,
-        "199": 28,
-        "200": 29,
-        "201": 30,
-        "202": 31,
-        "203": 32,
-        "33": 33,
-        "34": 34,
-        "35": 35,
-        "36": 36,
-        "37": 37,
-        "38": 38,
-        "39": 39,
-        "40": 40,
-        "41": 41,
-        "42": 42,
-        "43": 43,
-        "44": 44,
-        "45": 45,
-        "C5": 46,
-        "D5": 47,
-        "E5": 48,
-        "F5": 49,
-        "G5": 50,
-        "H5": 51,
-        "I5": 52,
-        "J5": 53,
-        "K5": 54,
-        "K6": 55,
-        "J6": 56,
-        "I6": 57,
-        "H6": 58,
-        "G6": 59,
-        "F6": 60,
-        "E6": 61,
-        "D6": 62,
-        "C6": 63,
-        "B6": 64,
-        "A6": 65,
-        "A7": 66,
-        "B7": 67,
-        "C7": 68,
-        "D7": 69,
-        "E7": 70,
-        "F7": 71,
-        "G7": 72,
-        "H7": 73,
-        "I7": 74,
-        "J7": 75,
-        "K7": 76,
-        "K8": 77,
-        "J8": 78,
-        "I8": 79,
-        "H8": 80,
-        "G8": 81,
-        "F8": 82,
-        "E8": 83,
-        "D8": 84,
-        "C8": 85,
-        "B8": 86,
-        "A8": 87,
-        "A9": 88,
-        "B9": 89,
-        "C9": 90,
-        "D9": 91,
-        "E9": 92,
-        "F9": 93,
-        "G9": 94,
-        "H9": 95,
-        "I9": 96,
-        "J9": 97,
-        "K9": 98,
-        "K10": 99,
-        "J10": 100,
-        "I10": 101,
-        "H10": 102,
-        "G10": 103,
-        "F10": 104,
-        "E10": 105,
-        "D10": 106,
-        "C10": 107,
-        "B10": 108,
-        "A10": 109,
-        "A11": 110,
-        "B11": 111,
-        "C11": 112,
-        "D11": 113,
-        "E11": 114,
-        "F11": 115,
-        "G11": 116,
-        "H11": 117,
-        "I11": 118,
-        "J11": 119,
-        "K11": 120,
-        "K12": 121,
-        "J12": 122,
-        "I12": 123,
-        "H12": 124,
-        "G12": 125,
-        "F12": 126,
-        "E12": 127,
-        "D12": 128,
-        "C12": 129,
-        "B12": 130,
-        "A12": 131,
-        "A13": 132,
-        "B13": 133,
-        "C13": 134,
-        "D13": 135,
-        "E13": 136,
-        "F13": 137,
-        "G13": 138,
-        "H13": 139,
-        "I13": 140,
-        "J13": 141,
-        "K13": 142,
-        "K14": 143,
-        "J14": 144,
-        "I14": 145,
-        "H14": 146,
-        "G14": 147,
-        "F14": 148,
-        "E14": 149,
-        "D14": 150,
-        "C14": 151,
-        "B14": 152,
-        "A14": 153,
-        "A15": 154,
-        "B15": 155,
-        "C15": 156,
-        "D15": 157,
-        "E15": 158,
-        "F15": 159,
-        "G15": 160,
-        "H15": 161,
-        "I15": 162,
-        "J15": 163,
-        "K15": 164,
-        "K16": 165,
-        "J16": 166,
-        "I16": 167,
-        "H16": 168,
-        "G16": 169,
-        "F16": 170,
-        "E16": 171,
-        "D16": 172,
-        "C16": 173,
-        "B16": 174,
-        "A16": 175,
-        "A17": 176,
-        "B17": 177,
-        "C17": 178,
-        "D17": 179,
-        "E17": 180,
-        "F17": 181,
-        "G17": 182,
-        "H17": 183,
-        "I17": 184,
-        "J17": 185,
-        "K17": 186,
-        "K18": 187,
-        "": 188,
-        "198": 189,
-        "190": 190,
-        "191": 191,
-        "192": 192,
-        "193": 193,
-        "194": 194,
-        "195": 195,
-        "196": 196,
-        "197": 13,
+        #REVERSE
+        0: 10,
+        1: 9,
+        2: 8,
+        3: 7,
+        4: 6,
+        5: 5,
+        6: 4,
+        7: 3,
+        8: 2,
+        9: 1,
+        10: 0,
+        #NORMAL
+        11: 11,
+        12: 12,
+        13: 13,
+        14: 14,
+        15: 15,
+        16: 16,
+        17: 17,
+        18: 18,
+        19: 19,
+        20: 20,
+        21: 21,
+        #REVERSE
+        22: 32,
+        23: 31,
+        24: 30,
+        25: 29,
+        26: 28,
+        27: 27,
+        28: 26,
+        29: 25,
+        30: 24,
+        31: 23,
+        32: 22,
+        #NORMAL
+        33: 33,
+        34: 34,
+        35: 35,
+        36: 36,
+        37: 37,
+        38: 38,
+        39: 39,
+        40: 40,
+        41: 41,
+        42: 42,
+        43: 43,
+        #REVERSE
+        44: 54,
+        45: 53,
+        46: 52,
+        47: 51,
+        48: 50,
+        49: 49,
+        50: 48,
+        51: 47,
+        52: 46,
+        53: 45,
+        54: 44,
+        #NORMAL
+        55: 55,
+        56: 56,
+        57: 57,
+        58: 58,
+        59: 59,
+        60: 60,
+        61: 61,
+        62: 62,
+        63: 63,
+        64: 64,
+        65: 65,
+        #REVERSE
+        66: 76,
+        67: 75,
+        68: 74,
+        69: 73,
+        70: 72,
+        71: 71,
+        72: 70,
+        73: 69,
+        74: 68,
+        75: 67,
+        76: 66,
+        #NORMAL
+        77: 77,
+        78: 78,
+        79: 79,
+        80: 80,
+        81: 81,
+        82: 82,
+        83: 83,
+        84: 84,
+        85: 85,
+        86: 86,
+        87: 87,
+        #REVERSE
+        88: 98,
+        89: 97,
+        90: 96,
+        91: 95,
+        92: 94,
+        93: 93,
+        94: 92,
+        95: 91,
+        96: 90,
+        97: 89,
+        98: 88,
+        #NORMAL
+        99: 99,
+        100: 100,
+        101: 101,
+        102: 102,
+        103: 103,
+        104: 104,
+        105: 105,
+        106: 106,
+        107: 107,
+        108: 108,
+        109: 109,
+        #REVERSE
+        110: 120,
+        111: 119,
+        112: 118,
+        113: 117,
+        114: 116,
+        115: 115,
+        116: 114,
+        117: 113,
+        118: 112,
+        119: 111,
+        120: 110,
+        #NORMAL
+        121: 121,
+        122: 122,
+        123: 123,
+        124: 124,
+        125: 125,
+        126: 126,
+        127: 127,
+        128: 128,
+        129: 129,
+        130: 130,
+        131: 131,
+        #REVERSE
+        132: 142,
+        133: 141,
+        134: 140,
+        135: 139,
+        136: 138,
+        137: 137,
+        138: 136,
+        139: 135,
+        140: 134,
+        141: 133,
+        142: 132,
+        #NORMAL
+        143: 143,
+        144: 144,
+        145: 145,
+        146: 146,
+        147: 147,
+        148: 148,
+        149: 149,
+        150: 150,
+        151: 151,
+        152: 152,
+        153: 153,
+        # REVERSE
+        154: 164,
+        155: 163,
+        156: 162,
+        157: 161,
+        158: 160,
+        159: 159,
+        160: 158,
+        161: 157,
+        162: 156,
+        163: 155,
+        164: 154,
+        # NORMAL
+        165: 165,
+        166: 166,
+        167: 167,
+        168: 168,
+        169: 169,
+        170: 170,
+        171: 171,
+        172: 172,
+        173: 173,
+        174: 174,
+        175: 175,
+        # REVERSE
+        176: 186,
+        177: 185,
+        178: 184,
+        179: 183,
+        180: 182,
+        181: 181,
+        182: 180,
+        183: 179,
+        184: 178,
+        185: 177,
+        186: 176,
+        # NORMAL
+        187: 187,
+        188: 188,
+        189: 189,
+        190: 190,
+        191: 191,
+        192: 192,
+        193: 193,
+        194: 194,
+        195: 195,
+        196: 196,
+        197: 197,
     }
+    print(index)
     return switcher.get(index, None)
-# def picturesAdjusted(pics):
-#     oldPics = pics
-#     index = 0
-#     tempi=18
-#     tempj=0
-#     directionUp = True
-#     while tempi != 0:
-#         if directionUp:
-#             tempj +=1
-#         else:
-#             tempj -=1
-#         if tempj == 12:
-#             directionUp = False
-#         elif tempj == 0:
-#             directionUp = True
-#         else:
-#             newPics[index] =
-#
-#     return newPics
+
 
 
 
@@ -606,6 +597,7 @@ class Problem(Button):
 
         self.tmp = 0 #running index for 228 images
         self.TEMP = 197 #running index for 197 LEDs
+        self.REVERSE = True
         for i in range(19):
             for j in range(12):
                 print("i=&s", i)
@@ -684,28 +676,31 @@ class Problem(Button):
                     LED_ROUTE_IMAGES[self.tmp].reload()
                 else:
                     # imageIndex = picIndexLookUp(self.tmp)
-                    if self.colorLED[self.TEMP] == 0:
+                    #since LED's go in zig zags, we need to adjust mirror numbers.
+                    if self.colorLED[picIndexLookUp(self.TEMP)] == 0:
                         print("NO COLOR")
                         imageStr = str("images/moon-" + str(i) + "-" + str(j) + ".png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
-                    elif self.colorLED[self.TEMP] == 1:
+                    elif self.colorLED[picIndexLookUp(self.TEMP)] == 1:
                         print("i=&s", i)
                         print("j=&s", j)
                         print("BLUE")
                         imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-blue-square.png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
-                    elif self.colorLED[self.TEMP] == 2:
+                    elif self.colorLED[picIndexLookUp(self.TEMP)] == 2:
                         imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-red-square.png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
                         print("RED")
-                    else:
+                    elif self.colorLED[picIndexLookUp(self.TEMP)] == 3:
                         imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-green-square.png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
                         print("GREEN")
+                    else:
+                        print("WE HAVE A PROBLEM")
 
                     print(self.tmp)
                     print(self.TEMP)

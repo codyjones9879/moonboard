@@ -90,6 +90,46 @@ def colorWipe(strip, color, wait_ms=50):
         strip.show()
         # time.sleep(wait_ms/1000.0)
 
+def numberToLetter(coord):
+    switcher = {
+
+        "1": "A",
+        "2": "B",
+        "3": "C",
+        "4": "D",
+        "5": "E",
+        "6": "F",
+        "7": "G",
+        "8": "H",
+        "9": "I",
+        "10": "J",
+        "11": "K",
+    }
+    return switcher.get(coord, None)
+
+def flipRow(coord):
+    switcher = {
+
+        "18": "1",
+        "17": "2",
+        "16": "3",
+        "15": "4",
+        "14": "5",
+        "13": "6",
+        "12": "7",
+        "11": "8",
+        "10": "9",
+        "9": "10",
+        "8": "11",
+        "7": "12",
+        "6": "13",
+        "5": "14",
+        "4": "15",
+        "3": "16",
+        "2": "17",
+        "1": "18",
+    }
+    return switcher.get(coord, None)
 
 def moonToLED(coord):
     switcher = {
@@ -952,26 +992,39 @@ class moonBoardButton(Button):
 
         imageStrTemp = self.regularImage
         coordinates = imageStrTemp.split('-',1)[1]
-        xcoordinate = coordinates.split('-', 1)[0]
-        ycoordinate = coordinates.split('-', 1)[1].split('.', 1)[0]
+        ycoordinate = coordinates.split('-', 1)[0]
+        #ycoordinateAdjusted = picIndexLookUp(int(ycoordinate))
+        xcoordinate = coordinates.split('-', 1)[1].split('.', 1)[0]
         print(coordinates)
         print(xcoordinate)
         print(ycoordinate)
         imageStrTemp = imageStrTemp.split('.',1)[0]
-        if not xcoordinate == str(0) and not ycoordinate == str(0):
+        letterCoordinate = numberToLetter(xcoordinate)
+        ycoordinateAdjusted = flipRow(ycoordinate)
+        print(letterCoordinate + ycoordinateAdjusted)
+        if not ycoordinate == str(0) and not xcoordinate == str(0):
 
             self.index+=1
             if self.index == 4:
                 self.index = 0
             if self.index == 0:
                 self.background_normal = self.regularImage
+                LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
+                # strip.setPixelColorRGB(LEDNum, 0, 0, 0)
                 print(self.index)
             if self.index == 1:
                 self.background_normal = imageStrTemp + "-blue-square.png"
+                LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
+                # strip.setPixelColorRGB(LEDNum, 0, 0, 255)
+                print(LEDNum)
             if self.index == 2:
                 self.background_normal = imageStrTemp + "-red-square.png"
+                LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
+                # strip.setPixelColorRGB(LEDNum, 255, 0, 0)
             if self.index == 3:
                 self.background_normal = imageStrTemp + "-green-square.png"
+                LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
+                # strip.setPixelColorRGB(LEDNum, 0, 255, 0)
             print(self.background_normal)
 
 

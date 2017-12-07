@@ -54,9 +54,51 @@ def getArgs(problemInfo):
     return None
     # return args
 
+def getargsproblem(problemInfo):
+    return (problemInfo[0], problemInfo[1], problemInfo[2], problemInfo[3], problemInfo[4], problemInfo[5],
+            problemInfo[6], problemInfo[7], problemInfo[8], problemInfo[9], problemInfo[10], problemInfo[11],
+            problemInfo[12], problemInfo[13], problemInfo[14], problemInfo[15], problemInfo[16], problemInfo[17],
+            problemInfo[18], problemInfo[19], problemInfo[20], problemInfo[21], problemInfo[22], problemInfo[23],
+            problemInfo[24], problemInfo[25], problemInfo[26], problemInfo[27], problemInfo[28], problemInfo[29],
+            problemInfo[30], problemInfo[31], problemInfo[32], problemInfo[33], problemInfo[34], problemInfo[35],
+            problemInfo[36], problemInfo[37], problemInfo[38], problemInfo[39], problemInfo[40], problemInfo[41],
+            problemInfo[42], problemInfo[43], problemInfo[44], problemInfo[45], problemInfo[46], problemInfo[47],
+            problemInfo[48], problemInfo[49], problemInfo[50], problemInfo[51], problemInfo[52], problemInfo[53],
+            problemInfo[54], problemInfo[55], problemInfo[56], problemInfo[57], problemInfo[58], problemInfo[59],
+            problemInfo[60], problemInfo[61], problemInfo[62], problemInfo[63], problemInfo[64], problemInfo[65],
+            problemInfo[66], problemInfo[67], problemInfo[68], problemInfo[69], problemInfo[70], problemInfo[71],
+            problemInfo[72], problemInfo[73], problemInfo[74], problemInfo[75], problemInfo[76], problemInfo[77],
+            problemInfo[78], problemInfo[79], problemInfo[80], problemInfo[81], problemInfo[82], problemInfo[83],
+            problemInfo[84], problemInfo[85], problemInfo[86], problemInfo[87], problemInfo[88], problemInfo[89],
+            problemInfo[90], problemInfo[91], problemInfo[92], problemInfo[93], problemInfo[94], problemInfo[95],
+            problemInfo[96], problemInfo[97], problemInfo[98], problemInfo[99], problemInfo[100], problemInfo[101],
+            problemInfo[102], problemInfo[103], problemInfo[104], problemInfo[105], problemInfo[106], problemInfo[107],
+            problemInfo[108], problemInfo[109], problemInfo[110], problemInfo[111], problemInfo[112], problemInfo[113],
+            problemInfo[114])
+    # return args
+
 
 def getQuery():
     query = "SELECT * FROM routelinks"
+
+    return query
+
+def getqueryproblem():
+    query = "INSERT INTO routes (Method, Name, GradeUS, GradeUK, UserGradeUS, UserGradeUK, MoonBoardConfiguration, " \
+            "MoonBoardConfigurationId, SetterId, SetterNickName, FirstName, LastName, City, Country, ProfileImageUrl, "\
+            "FirstAscender, Rating, UserRating, Repeats, Attempts, HoldsetupId, HoldsetupDescription, IsBenchmark, "\
+            "StartHold1, Starthold2, IntermediateHold1,IntermediateHold2,IntermediateHold3,   IntermediateHold4,  " \
+            "IntermediateHold5, IntermediateHold6,  IntermediateHold7,  IntermediateHold8,  IntermediateHold9,  " \
+            "IntermediateHold10, IntermediateHold11, IntermediateHold12, IntermediateHold13, IntermediateHold14, " \
+            "IntermediateHold15, IntermediateHold16, IntermediateHold17, IntermediateHold18, IntermediateHold19, " \
+            "IntermediateHold20, FinishHold1, FinishHold2, NumberOfTries, NameForUrl, Id, ApiId, DateUpdated, " \
+            "DateDeleted, DateAdded) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s," \
+            "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s," \
+            "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()) " \
+            "ON DUPLICATE KEY UPDATE DateUpdated = IF(Rating != VALUES(Rating) OR " \
+            "(Repeats != VALUES(Repeats)), VALUES(DateUpdated), DateUpdated)," \
+            "Rating  = IF(Rating != VALUES(Rating), VALUES(Rating), Rating)," \
+            "Repeats = IF(Repeats != VALUES(Repeats), VALUES(Repeats), Repeats)"
 
     return query
 
@@ -64,6 +106,11 @@ def getQuery():
 def submitDB(db, query):
     cur = db.cursor()
     cur.execute(query)
+    return cur
+
+def submitDBproblem(db, query, args):
+    cur = db.cursor()
+    cur.execute(query, args)
     return cur
 
 def getVGrade(fontGrade):
@@ -111,6 +158,7 @@ def getVGrade(fontGrade):
 
 
 def loadMainPage():
+    problemInfoArray = [0] * 144
     db = connectDB()
     query = getQuery()
     args = getArgs(None)
@@ -122,8 +170,9 @@ def loadMainPage():
     # problems = soupProblems.find(class_='ProblemList')
     # logger.debug(problems.prettify(encoding='utf-8'))
     # problemsArray = problems.find_all('a')
-    # problemNumber = 0
+    problemNumber = 0
     for links in linkCollection.fetchall():
+        problemNumber+=1
         # print(str(links))
         # string = zip(*links)
         print(links[0])
@@ -138,9 +187,55 @@ def loadMainPage():
             if ("var problem = ") in ids.getText():
                 problemInfo = string.strip().split('\n', 1)[0]
                 detailsArray = problemInfo.split(',')
-                print(detailsArray[1])
+                infoIndex = 0
+                for item in detailsArray:
+                    if ("var problem = ") in item:
+                        item = item[27:]
+                    itemInfo = item.split(':')
+                    itemInfo[0] = itemInfo[0].replace("\"", "")
+                    itemInfo[0] = itemInfo[0].replace("{", "")
+                    itemInfo[0] = itemInfo[0].replace("}", "")
+                    itemInfo[1] = itemInfo[1].replace("\"", "")
+                    itemInfo[1] = itemInfo[1].replace("{", "")
+                    itemInfo[1] = itemInfo[1].replace("}", "")
 
+                    if infoIndex == 2:
+                        problemInfoArray[infoIndex] = getVGrade(itemInfo[1])
+                        problemInfoArray[infoIndex+1] = itemInfo[1]
+                        print(problemInfoArray)
+                        infoIndex += 2
 
+                    elif infoIndex == 4:
+                        problemInfoArray[infoIndex] = getVGrade(itemInfo[1])
+                        problemInfoArray[infoIndex+1] = itemInfo[1]
+                        print(problemInfoArray)
+                        infoIndex+=2
+                    elif infoIndex == 8:
+                        problemInfoArray[infoIndex] = itemInfo[2]
+                        infoIndex+=1
+                        print(problemInfoArray)
+                    elif infoIndex == 20:
+                        problemInfoArray[infoIndex] = itemInfo[2]
+                        infoIndex+=1
+                        print(problemInfoArray)
+                    elif (infoIndex >= 22 and infoIndex <= 30) or (infoIndex == 32):
+                        #problemInfoArray[infoIndex] = itemInfo[2]
+                        #infoIndex+=1
+                        print(problemInfoArray)
+                    else:
+                        problemInfoArray[infoIndex] = str(itemInfo[1])
+                        infoIndex+=1
+                        print(problemInfoArray)
+                    print(infoIndex)
+
+                    print(itemInfo)
+                    # print(itemInfo[1])
+                print(problemInfoArray)
+                print(infoIndex)
+        args = getargsproblem(problemInfoArray)
+        query = getqueryproblem()
+        submitDBproblem(db, query, args)
+        logger.info("Updating and Added Route:" + str(problemNumber))
 
 if __name__ == '__main__':
     ###################################

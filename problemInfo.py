@@ -188,6 +188,7 @@ def loadMainPage():
                 problemInfo = string.strip().split('\n', 1)[0]
                 detailsArray = problemInfo.split(',')
                 infoIndex = 0
+                arrayIndex = 0
                 for item in detailsArray:
                     if ("var problem = ") in item:
                         item = item[27:]
@@ -200,35 +201,45 @@ def loadMainPage():
                     itemInfo[1] = itemInfo[1].replace("}", "")
 
                     if infoIndex == 2:
-                        problemInfoArray[infoIndex] = getVGrade(itemInfo[1])
-                        problemInfoArray[infoIndex+1] = itemInfo[1]
+                        problemInfoArray[arrayIndex] = getVGrade(itemInfo[1])
+                        problemInfoArray[arrayIndex+1] = itemInfo[1]
                         print(problemInfoArray)
-                        infoIndex += 2
+                        arrayIndex += 2
+                        infoIndex+=2
 
                     elif infoIndex == 4:
-                        problemInfoArray[infoIndex] = getVGrade(itemInfo[1])
-                        problemInfoArray[infoIndex+1] = itemInfo[1]
+                        problemInfoArray[arrayIndex] = getVGrade(itemInfo[1])
+                        problemInfoArray[arrayIndex+1] = itemInfo[1]
                         print(problemInfoArray)
-                        infoIndex+=2
+                        arrayIndex+=2
+                        infoIndex += 2
                     elif infoIndex == 8:
-                        problemInfoArray[infoIndex] = itemInfo[2]
+                        problemInfoArray[arrayIndex] = itemInfo[2]
+                        arrayIndex+=1
                         infoIndex+=1
                         print(problemInfoArray)
                     elif infoIndex == 20:
-                        problemInfoArray[infoIndex] = itemInfo[2]
+                        problemInfoArray[arrayIndex] = itemInfo[2]
+                        arrayIndex+=1
                         infoIndex+=1
                         print(problemInfoArray)
-                    elif (infoIndex >= 22 and infoIndex <= 30) or (infoIndex == 32):
+                    elif (infoIndex >= 22 and infoIndex <= 30) or (infoIndex == 31):
                         #problemInfoArray[infoIndex] = itemInfo[2]
-                        #infoIndex+=1
+                        infoIndex+=1
+                        print(problemInfoArray)
+                    elif (infoIndex == 35):
+                        #problemInfoArray[infoIndex] = itemInfo[2]
+                        infoIndex+=1
                         print(problemInfoArray)
                     else:
-                        problemInfoArray[infoIndex] = str(itemInfo[1])
+                        problemInfoArray[arrayIndex] = str(itemInfo[1])
                         infoIndex+=1
+                        arrayIndex+=1
                         print(problemInfoArray)
                     print(infoIndex)
 
                     print(itemInfo)
+                    #infoIndex+=1
                     # print(itemInfo[1])
                 print(problemInfoArray)
                 print(infoIndex)

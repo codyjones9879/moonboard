@@ -989,13 +989,13 @@ class moonBoardButton(Button):
         ycoordinate = coordinates.split('-', 1)[0]
         #ycoordinateAdjusted = picIndexLookUp(int(ycoordinate))
         xcoordinate = coordinates.split('-', 1)[1].split('.', 1)[0]
-        print(coordinates)
-        print(xcoordinate)
-        print(ycoordinate)
+        #print(coordinates)
+        #print(xcoordinate)
+        #print(ycoordinate)
         imageStrTemp = imageStrTemp.split('.',1)[0]
         letterCoordinate = numberToLetter(xcoordinate)
         ycoordinateAdjusted = flipRow(ycoordinate)
-        print(letterCoordinate + ycoordinateAdjusted)
+        #print(letterCoordinate + ycoordinateAdjusted)
         if not ycoordinate == str(0) and not xcoordinate == str(0):
 
             self.index+=1
@@ -1005,22 +1005,22 @@ class moonBoardButton(Button):
                 self.background_normal = self.regularImage
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
                 strip.setPixelColorRGB(LEDNum, 0, 0, 0)
-                print(self.index)
+                #print(self.index)
             if self.index == 1:
                 self.background_normal = imageStrTemp + "-blue-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
                 strip.setPixelColorRGB(LEDNum, 0, 0, 255)
-                print(LEDNum)
+                #print(LEDNum)
             if self.index == 2:
                 self.background_normal = imageStrTemp + "-red-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
-                strip.setPixelColorRGB(LEDNum, 255, 0, 0)
+                strip.setPixelColorRGB(LEDNum, 0, 255, 0)
             if self.index == 3:
                 self.background_normal = imageStrTemp + "-green-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
-                strip.setPixelColorRGB(LEDNum, 0, 255, 0)
-            print(self.background_normal)
-
+                strip.setPixelColorRGB(LEDNum, 255, 0, 0)
+            #print(self.background_normal)
+	    strip.show()
 
 
     pass

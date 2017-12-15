@@ -1,6 +1,7 @@
 ## Synopsis
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+This is an all-in-one DIY software project to mimick the Moonboard LED system for rock climbing. From Loading all the Boulder Problems into a database
+along with soldering and installing the LEDs, This github project attempts to explain it all.
 
 ## Code Example
 
@@ -8,20 +9,29 @@ All that is required is to first upload routes to your own personal *local* data
 
 sudo python MoonboardLEDApp.py
 
+I have also commented out an apache remote server in case you want to offload the server to another system.
+
 ## Motivation
 
 I wanted to utilize an LED system that kept track of all Moonboard routes.  Since I could not bring myself to spend money on theirs, I created a cheap DIY way. The software I have written requires ALOT of extra libraries and some hardware but I should be able to showcase it here for replication purposes.
 
 ## Installation
+Starting from the beginning assuming you have a fresh install of Jessie for raspberry pi.
+
+Open up a terminal and checkout this git repository:
+    git clone https://github.com/codyjones9879/moonboard.git
+
 
 ### Requirements
 
 #### Hardware
 Raspberry pi 3 (any should work here)
+Raspberry pi 7" display. I purchased
 Adafruit NeoPixels
+A circuit to utilize the Neopixels and be controlled with Raspberry Pi
 
 #### Software - easier to follow the tutorial
-Python 3  AND Python 2.7.13
+Python 3  AND Python 2.7.13 (raspberry Jessie appears to have both python versions pre-loaded)
 MySQL
 rpi_ws281x (python 2 library for neopixel)
 kivy (Python GUI)
@@ -44,3 +54,138 @@ Let people know how they can dive into the project, include important links to t
 ## License
 
 A short snippet describing the license (MIT, Apache, etc.)
+
+
+# DIY Moonboard LED App
+
+This is an all-in-one DIY software project to mimick the Moonboard LED system for rock climbing. From Loading all the Boulder Problems into a database
+along with soldering and installing the LEDs, This github project attempts to explain it all.
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine.
+
+### Prerequisites
+
+Raspberry pi 3 (any should work here)
+Raspberry pi 7" display. I purchased [this](https://www.amazon.com/Raspberry-Pi-7-Touchscreen-Display/dp/B0153R2A9I/).
+Adafruit NeoPixels. I purchased [these](https://www.amazon.com/gp/product/B01AU6UG70/ref=oh_aui_detailpage_o09_s00?ie=UTF8&psc=1).
+A circuit to utilize the Neopixels and be controlled with Raspberry Pi. Tutorial Here.
+
+```
+Give examples
+```
+
+### Installing
+
+ASSUMED:  A Fresh OS install of JESSIE on the raspberry pi 3
+RECOMMENDED: Install and run software from CLI mode otherwise the app runs a bit slower
+
+1. Update install repo
+
+```
+pi@raspberrypi ~ $ sudo apt-get update && sudo apt-get -y upgrade
+pi@raspberrypi ~ $ sudo reboot
+```
+2. Install Dependencies
+```
+pi@raspberrypi ~ $ sudo apt-get -y install pkg-config libgl1-mesa-dev libgles2-mesa-dev \
+python-pygame python-setuptools libgstreamer1.0-dev git-core \
+gstreamer1.0-plugins-{bad,base,good,ugly} \
+gstreamer1.0-{omx,alsa} python-dev
+```
+3. Install pip
+```
+pi@raspberrypi ~ $ sudo python get-pip.py
+```
+4. Install supporting software that Kivy utilizes to run most apps (including this one) THIS WILL TAKE AWHILE
+```
+pi@raspberrypi ~ $ sudo pip install cython pygments docutils
+```
+5. Install Kivy (THIS WILL TAKE AWHILE)
+```
+pi@raspberrypi ~ $ git clone https://github.com/kivy/kivy
+pi@raspberrypi ~ $ cd kivy
+pi@raspberrypi ~/kivy $ python setup.py build
+pi@raspberrypi ~/kivy $ sudo python setup.py install
+```
+5. Utilize your touchscreen
+```
+pi@raspberrypi ~/kivy $ python ~/kivy/examples/demo/pictures/main.py
+```
+6. Exit out of this, CTL+C, then we will edit the config.ini file
+```
+pi@raspberrypi ~/kivy $ nano ~/.kivy/config.ini
+```
+7. Go to [Inputs] and replace entries with:
+```
+mouse = mouse
+mtdev_%(name)s = probesysfs,provider=mtdev
+hid_%(name)s = probesysfs,provider=hidinput
+```
+8. In order for touch to work with root (since python likes to run in root access for this app)
+```
+pi@raspberrypi ~ $ sudo cp ~/.kivy/config.ini /root/.kivy/config.ini
+```
+9.
+And repeat
+
+```
+until finished
+```
+
+End with an example of getting some data out of the system or using it for a little demo
+
+## Running the tests
+
+Explain how to run the automated tests for this system
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+### And coding style tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Built With
+
+* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+
+## Authors
+
+* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Hat tip to anyone who's code was used
+* Inspiration
+* etc

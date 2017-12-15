@@ -1004,21 +1004,21 @@ class moonBoardButton(Button):
             if self.index == 0:
                 self.background_normal = self.regularImage
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
-                # strip.setPixelColorRGB(LEDNum, 0, 0, 0)
+                strip.setPixelColorRGB(LEDNum, 0, 0, 0)
                 print(self.index)
             if self.index == 1:
                 self.background_normal = imageStrTemp + "-blue-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
-                # strip.setPixelColorRGB(LEDNum, 0, 0, 255)
+                strip.setPixelColorRGB(LEDNum, 0, 0, 255)
                 print(LEDNum)
             if self.index == 2:
                 self.background_normal = imageStrTemp + "-red-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
-                # strip.setPixelColorRGB(LEDNum, 255, 0, 0)
+                strip.setPixelColorRGB(LEDNum, 255, 0, 0)
             if self.index == 3:
                 self.background_normal = imageStrTemp + "-green-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
-                # strip.setPixelColorRGB(LEDNum, 0, 255, 0)
+                strip.setPixelColorRGB(LEDNum, 0, 255, 0)
             print(self.background_normal)
 
 

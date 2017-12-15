@@ -1,0 +1,1 @@
+(SELECT * FROM Moonboard ORDER BY DateAdded ASC LIMIT 10) ORDER BY Repeats DESC

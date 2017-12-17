@@ -566,7 +566,7 @@ class DbCon:
         self.c = self.db.cursor()
 
     def get_rows(self):
-        self.c.execute("SELECT * FROM moonboard ORDER BY DateAdded ASC LIMIT 100")
+        self.c.execute("SELECT * FROM moonboard ORDER BY DateAdded ASC LIMIT 10")
         return self.c.fetchall()
 
     def get_rows_filtered(self, v4plus, v5, v5plus, v6, v7, v8, v8plus, v9, v10, v11, v12, v13, v14, star3, star2, star1,
@@ -711,10 +711,10 @@ class DbCon:
         # print(execute)
         print(
         "(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT " + str(
-            pageIndex * 100) + ",100)" + addedCommandStr)
+            pageIndex * 10) + ",10)" + addedCommandStr)
         self.c.execute(
             "(SELECT * FROM moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT " + str(
-                pageIndex * 100) + ",100)" + addedCommandStr)
+                pageIndex * 10) + ",10)" + addedCommandStr)
         return self.c.fetchall()
 
     def get_rows_searched(self, search=""):
@@ -724,12 +724,12 @@ class DbCon:
         if filteredCommandStr == "":
             print(filteredCommandStr)
             self.c.execute(
-                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT " + str(pageIndex*100) + ",100" % search)
+                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT " + str(pageIndex*10) + ",10" % search)
 
         else:
             print(filteredCommandStr)
             self.c.execute(
-                "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 0,100" % search)
+                "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 0,10" % search)
         return self.c.fetchall()
 
 class SearchButton(Button):
@@ -1014,11 +1014,11 @@ class moonBoardButton(Button):
             if self.index == 2:
                 self.background_normal = imageStrTemp + "-red-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
-                strip.setPixelColorRGB(LEDNum, 255, 0, 0)
+                strip.setPixelColorRGB(LEDNum, 0, 255, 0)
             if self.index == 3:
                 self.background_normal = imageStrTemp + "-green-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
-                strip.setPixelColorRGB(LEDNum, 0, 255, 0)
+                strip.setPixelColorRGB(LEDNum, 255, 0, 0)
             #print(self.background_normal)
 	    strip.show()
 

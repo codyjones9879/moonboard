@@ -720,7 +720,7 @@ class DbCon:
     def get_rows_searched(self, search=""):
         # self.c.execute("SELECT * FROM Moonboard WHERE Author REGEXP '.*%s.*' LIMIT 30" % search)
         #print("SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search)
-        global filteredCommandStr
+        global filteredCommandStr, pageIndex
         if filteredCommandStr == "":
             print(filteredCommandStr)
             self.c.execute(

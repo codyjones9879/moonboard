@@ -575,7 +575,7 @@ class DbCon:
         filteredCommandStr = ""
         orderCommandStr = ""
         addedCommandStr = ""
-        print(popular)
+        #print(popular)
         if v4plus:
             if filteredCommandStr != "":
                 filteredCommandStr += " OR "
@@ -722,12 +722,12 @@ class DbCon:
         #print("SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search)
         global filteredCommandStr, pageIndex
         if filteredCommandStr == "":
-            print(filteredCommandStr)
+            #print(filteredCommandStr)
             self.c.execute(
-                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT " + str(pageIndex*10) + ",10" % search)
+                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 10" % search)
 
         else:
-            print(filteredCommandStr)
+            #print(filteredCommandStr)
             self.c.execute(
                 "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 0,10" % search)
         return self.c.fetchall()
@@ -974,15 +974,15 @@ class moonBoardButton(Button):
 
     def update(self):
         self.source = "images/moon-1-1-blue-square.png"
-        print("Call to Update")
+        #print("Call to Update")
         self.reload()
 
     def on_press(self):
         # self.coordLED = [None] * 198
         # self.colorLED = [0] * 198
 
-        print(self.index)
-        print(self.background_normal)
+        #print(self.index)
+        #print(self.background_normal)
 
         imageStrTemp = self.regularImage
         coordinates = imageStrTemp.split('-',1)[1]
@@ -1097,10 +1097,10 @@ class MoonboardAppLayout(GridLayout):
         for i in range(len(toggleText)):
 
             if toggleText[i] == "Popular":
-                print("FALSE CHECKBOX")
+                #print("FALSE CHECKBOX")
                 filterBox[i] = FilterBox(on_press=self.filter, active=False)
             elif toggleText[i] == "Newest":
-                print("FALSE CHECKBOX")
+                #print("FALSE CHECKBOX")
                 filterBox[i] = FilterBox(on_press=self.filter, active=True)
             else:
                 filterBox[i] = FilterBox(on_press=self.filter, active=True)
@@ -1164,8 +1164,8 @@ class MoonboardAppLayout(GridLayout):
 
     def pageIncrease(self, pageNum):  #TODO account for something like remaining 99 if there isn't an even search
         global Routes, pageIndex, filterBox
-        print(pageIndex)
-        print(len(Routes))
+        #print(pageIndex)
+        #print(len(Routes))
         filterBox[19] = False
         if (len(Routes) > 99):
             pageIndex+=1
@@ -1176,8 +1176,8 @@ class MoonboardAppLayout(GridLayout):
 
     def pageDecrease(self, pageNum):  #TODO account for something like remaining 99 if there isn't an even search
         global Routes, pageIndex, filterBox
-        print(pageIndex)
-        print(len(Routes))
+        #print(pageIndex)
+        #print(len(Routes))
 
         filterBox[19] = False
         if (pageIndex > 0):

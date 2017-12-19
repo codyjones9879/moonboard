@@ -679,7 +679,7 @@ class DbCon:
             filteredCommandStr += ")"
         if filteredCommandStr == " WHERE (":
             filteredCommandStr += "Stars = 4)"
-        print(filteredCommandStr)
+        #print(filteredCommandStr)
         if popular and newest:
             # print("popular: " + str(popular) + "NEWEST: " + str(newest) + " Random: " + str(random))
             orderCommandStr = " ORDER BY DateAdded ASC "
@@ -705,13 +705,13 @@ class DbCon:
         else:
             filterBox[19] = False
             addCommandStr = ""
-        print(orderCommandStr)
+        #print(orderCommandStr)
 
         # execute = "SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '')"  "REGEXP '.*%s.*'" + orderCommandStr + "LIMIT 0,100" % search
         # print(execute)
-        print(
-        "(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT " + str(
-            pageIndex * 10) + ",10)" + addedCommandStr)
+       # print(
+        #"(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT " + str(
+            #pageIndex * 10) + ",10)" + addedCommandStr)
         self.c.execute(
             "(SELECT * FROM moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT " + str(
                 pageIndex * 10) + ",10)" + addedCommandStr)
@@ -724,8 +724,7 @@ class DbCon:
         if filteredCommandStr == "":
             #print(filteredCommandStr)
             self.c.execute(
-                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 10" % search)
-
+                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT " % search + str(pageIndex*10) + ",10" )
         else:
             #print(filteredCommandStr)
             self.c.execute(
@@ -1092,8 +1091,13 @@ class MoonboardAppLayout(GridLayout):
         self.navigateGrid = GridLayout(rows=2, orientation="vertical", size_hint_y=None)
         self.filterGroup = GridLayout(cols=4)
 
+        self.add_widget(self.navigateGrid)
+        self.add_widget(self.customizeBox)
         self.moonboardProblemsScroll.add_widget(self.problemList)
         self.add_widget(self.moonboardProblemsScroll)
+        self.add_widget(self.searchGrid)
+
+
         for i in range(len(toggleText)):
 
             if toggleText[i] == "Popular":
@@ -1120,9 +1124,7 @@ class MoonboardAppLayout(GridLayout):
         self.navigateGrid.add_widget(self.search_field)
         self.navigateGrid.add_widget(self.navigation_field)
         self.customizeBox.add_widget(self.customize)
-        self.add_widget(self.searchGrid)
-        self.add_widget(self.navigateGrid)
-        self.add_widget(self.customizeBox)
+
 
         #self.add_widget(self.nextPage)
 
@@ -1248,6 +1250,7 @@ class MoonboardAppLayout(GridLayout):
         self.problemList.clear_widgets()
 
     def custom_screen(self, custom):
+        colorWipe(strip, Color(0, 0, 0))
         self.clear_widgets()
         self.cols = 1
         self.return_home.size_hint_y = None

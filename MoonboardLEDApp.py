@@ -25,7 +25,7 @@ import pymysql.cursors
 from kivy.core.window import Window
 
 reload(sys)
-sys.setdefaultencoding('cp1252')
+sys.setdefaultencoding('utf8')
 LabelBase.register(name="NotoSans",
                    fn_regular="NotoSans-hinted/NotoSansUI-Regular.ttf",
                    fn_bold="NotoSans-hinted/NotoSansUI-Bold.ttf",
@@ -722,13 +722,11 @@ class DbCon:
             pageNum = str(pageIndex * 100)
             print(pageNum)
             self.c.execute(
-<<<<<<< Updated upstream
-                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 100" % search)
+                #"SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 100" % search)
                 #"SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 100" % search
-=======
+
                 "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT " % search + str(pageIndex*100) + ",100" )
 
->>>>>>> Stashed changes
         else:
             print(filteredCommandStr)
             self.c.execute(
@@ -1107,8 +1105,13 @@ class MoonboardAppLayout(GridLayout):
         self.navigateGrid = GridLayout(rows=2, orientation="vertical", size_hint_y=None)
         self.filterGroup = GridLayout(cols=4)
 
+        self.add_widget(self.navigateGrid)
+        self.add_widget(self.customizeBox)
         self.moonboardProblemsScroll.add_widget(self.problemList)
         self.add_widget(self.moonboardProblemsScroll)
+        self.add_widget(self.searchGrid)
+
+
         for i in range(len(toggleText)):
 
             if toggleText[i] == "Popular":
@@ -1135,9 +1138,7 @@ class MoonboardAppLayout(GridLayout):
         self.navigateGrid.add_widget(self.search_field)
         self.navigateGrid.add_widget(self.navigation_field)
         self.customizeBox.add_widget(self.customize)
-        self.add_widget(self.searchGrid)
-        self.add_widget(self.navigateGrid)
-        self.add_widget(self.customizeBox)
+
 
         #self.add_widget(self.nextPage)
 
@@ -1241,6 +1242,7 @@ class MoonboardAppLayout(GridLayout):
         self.problemList.clear_widgets()
 
     def custom_screen(self, custom):
+        #colorWipe(strip, Color(0, 0, 0))
         self.clear_widgets()
         self.cols = 1
         self.return_home.size_hint_y = None
@@ -1263,6 +1265,7 @@ class MoonboardAppLayout(GridLayout):
 
     def home_screen(self, home):
         self.clear_widgets()
+
         self.__init__()
 
     # def change_button_image(self, random):
@@ -1272,6 +1275,8 @@ class MoonboardAppLayout(GridLayout):
 
 
     def search(self, *args):
+        global pageIndex
+        pageIndex = 0
         self.clear_table()
         self.update_table(self.search_input.text)
 

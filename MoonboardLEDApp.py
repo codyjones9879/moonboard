@@ -722,8 +722,13 @@ class DbCon:
             pageNum = str(pageIndex * 100)
             print(pageNum)
             self.c.execute(
+<<<<<<< Updated upstream
                 "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 100" % search)
                 #"SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 100" % search
+=======
+                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT " % search + str(pageIndex*100) + ",100" )
+
+>>>>>>> Stashed changes
         else:
             print(filteredCommandStr)
             self.c.execute(
@@ -989,21 +994,21 @@ class moonBoardButton(Button):
         # self.coordLED = [None] * 198
         # self.colorLED = [0] * 198
 
-        print(self.index)
-        print(self.background_normal)
+        #print(self.index)
+        #print(self.background_normal)
 
         imageStrTemp = self.regularImage
         coordinates = imageStrTemp.split('-',1)[1]
         ycoordinate = coordinates.split('-', 1)[0]
         #ycoordinateAdjusted = picIndexLookUp(int(ycoordinate))
         xcoordinate = coordinates.split('-', 1)[1].split('.', 1)[0]
-        print(coordinates)
-        print(xcoordinate)
-        print(ycoordinate)
+        #print(coordinates)
+        #print(xcoordinate)
+        #print(ycoordinate)
         imageStrTemp = imageStrTemp.split('.',1)[0]
         letterCoordinate = numberToLetter(xcoordinate)
         ycoordinateAdjusted = flipRow(ycoordinate)
-        print(letterCoordinate + ycoordinateAdjusted)
+        #print(letterCoordinate + ycoordinateAdjusted)
         if not ycoordinate == str(0) and not xcoordinate == str(0):
 
             self.index+=1
@@ -1027,7 +1032,7 @@ class moonBoardButton(Button):
                 self.background_normal = imageStrTemp + "-green-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
                 # strip.setPixelColorRGB(LEDNum, 0, 255, 0)
-            print(self.background_normal)
+            #print(self.background_normal)
 
 
 

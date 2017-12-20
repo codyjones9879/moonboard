@@ -724,6 +724,7 @@ class DbCon:
         if filteredCommandStr == "":
             #print(filteredCommandStr)
             pageNum = str(pageIndex * 10)
+            print(pageNum)
             self.c.execute(
                 "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT " % search + str(pageIndex*10) + ",10" )
         else:
@@ -1172,7 +1173,7 @@ class MoonboardAppLayout(GridLayout):
         #print(pageIndex)
         #print(len(Routes))
         filterBox[19] = False
-        if (len(Routes) > 99):
+        if (len(Routes) > 9):
             pageIndex+=1
         else:
             pageIndex+=0

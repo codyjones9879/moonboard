@@ -25,7 +25,7 @@ import pymysql.cursors
 from kivy.core.window import Window
 
 reload(sys)
-sys.setdefaultencoding('utf8')
+sys.setdefaultencoding('cp1252')
 LabelBase.register(name="NotoSans",
                    fn_regular="NotoSans-hinted/NotoSansUI-Regular.ttf",
                    fn_bold="NotoSans-hinted/NotoSansUI-Bold.ttf",

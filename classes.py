@@ -566,7 +566,7 @@ class DbCon:
         self.c = self.db.cursor()
 
     def get_rows(self):
-        self.c.execute("SELECT * FROM moonboard ORDER BY DateAdded ASC LIMIT 10")
+        self.c.execute("(SELECT * FROM moonboard ORDER BY DateAdded ASC LIMIT 10)")
         return self.c.fetchall()
 
     def get_rows_filtered(self, v4plus, v5, v5plus, v6, v7, v8, v8plus, v9, v10, v11, v12, v13, v14, star3, star2, star1,
@@ -712,9 +712,9 @@ class DbCon:
        # print(
         #"(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT " + str(
             #pageIndex * 10) + ",10)" + addedCommandStr)
-        self.c.execute(
-            "(SELECT * FROM moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT " + str(
-                pageIndex * 10) + ",10)" + addedCommandStr)
+            self.c.execute(
+                "(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT " + str(
+                    pageIndex * 10) + ",10)" + addedCommandStr)
         return self.c.fetchall()
 
     def get_rows_searched(self, search=""):
@@ -723,6 +723,7 @@ class DbCon:
         global filteredCommandStr, pageIndex
         if filteredCommandStr == "":
             #print(filteredCommandStr)
+            pageNum = str(pageIndex * 10)
             self.c.execute(
                 "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT " % search + str(pageIndex*10) + ",10" )
         else:
@@ -1026,6 +1027,8 @@ class moonBoardButton(Button):
 
 
 class MoonboardAppLayout(GridLayout):
+
+
     def __init__(self, **kwargs):
         super(MoonboardAppLayout, self).__init__(**kwargs)
         # self.moonImagesArray = [None] * 228
@@ -1133,25 +1136,25 @@ class MoonboardAppLayout(GridLayout):
         # self.moonImagesArray[14].source = "images/moon-1-1-blue-square.png"
         # self.moonImagesArray.reload()
 
-    def filter_table(self, search=""):
-        global Routes, filterBox
-        Routes = self.db.get_rows_filtered(filterBox[0].active, filterBox[1].active, filterBox[2].active, filterBox[3].active, filterBox[4].active, filterBox[5].active, filterBox[6].active, filterBox[7].active, filterBox[8].active, filterBox[9].active, filterBox[10].active, filterBox[11].active, filterBox[12].active, filterBox[13].active, filterBox[14].active, filterBox[15].active, filterBox[16].active, filterBox[17].active, search)
-        for index in range(len(Routes)):
-            #print(Routes[index])
-            #print(len(Routes[index]))
-            problemButton[index] = Problem(
-                text=str(Routes[index][0] + '\n' + "Set By: " + Routes[index][1]) + '\n' + "Grade: " + Routes[index][2] + '/' +
-                     Routes[index][3] + " Stars: " + str(Routes[index][4]) + '\n' + "Moves: " + str(Routes[index][5]) + '     ' + "Repeats: " + str(Routes[index][6]),
-                size_hint_y=None)
-            problemButton[index].route = Routes[index][7:211]
-            problemButton[index].routeName = str(Routes[index][0])
-            problemButton[index].setterName = str(Routes[index][1])
-            problemButton[index].gradeUK = str(Routes[index][2])
-            problemButton[index].gradeUS = str(Routes[index][3])
-            problemButton[index].stars = Routes[index][4]
-            problemButton[index].moves = Routes[index][5]
-            problemButton[index].repeats = Routes[index][6]
-            self.problemList.add_widget(problemButton[index])
+    # def filter_table(self, search=""):
+    #     global Routes, filterBox
+    #     Routes = self.db.get_rows_filtered(filterBox[0].active, filterBox[1].active, filterBox[2].active, filterBox[3].active, filterBox[4].active, filterBox[5].active, filterBox[6].active, filterBox[7].active, filterBox[8].active, filterBox[9].active, filterBox[10].active, filterBox[11].active, filterBox[12].active, filterBox[13].active, filterBox[14].active, filterBox[15].active, filterBox[16].active, filterBox[17].active, search)
+    #     for index in range(len(Routes)):
+    #         #print(Routes[index])
+    #         #print(len(Routes[index]))
+    #         problemButton[index] = Problem(
+    #             text=str(Routes[index][0] + '\n' + "Set By: " + Routes[index][1]) + '\n' + "Grade: " + Routes[index][2] + '/' +
+    #                  Routes[index][3] + " Stars: " + str(Routes[index][4]) + '\n' + "Moves: " + str(Routes[index][5]) + '     ' + "Repeats: " + str(Routes[index][6]),
+    #             size_hint_y=None)
+    #         problemButton[index].route = Routes[index][7:211]
+    #         problemButton[index].routeName = str(Routes[index][0])
+    #         problemButton[index].setterName = str(Routes[index][1])
+    #         problemButton[index].gradeUK = str(Routes[index][2])
+    #         problemButton[index].gradeUS = str(Routes[index][3])
+    #         problemButton[index].stars = Routes[index][4]
+    #         problemButton[index].moves = Routes[index][5]
+    #         problemButton[index].repeats = Routes[index][6]
+    #         self.problemList.add_widget(problemButton[index])
 
 
     def randomPressed(self, random):

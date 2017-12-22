@@ -28,6 +28,7 @@ logger.addHandler(ch)
 ###################################
 # GLOBALS
 problemsArray = []
+problemsArrayEdited = []
 link = ""
 problemInfo = [0] * 205
 
@@ -159,6 +160,7 @@ def getVGrade(fontGrade):
 
 def loadMainPage():
     problemInfoArray = [0] * 144
+    problemInfoArrayFixed = [0] * 144
     db = connectDB()
     query = getQuery()
     args = getArgs(None)
@@ -175,74 +177,84 @@ def loadMainPage():
         problemNumber+=1
         # print(str(links))
         # string = zip(*links)
-        print(links[0])
+        #print(links[0])
         pageProblem = requests.get("http://www.moonboard.com" + links[0])
             #pageProblem = requests.get("http://www.moonboard.com/problems/View/" + problemNum + "/" + link)
         logger.info('pageContent = %s' % pageProblem.content)
         soup = BeautifulSoup(pageProblem.content, 'html.parser')
         logger.debug(soup.prettify(encoding='utf-8'))
         problemDetail = soup.find_all("script", type="text/javascript")
+        #print(problemDetail)
         for ids in problemDetail:
             string = ids.getText()
             if ("var problem = ") in ids.getText():
                 problemInfo = string.strip().split('\n', 1)[0]
+                #print(problemInfo)
                 detailsArray = problemInfo.split(',')
+                #print(detailsArray)
                 infoIndex = 0
                 arrayIndex = 0
                 for item in detailsArray:
+                    #print(item)
                     if ("var problem = ") in item:
                         item = item[27:]
                     itemInfo = item.split(':')
+                    itemInfo[0] = itemInfo[0].replace("[", "")
+                    itemInfo[0] = itemInfo[0].replace("]", "")
                     itemInfo[0] = itemInfo[0].replace("\"", "")
                     itemInfo[0] = itemInfo[0].replace("{", "")
                     itemInfo[0] = itemInfo[0].replace("}", "")
                     itemInfo[1] = itemInfo[1].replace("\"", "")
                     itemInfo[1] = itemInfo[1].replace("{", "")
                     itemInfo[1] = itemInfo[1].replace("}", "")
-
+                    itemInfo[1] = itemInfo[1].replace("[", "")
+                    itemInfo[1] = itemInfo[1].replace("]", "")
                     if infoIndex == 2:
                         problemInfoArray[arrayIndex] = getVGrade(itemInfo[1])
                         problemInfoArray[arrayIndex+1] = itemInfo[1]
-                        print(problemInfoArray)
+                        #print(problemInfoArray)
                         arrayIndex += 2
                         infoIndex+=2
 
                     elif infoIndex == 4:
                         problemInfoArray[arrayIndex] = getVGrade(itemInfo[1])
                         problemInfoArray[arrayIndex+1] = itemInfo[1]
-                        print(problemInfoArray)
+                        #print(problemInfoArray)
                         arrayIndex+=2
                         infoIndex += 2
                     elif infoIndex == 8:
                         problemInfoArray[arrayIndex] = itemInfo[2]
                         arrayIndex+=1
                         infoIndex+=1
-                        print(problemInfoArray)
+                        #print(problemInfoArray)
                     elif infoIndex == 20:
                         problemInfoArray[arrayIndex] = itemInfo[2]
                         arrayIndex+=1
                         infoIndex+=1
-                        print(problemInfoArray)
+                        #print(problemInfoArray)
                     elif (infoIndex >= 22 and infoIndex <= 30) or (infoIndex == 31):
                         #problemInfoArray[infoIndex] = itemInfo[2]
                         infoIndex+=1
-                        print(problemInfoArray)
+                        #print(problemInfoArray)
                     elif (infoIndex == 35):
                         #problemInfoArray[infoIndex] = itemInfo[2]
                         infoIndex+=1
-                        print(problemInfoArray)
+                        #print(problemInfoArray)
                     else:
                         problemInfoArray[arrayIndex] = str(itemInfo[1])
                         infoIndex+=1
                         arrayIndex+=1
-                        print(problemInfoArray)
-                    print(infoIndex)
+                        #print(problemInfoArray)
+                    #print(infoIndex)
 
-                    print(itemInfo)
+                    #print(itemInfo)
                     #infoIndex+=1
                     # print(itemInfo[1])
-                print(problemInfoArray)
-                print(infoIndex)
+                #print(problemInfoArray)
+                #print(infoIndex)
+
+
+
         args = getargsproblem(problemInfoArray)
         query = getqueryproblem()
         submitDBproblem(db, query, args)

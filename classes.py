@@ -68,7 +68,7 @@ LED_ROUTE_IMAGES = [None] * 228
 
 
 # Window.fullscreen = 'auto'
-LED_COUNT = 196
+LED_COUNT = 198
 LED_PIN = 18
 LED_FREQ_HZ = 800000
 LED_DMA = 5
@@ -786,11 +786,11 @@ class Problem(Button):
                 # start Holds
                 if self.coordLED[index] != None:
                     self.colorLED[self.coordLED[index]] = 1
-                    strip.setPixelColorRGB(self.coordLED[index], 0, 0, 255)
+                    strip.setPixelColorRGB(self.coordLED[index], 255, 0, 0)
             elif index > 3 and index < 196:
                 if self.coordLED[index] != None:
                     self.colorLED[self.coordLED[index]] = 2
-                    strip.setPixelColorRGB(self.coordLED[index], 255, 0, 0)
+                    strip.setPixelColorRGB(self.coordLED[index], 0, 0, 255)
                     # else:
                     # 	#colorLED[coordLED[index]] = 0
             else:
@@ -901,16 +901,16 @@ class Problem(Button):
                         #print("i=&s", i)
                         #print("j=&s", j)
                         #print("BLUE")
-                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-blue-square.png")
+                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-green-square.png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
                     elif self.colorLED[picIndexLookUp(self.TEMP)] == 2:
-                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-red-square.png")
+                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-blue-square.png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
                         #print("RED")
                     elif self.colorLED[picIndexLookUp(self.TEMP)] == 3:
-                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-green-square.png")
+                        imageStr = str("images/moon-" + str(i) + "-" + str(j) + "-red-square.png")
                         LED_ROUTE_IMAGES[self.tmp].source = imageStr
                         LED_ROUTE_IMAGES[self.tmp].reload()
                         #print("GREEN")

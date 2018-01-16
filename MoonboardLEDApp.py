@@ -25,7 +25,7 @@ import pymysql.cursors
 from kivy.core.window import Window
 
 reload(sys)
-sys.setdefaultencoding('cp1252')
+sys.setdefaultencoding('utf-8')
 LabelBase.register(name="NotoSans",
                    fn_regular="NotoSans-hinted/NotoSansUI-Regular.ttf",
                    fn_bold="NotoSans-hinted/NotoSansUI-Bold.ttf",
@@ -709,8 +709,8 @@ class DbCon:
 
         #execute = "SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '')"  "REGEXP '.*%s.*'" + orderCommandStr + "LIMIT 0,100" % search
         #print(execute)
-        print("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT "  + str(pageIndex*100) + ",100)" + addedCommandStr)
-        self.c.execute("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT " + str(pageIndex*100) + ",100)" + addedCommandStr)
+        print("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT "  + str(pageIndex*100) + ",100)" + addedCommandStr)
+        self.c.execute("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT " + str(pageIndex*100) + ",100)" + addedCommandStr)
         return self.c.fetchall()
 
     def get_rows_searched(self, search=""):
@@ -725,12 +725,12 @@ class DbCon:
                 #"SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 100" % search)
                 #"SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 100" % search
 
-                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT " % search + str(pageIndex*100) + ",100" )
+                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s' ORDER BY DateAdded ASC LIMIT " % search + str(pageIndex*100) + ",100" )
 
         else:
             print(filteredCommandStr)
             self.c.execute(
-                "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 0,100" % search)
+                "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s' ORDER BY DateAdded ASC LIMIT 0,100" % search)
         return self.c.fetchall()
 
 
@@ -1010,7 +1010,7 @@ class moonBoardButton(Button):
         if not ycoordinate == str(0) and not xcoordinate == str(0):
 
             self.index+=1
-            if self.index == 4:
+            if self.index == 6:
                 self.index = 0
             if self.index == 0:
                 self.background_normal = self.regularImage
@@ -1030,6 +1030,14 @@ class moonBoardButton(Button):
                 self.background_normal = imageStrTemp + "-green-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
                 # strip.setPixelColorRGB(LEDNum, 0, 255, 0)
+            if self.index == 4:
+                self.background_normal = imageStrTemp + "-yellow-square.png"
+                LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
+                #strip.setPixelColorRGB(LEDNum, 255, 255, 0)
+            if self.index == 5:
+                self.background_normal = imageStrTemp + "-white-square.png"
+                LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
+                #strip.setPixelColorRGB(LEDNum, 255, 255, 255)
             #print(self.background_normal)
 
 
@@ -1219,13 +1227,14 @@ class MoonboardAppLayout(GridLayout):
 
     def update_table(self, search=""):
         global Routes
+        print(search)
         Routes = self.db.get_rows_searched(search)
         #print(Routes)
         for index in range(len(Routes)):
-            #print(Routes[index])
+            print(Routes[index][0])
             #print(len(Routes[index]))
             problemButton[index] = Problem(
-                text=str(Routes[index][0] + '\n' + "Set By: " + Routes[index][1]) + '\n' + "Grade: " + Routes[index][2] + '/' +
+                text=str(Routes[index][0].decode('utf-8') + '\n' + "Set By: " + Routes[index][1]) + '\n' + "Grade: " + Routes[index][2] + '/' +
                      Routes[index][3] + " Stars: " + str(Routes[index][4]) + '\n' + "Moves: " + str(Routes[index][5]) + '     ' + "Repeats: " + str(Routes[index][6]),
                 size_hint_y=None)
             problemButton[index].route = Routes[index][7:211]
@@ -1278,11 +1287,45 @@ class MoonboardAppLayout(GridLayout):
         global pageIndex
         pageIndex = 0
         self.clear_table()
-        self.update_table(self.search_input.text)
+        if "\'" in self.search_input.text:
+            temp = self.search_input.text
+            temp = temp.replace("'","+[^.apostrophe.]+")
+            print(temp)
+            try:
+                self.update_table(temp)
+            except:
+                pass
+        elif "\\" in self.search_input.text:
+                temp = self.search_input.text
+                temp = temp.replace("\\", "+[^.solidus.]+")
+                print(temp)
+                try:
+                    self.update_table(temp)
+                except:
+                    pass
+        else:
+            self.update_table(self.search_input.text)
 
     def filter(self, *args):
         self.clear_table()
-        self.filter_table(self.search_input.text)
+        if "\'" in self.search_input.text:
+            temp = self.search_input.text
+            temp = temp.replace("'","+[^.apostrophe.]+")
+            print(temp)
+            try:
+                self.filter_table(temp)
+            except:
+                pass
+        elif "\\" in self.search_input.text:
+                temp = self.search_input.text
+                temp = temp.replace("\\", "+[[.solidus.]]+")
+                print(temp)
+                try:
+                    self.update_table(temp)
+                except:
+                    pass
+        else:
+            self.filter_table(self.search_input.text)
 
 
 class DatabaseApp(App):

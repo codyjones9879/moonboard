@@ -709,8 +709,8 @@ class DbCon:
 
         #execute = "SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '')"  "REGEXP '.*%s.*'" + orderCommandStr + "LIMIT 0,100" % search
         #print(execute)
-        print("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT "  + str(pageIndex*100) + ",100)" + addedCommandStr)
-        self.c.execute("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT " + str(pageIndex*100) + ",100)" + addedCommandStr)
+        print("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT "  + str(pageIndex*10) + ",10)" + addedCommandStr)
+        self.c.execute("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT " + str(pageIndex*10) + ",10)" + addedCommandStr)
         return self.c.fetchall()
 
     def get_rows_searched(self, search=""):
@@ -719,18 +719,20 @@ class DbCon:
         global filteredCommandStr, pageIndex
         if filteredCommandStr == "":
             print(filteredCommandStr)
-            pageNum = str(pageIndex * 100)
+            pageNum = str(pageIndex * 10)
             print(pageNum)
+            print("SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s' ORDER BY DateAdded ASC LIMIT " % search + str(pageIndex*10) + ",10" )
             self.c.execute(
                 #"SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 100" % search)
                 #"SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 100" % search
 
-                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s' ORDER BY DateAdded ASC LIMIT " % search + str(pageIndex*100) + ",100" )
+                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s' ORDER BY DateAdded ASC LIMIT " % search + str(pageIndex*10) + ",10" )
 
         else:
-            print(filteredCommandStr)
+            print("Filtered Command:"+filteredCommandStr)
+            print(                "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s' ORDER BY DateAdded ASC LIMIT 0,10" % search)
             self.c.execute(
-                "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s' ORDER BY DateAdded ASC LIMIT 0,100" % search)
+                "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s' ORDER BY DateAdded ASC LIMIT 0,10" % search)
         return self.c.fetchall()
 
 
@@ -1167,9 +1169,9 @@ class MoonboardAppLayout(GridLayout):
     def pageIncrease(self, pageNum):  #TODO account for something like remaining 99 if there isn't an even search
         global Routes, pageIndex, filterBox
         print(pageIndex)
-        print(len(Routes))
+        #print(len(Routes))
         filterBox[19] = False
-        if (len(Routes) > 99):
+        if (len(Routes) > 9):
             pageIndex+=1
         else:
             pageIndex+=0
@@ -1179,7 +1181,7 @@ class MoonboardAppLayout(GridLayout):
     def pageDecrease(self, pageNum):  #TODO account for something like remaining 99 if there isn't an even search
         global Routes, pageIndex, filterBox
         print(pageIndex)
-        print(len(Routes))
+        #print(len(Routes))
 
         filterBox[19] = False
         if (pageIndex > 0):
@@ -1303,8 +1305,19 @@ class MoonboardAppLayout(GridLayout):
                     self.update_table(temp)
                 except:
                     pass
+        elif self.search_input.text == '':
+            temp = self.search_input.text
+            temp = temp.replace("",".*.*")
+            print(temp)
+            try:
+                self.filter_table(temp)
+            except:
+                pass
         else:
-            self.update_table(self.search_input.text)
+            try:
+                self.update_table(self.search_input.text)
+            except:
+                pass
 
     def filter(self, *args):
         self.clear_table()
@@ -1321,11 +1334,22 @@ class MoonboardAppLayout(GridLayout):
                 temp = temp.replace("\\", "+[[.solidus.]]+")
                 print(temp)
                 try:
-                    self.update_table(temp)
+                    self.filter_table(temp)
                 except:
                     pass
+        elif self.search_input.text == '':
+            temp = self.search_input.text
+            temp = temp.replace("",".*.*")
+            print(temp)
+            try:
+                self.filter_table(temp)
+            except:
+                pass
         else:
-            self.filter_table(self.search_input.text)
+            try:
+                self.filter_table(self.search_input.text)
+            except:
+                pass
 
 
 class DatabaseApp(App):

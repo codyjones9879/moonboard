@@ -25,7 +25,7 @@ from kivy.core.window import Window
 
 
 reload(sys)
-sys.setdefaultencoding('utf-8')
+sys.setdefaultencoding('cp1252')
 LabelBase.register(name="NotoSans",
                    fn_regular="NotoSans-hinted/NotoSansUI-Regular.ttf",
                    fn_bold="NotoSans-hinted/NotoSansUI-Bold.ttf",
@@ -713,7 +713,7 @@ class DbCon:
         #"(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT " + str(
             #pageIndex * 10) + ",10)" + addedCommandStr)
             self.c.execute(
-                "(SELECT * FROM moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT " + str(
+                "(SELECT * FROM moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*'" % search + "" + orderCommandStr + "LIMIT " + str(
                     pageIndex * 10) + ",10)" + addedCommandStr)
         return self.c.fetchall()
 
@@ -726,11 +726,11 @@ class DbCon:
             pageNum = str(pageIndex * 10)
             print(pageNum)
             self.c.execute(
-                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s' ORDER BY DateAdded ASC LIMIT " % search + str(pageIndex*10) + ",10" )
+                "SELECT * from moonboard WHERE (GradeUS = 'V4+'  OR GradeUS = 'V5' OR GradeUS = 'V5+' OR GradeUS = 'V6' OR GradeUS = 'V7' OR GradeUS = 'V8' OR GradeUS = 'V8+' OR GradeUS = 'V9' OR GradeUS = 'V10' OR GradeUS = 'V11' OR GradeUS = 'V12' OR GradeUS = 'V13' OR GradeUS = 'V14') AND (Stars = 0 OR Stars = 1 OR Stars = 2 OR Stars = 3) AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT " % search + str(pageIndex*10) + ",10" )
         else:
             #print(filteredCommandStr)
             self.c.execute(
-                "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s' ORDER BY DateAdded ASC LIMIT 0,10" % search)
+                "SELECT * from moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '.*%s.*' ORDER BY DateAdded ASC LIMIT 0,10" % search)
         return self.c.fetchall()
 
 class SearchButton(Button):
@@ -1294,48 +1294,12 @@ class MoonboardAppLayout(GridLayout):
 
 
     def search(self, *args):
-        global pageIndex
-        pageIndex = 0
         self.clear_table()
-        if "\'" in self.search_input.text:
-            temp = self.search_input.text
-            temp = temp.replace("'","+[^.apostrophe.]+")
-            print(temp)
-            try:
-                self.update_table(temp)
-            except:
-                pass
-        elif "\\" in self.search_input.text:
-                temp = self.search_input.text
-                temp = temp.replace("\\", "+[^.solidus.]+")
-                print(temp)
-                try:
-                    self.update_table(temp)
-                except:
-                    pass
-        else:
-            self.update_table(self.search_input.text)
+        self.update_table(self.search_input.text)
 
     def filter(self, *args):
         self.clear_table()
-        if "\'" in self.search_input.text:
-            temp = self.search_input.text
-            temp = temp.replace("'","+[^.apostrophe.]+")
-            print(temp)
-            try:
-                self.filter_table(temp)
-            except:
-                pass
-        elif "\\" in self.search_input.text:
-                temp = self.search_input.text
-                temp = temp.replace("\\", "+[[.solidus.]]+")
-                print(temp)
-                try:
-                    self.update_table(temp)
-                except:
-                    pass
-        else:
-            self.filter_table(self.search_input.text)
+        self.filter_table(self.search_input.text)
 
 
 class DatabaseApp(App):

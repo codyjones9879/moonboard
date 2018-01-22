@@ -563,7 +563,7 @@ class DbCon:
         self.c = self.db.cursor()
 
     def get_rows(self):
-        self.c.execute("(SELECT * FROM Moonboard ORDER BY DateAdded ASC LIMIT 0,10)")
+        self.c.execute("(SELECT * FROM moonboard ORDER BY DateAdded ASC LIMIT 0,10)")
         return self.c.fetchall()
 
     def get_rows_filtered(self, v4plus, v5, v5plus, v6, v7, v8, v8plus, v9, v10, v11, v12, v13, v14, star3, star2, star1,

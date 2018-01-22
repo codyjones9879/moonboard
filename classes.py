@@ -1223,7 +1223,7 @@ class MoonboardAppLayout(GridLayout):
         #print(Routes)
         for index in range(len(Routes)):
             problemButton[index] = Problem(
-                text=str(Routes[index][0].decode('utf-8') + '\n' + "Set By: " + Routes[index][1]) + '\n' + "Grade: " + Routes[index][2] + '/' +
+                text=str(Routes[index][0].decode('cp1252').encode('utf-8') + '\n' + "Set By: " + Routes[index][1]) + '\n' + "Grade: " + Routes[index][2] + '/' +
                      Routes[index][3] + " Stars: " + str(Routes[index][4]) + '\n' + "Moves: " + str(Routes[index][5]) + '     ' + "Repeats: " + str(Routes[index][6]),
                 size_hint_y=None)
             problemButton[index].route = Routes[index][7:211]
@@ -1310,7 +1310,7 @@ class MoonboardAppLayout(GridLayout):
         if "\'" in self.search_input.text:
             temp = self.search_input.text
             temp = temp.replace("'","+[^.apostrophe.]+")
-            #print(temp)
+            print(temp)
             try:
                 self.filter_table(temp)
             except:

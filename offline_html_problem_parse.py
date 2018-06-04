@@ -737,6 +737,7 @@ def submitDBproblem(db, query, args):
 
 def getVGrade(fontGrade):
     switcher = {
+        "5+": "V2",
         "6a": "V3",
         "6a+": "V3+",
         "6B": "V4",
@@ -1011,6 +1012,8 @@ def loadMainPage():
                     #detailsArray = problemInfo.split(r',(?=")')
                     problemInfo = problemInfo.replace('},{','\",\"')
                     detailsArray = re.split(',(?=")', problemInfo)
+                    if detailsArray[2] == u'"':
+                        detailsArray.pop(2)
                     infoIndex = 0
                     arrayIndex = 0
                     endHoldsIndex = 200

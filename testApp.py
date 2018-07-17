@@ -782,7 +782,7 @@ class SearchButton(Button):
 
 
 class Problem(Button):
-    route = [None] * 205
+    route = [None] * 34
     global LED_ROUTE_IMAGES
     routeName = ""
     setterName = ""
@@ -795,20 +795,21 @@ class Problem(Button):
 
     def on_press(self):
         #colorWipe(strip, Color(0, 0, 0))
-        self.coordLED = [None] * 198
+        self.coordLED = [None] * 34
         '''
             # Example Array setup:   [SH1, SH2, SH3, SH4,IH1,.....IH196,FH1,FH2]   SH1-4  is a combination of 2 hands and 2 feet, Intermediate max is with only 1 hand hold to start and 1 finish 
             # hold max making a remaining 196 Intermediate holds potentially if the wall is filled We need designated locations for these combinations
             '''
         self.colorLED = [0] * 198
         # start holds
-        self.coordLED[0] = moonToLED(self.route[0])
-        self.coordLED[1] = moonToLED(self.route[1])
+        print(self.route)
+        self.coordLED[0] = moonToLED(self.route[1])
+        self.coordLED[1] = moonToLED(self.route[3])
         self.coordLED[2] = None  # only because of moonboard only having 2 start holds
         self.coordLED[3] = None  # only because of moonboard only having 2 start holds
         # finish Holds
-        self.coordLED[196] = moonToLED(self.route[202])
-        self.coordLED[197] = moonToLED(self.route[203])
+        self.coordLED[31] = moonToLED(self.route[31])
+        self.coordLED[33] = moonToLED(self.route[33])
 
         temp = 2  # starting index in route that intermediate holds belong to
         temp2 = 4
@@ -1110,7 +1111,8 @@ class MoonboardAppLayout(GridLayout):
             problemButton[i] = Problem(
                 text=(Routes[i][1] + '\n' + "Set By: " + Routes[i][10].encode('utf-8')) + '\n' + "Grade: " + Routes[i][2] + " UserRating: " + str(Routes[i][19]) + '\n' + '     ' + "Repeats: " + str(Routes[i][20]),
                 size_hint_y=None)
-            #problemButton[i].route = Routes[i][7:211]
+            #print(Routes[i][34:68])
+            problemButton[i].route = Routes[i][34:68]
             problemButton[i].routeName = Routes[i][1]
             problemButton[i].setterName = str(Routes[i][10])
             #problemButton[i].gradeUK = str(Routes[i][2])

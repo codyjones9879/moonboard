@@ -811,13 +811,13 @@ class Problem(Button):
         self.coordLED[31] = moonToLED(self.route[31])
         self.coordLED[33] = moonToLED(self.route[33])
 
-        temp = 2  # starting index in route that intermediate holds belong to
+        temp = 5  # starting index in route that intermediate holds belong to
         temp2 = 4
-        while self.route[temp] != '0':
+        while self.route[temp] != None:
             self.coordLED[temp2] = moonToLED(self.route[temp])
             #print(self.coordLED[temp2])
             temp2 += 1
-            temp += 1
+            temp += 2
         '''
         	# Color Choice:
         	# 0. Off
@@ -832,7 +832,7 @@ class Problem(Button):
                 if self.coordLED[index] != None:
                     self.colorLED[self.coordLED[index]] = 1
                     #strip.setPixelColorRGB(self.coordLED[index], 255, 0, 0)
-            elif index > 3 and index < 196:
+            elif index > 3 and index < 31:
                 if self.coordLED[index] != None:
                     self.colorLED[self.coordLED[index]] = 2
                     #strip.setPixelColorRGB(self.coordLED[index], 0, 0, 255)
@@ -1254,7 +1254,7 @@ class MoonboardAppLayout(GridLayout):
                 text=(Routes[index][1] + '\n' + "Set By: " + Routes[index][10].encode('utf-8')) + '\n' + "Grade: " + Routes[index][
                     2] + " UserRating: " + str(Routes[index][19]) + '\n' + '     ' + "Repeats: " + str(Routes[index][20]),
                 size_hint_y=None)
-            # problemButton[i].route = Routes[i][7:211]
+            problemButton[index].route = Routes[index][34:68]
             problemButton[index].routeName = Routes[index][1]
             problemButton[index].setterName = str(Routes[index][10])
             # problemButton[i].gradeUK = str(Routes[i][2])

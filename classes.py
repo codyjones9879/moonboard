@@ -30,7 +30,7 @@ LabelBase.register(name="NotoSans",
                    fn_bold="NotoSans-hinted/NotoSansUI-Bold.ttf",
                    fn_italic="NotoSans-hinted/NotoSansUI-Italic.ttf",
                    fn_bolditalic="NotoSans-hinted/NotoSansUI-BoldItalic.ttf")
-
+Config.set('graphics', 'default_font', '[‘Roboto’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’]')
 '''
 Coordinate Key: This is for color value
 

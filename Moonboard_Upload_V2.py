@@ -67,7 +67,7 @@ def submitDB(db, query, args):
 
 db = connectDB()
 
-driver = webdriver.Chrome('D:\Python27\selenium\webdriver\chromedriver.exe')
+driver = webdriver.Chrome('C:\Python27\selenium\websdriver\chromedriver.exe')
 # load the page
 driver.get("https://moonboard.com/Account/Login")
 

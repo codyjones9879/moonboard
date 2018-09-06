@@ -610,7 +610,7 @@ class DbCon:
         return self.c.fetchall()
 
     def get_rows_filtered(self, v4plus, v5, v5plus, v6, v7, v8, v8plus, v9, v10, v11, v12, v13, v14, star3, star2, star1,
-                          star0, popular, newest, random, search):
+                          star0, popular, newest, benchmark, random, search):
         global filteredCommandStr, orderCommandStr, addedCommandStr, filterBox, pageIndex
         filteredCommandStr = ""
         orderCommandStr = ""
@@ -717,9 +717,12 @@ class DbCon:
             filteredCommandStr += "UserRating = 3"
         if star0 or star1 or star2 or star3:
             filteredCommandStr += ")"
+        if benchmark:
+            filteredCommandStr += " AND (isBenchmark = 1)"
         # if filteredCommandStr == " WHERE (":
         #     filteredCommandStr += "UserRating = 4)"
         #print(filteredCommandStr)
+
         if popular and newest:
             # print("popular: " + str(popular) + "NEWEST: " + str(newest) + " Random: " + str(random))
             orderCommandStr = " ORDER BY DateInserted ASC "
@@ -743,14 +746,14 @@ class DbCon:
             # print("popular: " + str(popular) + "NEWEST: " + str(newest) + " Random: " + str(random))
             addedCommandStr = " ORDER BY RAND() "
         else:
-            filterBox[19] = False
+            filterBox[20] = False
             addCommandStr = ""
         #print(orderCommandStr)
 
         #execute = "SELECT * FROM routes" + filteredCommandStr + " AND concat(Author, '', routes.Name, '',  GradeUK, '', Grade, '', Moves, '', UserRating, '', Repeats, '')"  "REGEXP '.*%s.*'" + orderCommandStr + "LIMIT 0,100" % search
         #print(execute)
-        print("(SELECT * FROM routes" + filteredCommandStr + " AND concat(SetterNickName, '', routes.Name, '', Grade, '', UserRating, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT "  + str(pageIndex*10) + ",10)" + addedCommandStr)
-        self.c.execute("(SELECT * FROM routes" + filteredCommandStr + " AND concat(SetterNickName, '', routes.Name, '', Grade, '', UserRating, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT " + str(pageIndex*10) + ",10)" + addedCommandStr)
+        print("(SELECT * FROM routes" + filteredCommandStr + "AND (Method = \'Feet follow hands\')" + " AND concat(SetterNickName, '', routes.Name, '', Grade, '', UserRating, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT "  + str(pageIndex*10) + ",10)" + addedCommandStr)
+        self.c.execute("(SELECT * FROM routes" + filteredCommandStr + "AND (Method = \'Feet follow hands\')" + " AND concat(SetterNickName, '', routes.Name, '', Grade, '', UserRating, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT " + str(pageIndex*10) + ",10)" + addedCommandStr)
         return self.c.fetchall()
 
     def get_rows_searched(self, search=""):
@@ -773,7 +776,7 @@ class DbCon:
             #print(                "SELECT * FROM routes" + filteredCommandStr + " AND concat(Author, '', routes.Name, '',  GradeUK, '', Grade, '', Moves, '', UserRating, '', Repeats, '') REGEXP '%s' ORDER BY DateInserted ASC LIMIT 0,10" % search)
 
             self.c.execute(
-                "SELECT * FROM routes" + filteredCommandStr + " AND concat(SetterNickName, '', routes.Name, '',  Grade, '', UserRating, '', Repeats, '') REGEXP '%s' ORDER BY DateInserted ASC LIMIT 0,10" % search)
+                "SELECT * FROM routes" + filteredCommandStr + "AND (Method = \'Feet follow hands\')" + " AND concat(SetterNickName, '', routes.Name, '',  Grade, '', UserRating, '', Repeats, '') REGEXP '%s' ORDER BY DateInserted ASC LIMIT 0,10" % search)
         return self.c.fetchall()
 
 class SearchButton(Button):
@@ -813,7 +816,7 @@ class Problem(Button):
 
         temp = 5  # starting index in route that intermediate holds belong to
         temp2 = 4
-        while self.route[temp] != None:
+        while self.route[temp] != '':
             self.coordLED[temp2] = moonToLED(self.route[temp])
             #print(self.coordLED[temp2])
             temp2 += 1
@@ -1098,14 +1101,14 @@ class MoonboardAppLayout(GridLayout):
         Routes = self.db.get_rows()
         print(Routes)
         problemButton = [None] * len(Routes)
-        filterBox = [None] * 20
-        FilterLabel = [None] * 19
-        filterBox[19] = False
+        filterBox = [None] * 21
+        FilterLabel = [None] * 20
+        filterBox[20] = False
         self.moonImages = [None] * 240
         self.problemList = GridLayout(cols=1, size_hint_y=None)
         self.problemList.bind(minimum_height=self.problemList.setter('height'))
         toggleText = ["6B+/V4+", "6C/V5", "6C+/V5+", "7A/V6", "7A+/V7", "7B/V8", "7B+/V8+", "7C/V9", "7C+/V10", "8A/V11", "8A+/V12", "8B/V13", "8B+/V14", "3 UserRating",
-                      "2 UserRating", "1 Star", "0 UserRating", "Popular", "Newest"]
+                      "2 UserRating", "1 Star", "0 UserRating", "Popular", "Newest", "Benchmarks"]
         for i in range(len(Routes)):
         #for i in range(10):
             problemButton[i] = Problem(
@@ -1165,6 +1168,8 @@ class MoonboardAppLayout(GridLayout):
             elif toggleText[i] == "Newest":
                 #print("FALSE CHECKBOX")
                 filterBox[i] = FilterBox(on_press=self.filter, active=True)
+            elif toggleText[i] == "Benchmarks":
+               filterBox[i] = FilterBox(on_press=self.filter, active=False)
             else:
                 filterBox[i] = FilterBox(on_press=self.filter, active=True)
             # print(filterBox[i])
@@ -1197,8 +1202,8 @@ class MoonboardAppLayout(GridLayout):
     def randomPressed(self, random):
 
         global filterBox, pageIndex
-        if filterBox[19] == False:
-            filterBox[19] = True
+        if filterBox[20] == False:
+            filterBox[20] = True
         pageIndex = 0
 
         self.filter()
@@ -1208,7 +1213,7 @@ class MoonboardAppLayout(GridLayout):
         global Routes, pageIndex, filterBox
         #print(pageIndex)
         #print(len(Routes))
-        filterBox[19] = False
+        filterBox[20] = False
         if (len(Routes) > 9):
             pageIndex+=1
         else:
@@ -1221,7 +1226,7 @@ class MoonboardAppLayout(GridLayout):
         #print(pageIndex)
         #print(len(Routes))
 
-        filterBox[19] = False
+        filterBox[20] = False
         if (pageIndex > 0):
             pageIndex-=1
         else:
@@ -1235,7 +1240,7 @@ class MoonboardAppLayout(GridLayout):
         global Routes, filterBox, pageIndex
         # if filterBox[17].active or filterBox[18].active:
         #     filterBox[19] = False
-        if filterBox[19]:
+        if filterBox[20]:
             filterBox[17].active = False
             filterBox[18].active = False
 
@@ -1246,7 +1251,7 @@ class MoonboardAppLayout(GridLayout):
                                            filterBox[9].active, filterBox[10].active, filterBox[11].active,
                                            filterBox[12].active, filterBox[13].active, filterBox[14].active,
                                            filterBox[15].active, filterBox[16].active, filterBox[17].active,
-                                           filterBox[18].active, filterBox[19], search)
+                                           filterBox[18].active, filterBox[19].active, filterBox[20], search)
         for index in range(len(Routes)):
             #print(Routes[index])
             #print(len(Routes[index]))

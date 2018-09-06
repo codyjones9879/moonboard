@@ -132,6 +132,7 @@ def uploading():
         probleminfoarray = [None] * 80
         problemexistsquery = routeexists(name[3])
         routecontained = submitdb(db, problemexistsquery)
+        #logger.info(links[0])
         if routecontained.fetchall():
             pass
         else:
@@ -139,6 +140,7 @@ def uploading():
             while result is None:
                 try:
                     pageproblem = requests.get("https://www.moonboard.com" + links[0], headers=headers)
+                    #logger.info("Found Page")
                     result = True
                 except:
                     pass
@@ -153,6 +155,7 @@ def uploading():
             location = False
             holdsarray = [None] * 200
             holdsindex = 0
+            logger.info(links[0])
             if checkexist:
                 logger.info("Problem Doesn't Exist Removing from Database....")
                 logger.info("Removing Route:" + str(problemnumber))
@@ -244,7 +247,7 @@ def uploading():
                                                 probleminfoarray[arrayindex] = 1
                                             arrayindex += 1
                                             infoindex += 1
-                                    elif iteminfo[0] == u'locations' or location:
+                                    elif iteminfo[0] == u'Locations' or location:
                                         if iteminfo[0] != u'RepeatText':
                                             location = True
                                             infoindex += 1
@@ -259,17 +262,17 @@ def uploading():
                                                 arrayindex += 1
                                                 infoindex += 1
                                     # Logic for StartHolds
-                                    elif infoindex == 34:
+                                    elif infoindex == 36:
                                         holdsarray[holdsindex] = iteminfo[2]  #
                                         holdsindex += 1
                                         infoindex += 1
-                                    elif (infoindex > 34) and (iteminfo[0] != u'Holdsets') and (
+                                    elif (infoindex > 35) and (iteminfo[0] != u'Holdsets') and (
                                                 infoindex < endholdsindex):
                                         # the rest of the hold information
                                         holdsarray[holdsindex] = iteminfo[1]
                                         holdsindex += 1
                                         infoindex += 1
-                                    elif (iteminfo[0] == u'Holdsets') and (infoindex > 33):
+                                    elif (iteminfo[0] == u'Holdsets') and (infoindex > 35):
                                         i = 0
                                         k = 0
                                         numstartholds = 0
@@ -336,7 +339,7 @@ def uploading():
                                                 probleminfoarray[arrayindex] = 1
                                             arrayindex += 1
                                             infoindex += 1
-                                    elif iteminfo[0] == u'locations' or location:
+                                    elif iteminfo[0] == u'Locations' or location:
                                         if iteminfo[0] != u'RepeatText':
                                             location = True
                                             infoindex += 1
@@ -350,17 +353,17 @@ def uploading():
                                                 probleminfoarray[arrayindex] = iteminfo[1]
                                                 arrayindex += 1
                                                 infoindex += 1
-                                    elif infoindex == 31:
+                                    elif infoindex == 33:
                                         holdsarray[holdsindex] = iteminfo[2]  #
                                         holdsindex += 1
                                         infoindex += 1
-                                    elif (infoindex > 31) and (iteminfo[0] != u'Holdsets') and (
+                                    elif (infoindex > 32) and (iteminfo[0] != u'Holdsets') and (
                                                 infoindex < endholdsindex):
                                         # the rest of the hold information
                                         holdsarray[holdsindex] = iteminfo[1]
                                         holdsindex += 1
                                         infoindex += 1
-                                    elif (iteminfo[0] == u'Holdsets') and (infoindex > 30):
+                                    elif (iteminfo[0] == u'Holdsets') and (infoindex > 32):
                                         i = 0
                                         k = 0
                                         numstartholds = 0

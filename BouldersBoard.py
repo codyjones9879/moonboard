@@ -1282,6 +1282,7 @@ class MoonboardAppLayout(GridLayout):
                     Routes[index][20]),
                 size_hint_y=None)
             # problemButton[i].route = Routes[i][7:211]
+            problemButton[index].route = Routes[index][34:68]
             problemButton[index].routeName = Routes[index][1]
             problemButton[index].setterName = str(Routes[index][10])
             # problemButton[i].gradeUK = str(Routes[i][2])

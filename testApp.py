@@ -816,7 +816,7 @@ class Problem(Button):
 
         temp = 5  # starting index in route that intermediate holds belong to
         temp2 = 4
-        while self.route[temp] != '':
+        while self.route[temp] != None:
             self.coordLED[temp2] = moonToLED(self.route[temp])
             #print(self.coordLED[temp2])
             temp2 += 1
@@ -1282,6 +1282,7 @@ class MoonboardAppLayout(GridLayout):
                     Routes[index][20]),
                 size_hint_y=None)
             # problemButton[i].route = Routes[i][7:211]
+            problemButton[index].route = Routes[index][34:68]
             problemButton[index].routeName = Routes[index][1]
             problemButton[index].setterName = str(Routes[index][10])
             # problemButton[i].gradeUK = str(Routes[i][2])

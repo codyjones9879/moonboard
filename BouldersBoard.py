@@ -22,6 +22,7 @@ from kivy.core.text import LabelBase
 import pymysql
 import pymysql.cursors
 from kivy.core.window import Window
+from kivy.cache import Cache
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -76,6 +77,10 @@ LED_BRIGHTNESS = 255
 LED_INVERT = False
 LED_CHANNEL = 0
 
+'''
+In order to not have to access the SD card which can be slow, here we make sure everything stays in the cache increasing performance. (Hopefully)
+'''
+Cache.register('kv.image', limit=None, timeout=None)
 
 LED_STRIP = ws.WS2811_STRIP_GRB
 strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)

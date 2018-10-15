@@ -1,28 +1,25 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-import kivy
-from neopixel import *
+
+# from neopixel import *
 import sys
-from kivy.app import App
-from kivy.uix.image import Image
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.checkbox import CheckBox
-from kivy.uix.textinput import TextInput
-from kivy.clock import Clock
-from kivy.properties import BooleanProperty, StringProperty, ListProperty
-from kivy.uix.behaviors import ToggleButtonBehavior
-from kivy.uix.recycleboxlayout import RecycleBoxLayout
-from kivy.config import Config
-from kivy.uix.label import Label
-from kivy.uix.togglebutton import ToggleButton
-from kivy.uix.button import Button
-from kivy.core.text import LabelBase
+import time
+
 import pymysql
 import pymysql.cursors
-from kivy.core.window import Window
+from kivy.app import App
 from kivy.cache import Cache
+from kivy.config import Config
+from kivy.core.text import LabelBase
+from kivy.core.window import Window
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.checkbox import CheckBox
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.image import Image
+from kivy.uix.label import Label
+from kivy.uix.scrollview import ScrollView
+from kivy.uix.textinput import TextInput
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -31,7 +28,8 @@ LabelBase.register(name="NotoSans",
                    fn_bold="NotoSans-hinted/NotoSansUI-Bold.ttf",
                    fn_italic="NotoSans-hinted/NotoSansUI-Italic.ttf",
                    fn_bolditalic="NotoSans-hinted/NotoSansUI-BoldItalic.ttf")
-Config.set('graphics', 'default_font', '[‘Roboto’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’]')
+Config.set('graphics', 'default_font',
+           '[‘Roboto’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’]')
 
 '''
 Coordinate Key: This is for color value
@@ -67,6 +65,10 @@ count = 0
 global LED_ROUTE_IMAGES, problemButton, Routes, filterBox, FilterLabel, filteredCommandStr, orderCommandStr, addedCommandStr, pageIndex
 LED_ROUTE_IMAGES = [None] * 228
 
+'''
+In order to not have to access the SD card which can be slow, here we make sure everything stays in the cache increasing performance. (Hopefully)
+'''
+Cache.register('kv.image', limit=None, timeout=None)
 
 # Window.fullscreen = 'auto'
 LED_COUNT = 198
@@ -77,10 +79,6 @@ LED_BRIGHTNESS = 255
 LED_INVERT = False
 LED_CHANNEL = 0
 
-'''
-In order to not have to access the SD card which can be slow, here we make sure everything stays in the cache increasing performance. (Hopefully)
-'''
-Cache.register('kv.image', limit=None, timeout=None)
 
 LED_STRIP = ws.WS2811_STRIP_GRB
 strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
@@ -92,8 +90,6 @@ def colorWipe(strip, color, wait_ms=0):
         strip.setPixelColor(i, color)
         strip.show()
         # time.sleep(wait_ms/1000.0)
-
-
 
 
 def getVGrade(fontGrade):
@@ -152,6 +148,7 @@ def numberToLetter(coord):
     }
     return switcher.get(coord, None)
 
+
 def flipRow(coord):
     switcher = {
 
@@ -175,6 +172,7 @@ def flipRow(coord):
         "1": "18",
     }
     return switcher.get(coord, None)
+
 
 def moonToLED(coord):
     switcher = {
@@ -599,7 +597,7 @@ def picIndexLookUp(index):
         196: 196,
         197: 197,
     }
-    #print(index)
+    # print(index)
     return switcher.get(index, None)
 
 
@@ -764,6 +762,8 @@ class DbCon:
             self.c.execute(
                 "SELECT * FROM routes" + filteredCommandStr + " AND (Method = \'Feet follow hands\' OR Method = \'Footless + kickboard\')" + " AND (HoldSetupDesc = 'MoonBoard Masters 2017') AND (ConfigurationDesc) REGEXP '40'" + " AND concat(SetterNickName, '', routes.Name, '',  Grade, '', UserRating, '', Repeats, '') REGEXP '%s' AND CONCAT_WS(StartHold1Desc, StartHold2Desc, IntermediateHold1Desc, IntermediateHold2Desc, IntermediateHold3Desc, IntermediateHold4Desc, IntermediateHold5Desc, IntermediateHold6Desc, IntermediateHold7Desc, IntermediateHold8Desc, IntermediateHold9Desc, IntermediateHold10Desc, IntermediateHold11Desc, IntermediateHold12Desc, IntermediateHold13Desc, FinishHold1Desc, FinishHold2Desc) NOT REGEXP 'B5|E5|G5|J5|C6|I6|A7|D7|H7|K7|C9|E9|G9|I9|A10|K10|C11|I11|B12|E12|G12|J12|D13|H13|B15|E15|G15|J15|D16|H16|C18,I18' ORDER BY DateInserted ASC LIMIT 0,10" % search)
         return self.c.fetchall()
+
+
 class SearchButton(Button):
     def on_press(self):
         return 0  # print("TODO mySQL search")
@@ -777,12 +777,13 @@ class Problem(Button):
     gradeUK = ""
     Grade = ""
     UserRating = 0
-    #moves = 0
+    # moves = 0
     repeats = 0
     font_name = 'DejaVuSans.ttf'
 
     def on_press(self):
-        #colorWipe(strip, Color(0, 0, 0))
+        # colorWipe(strip, Color(0, 0, 0))
+        start = time.time()
         self.coordLED = [None] * 34
         '''
             # Example Array setup:   [SH1, SH2, SH3, SH4,IH1,.....IH196,FH1,FH2]   SH1-4  is a combination of 2 hands and 2 feet, Intermediate max is with only 1 hand hold to start and 1 finish 
@@ -803,7 +804,6 @@ class Problem(Button):
         temp2 = 4
         while self.route[temp] != '':
             self.coordLED[temp2] = moonToLED(self.route[temp])
-            #print(self.coordLED[temp2])
             temp2 += 1
             temp += 2
         '''
@@ -840,9 +840,6 @@ class Problem(Button):
                 strip.setPixelColorRGB(index, 0, 0, 0)
             index += 1
         strip.show()
-
-        # picturesAdjusted(LED_ROUTE_IMAGES)
-
         self.tmp = 0  # running index for 228 images
         self.TEMP = 197  # running index for 197 LEDs
         self.REVERSE = True
@@ -923,14 +920,14 @@ class Problem(Button):
                     self.TEMP -= 1
                     # adjust Row and Column
                 self.tmp += 1
+        end = time.time()
+        print(end - start)
 
 
 class FilterBox(CheckBox):
     def __init__(self, **kwargs):
         super(FilterBox, self).__init__(**kwargs)
-        #self.active = True
 
-    #text = ""
 
 
 class moonBoardProblemImage(GridLayout):
@@ -950,9 +947,11 @@ class moonBoardImage(Image):
 
     pass
 
+
 class moonBoardButton(Button):
     route = [None] * 205
     global LED_ROUTE_IMAGES
+
     def __init__(self, **kwargs):
         super(moonBoardButton, self).__init__(**kwargs)
         self.index = 0
@@ -960,43 +959,28 @@ class moonBoardButton(Button):
 
     def update(self):
         self.source = "images/" + MoonLayout + "moon-1-1-blue-square.png"
-        #print("Call to Update")
         self.reload()
 
     def on_press(self):
-        # self.coordLED = [None] * 198
-        # self.colorLED = [0] * 198
-
-        #print(self.index)
-        #print(self.background_normal)
-
         imageStrTemp = self.regularImage
-        coordinates = imageStrTemp.split('-',1)[1]
+        coordinates = imageStrTemp.split('-', 1)[1]
         ycoordinate = coordinates.split('-', 1)[0]
-        #ycoordinateAdjusted = picIndexLookUp(int(ycoordinate))
         xcoordinate = coordinates.split('-', 1)[1].split('.', 1)[0]
-        #print(coordinates)
-        #print(xcoordinate)
-        #print(ycoordinate)
-        imageStrTemp = imageStrTemp.split('.',1)[0]
+        imageStrTemp = imageStrTemp.split('.', 1)[0]
         letterCoordinate = numberToLetter(xcoordinate)
         ycoordinateAdjusted = flipRow(ycoordinate)
-        #print(letterCoordinate + ycoordinateAdjusted)
         if not ycoordinate == str(0) and not xcoordinate == str(0):
-
-            self.index+=1
+            self.index += 1
             if self.index == 6:
                 self.index = 0
             if self.index == 0:
                 self.background_normal = self.regularImage
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
                 strip.setPixelColorRGB(LEDNum, 0, 0, 0)
-                #print(self.index)
             if self.index == 1:
                 self.background_normal = imageStrTemp + "-blue-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
                 strip.setPixelColorRGB(LEDNum, 0, 0, 255)
-                #print(LEDNum)
             if self.index == 2:
                 self.background_normal = imageStrTemp + "-red-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
@@ -1013,30 +997,24 @@ class moonBoardButton(Button):
                 self.background_normal = imageStrTemp + "-white-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
                 strip.setPixelColorRGB(LEDNum, 255, 255, 255)
-            #print(self.background_normal)
-	    strip.show()
-
+        strip.show()
 
     pass
 
 
 class MoonboardAppLayout(GridLayout):
-
-
     def __init__(self, **kwargs):
         super(MoonboardAppLayout, self).__init__(**kwargs)
-        # self.moonImagesArray = [None] * 228
         self.cols = 2
         self.rows = 2
         self.db = DbCon()
         global Routes, problemButton, filterBox, FilterLabel, filteredCommandStr, orderCommandStr, pageIndex, MoonLayout
-        #filteredCommandStr = " WHERE (Grade = '6B+' OR Grade = '6C' OR Grade = '6C+' OR Grade = '7A' OR Grade = '7A+' OR Grade = '7B' OR Grade = 'V8+' OR Grade = '7C' OR Grade = '7C+' OR Grade = '8A' OR Grade = '8A+' OR Grade = '8B' OR Grade = '8B+') AND (UserRating = 0 OR UserRating = 1 OR UserRating = 2 OR UserRating = 3) ORDER BY DateInserted ASC LIMIT 0,100"
         MoonLayout = "2017/"
         filteredCommandStr = ""
         orderCommandStr = "ORDER BY RAND() "
         pageIndex = 0
         Routes = self.db.get_rows()
-        print(Routes)
+        # print(Routes)
         problemButton = [None] * len(Routes)
         filterBox = [None] * 21
         FilterLabel = [None] * 20
@@ -1044,21 +1022,23 @@ class MoonboardAppLayout(GridLayout):
         self.moonImages = [None] * 240
         self.problemList = GridLayout(cols=1, size_hint_y=None)
         self.problemList.bind(minimum_height=self.problemList.setter('height'))
-        toggleText = ["6B+/V4+", "6C/V5", "6C+/V5+", "7A/V6", "7A+/V7", "7B/V8", "7B+/V8+", "7C/V9", "7C+/V10", "8A/V11", "8A+/V12", "8B/V13", "8B+/V14", "3 UserRating",
+        toggleText = ["6B+/V4+", "6C/V5", "6C+/V5+", "7A/V6", "7A+/V7", "7B/V8", "7B+/V8+", "7C/V9", "7C+/V10",
+                      "8A/V11", "8A+/V12", "8B/V13", "8B+/V14", "3 UserRating",
                       "2 UserRating", "1 Star", "0 UserRating", "Popular", "Newest", "Benchmarks"]
         for i in range(len(Routes)):
-        #for i in range(10):
+            # for i in range(10):
             problemButton[i] = Problem(
-                text=(Routes[i][1] + '\n' + "Set By: " + Routes[i][10].encode('utf-8')) + '\n' + "Grade: " + Routes[i][2] + " UserRating: " + str(Routes[i][19]) + '\n' + '     ' + "Repeats: " + str(Routes[i][20]),
+                text=(Routes[i][1] + '\n' + "Set By: " + Routes[i][10].encode('utf-8')) + '\n' + "Grade: " + Routes[i][
+                    2] + " UserRating: " + str(Routes[i][19]) + '\n' + '     ' + "Repeats: " + str(Routes[i][20]),
                 size_hint_y=None)
-            #print(Routes[i][34:68])
+            # print(Routes[i][34:68])
             problemButton[i].route = Routes[i][34:68]
             problemButton[i].routeName = Routes[i][1]
             problemButton[i].setterName = str(Routes[i][10])
-            #problemButton[i].gradeUK = str(Routes[i][2])
+            # problemButton[i].gradeUK = str(Routes[i][2])
             problemButton[i].Grade = str(Routes[i][2])
             problemButton[i].UserRating = Routes[i][19]
-            #problemButton[i].moves = Routes[i][5]
+            # problemButton[i].moves = Routes[i][5]
             problemButton[i].repeats = Routes[i][20]
             self.problemList.add_widget(problemButton[i])
         self.moonImageGroup = moonBoardProblemImage()
@@ -1081,32 +1061,30 @@ class MoonboardAppLayout(GridLayout):
         self.search_input = TextInput(text="", multiline=False)
         self.search_button = SearchButton(text="search", on_press=self.search)
         self.next_page_button = Button(text=">", on_press=self.pageIncrease)
-        #self.random_button = Button(text="Random", on_press=self.randomPressed)
+        # self.random_button = Button(text="Random", on_press=self.randomPressed)
         self.prev_page_button = Button(text="<", on_press=self.pageDecrease)
         self.customize = Button(text="Create Your Own!", on_press=self.custom_screen)
         self.return_home = Button(text="Return Home", on_press=self.home_screen)
-        #self.nextPage = SearchButton(text="search", on_press=self.search)
+        # self.nextPage = SearchButton(text="search", on_press=self.search)
         self.searchGrid = GridLayout(cols=1)
         self.navigateGrid = GridLayout(rows=2, orientation="vertical", size_hint_y=None)
         self.filterGroup = GridLayout(cols=4)
-
+        start = time.time()
         self.add_widget(self.navigateGrid)
         self.add_widget(self.customizeBox)
         self.moonboardProblemsScroll.add_widget(self.problemList)
         self.add_widget(self.moonboardProblemsScroll)
         self.add_widget(self.searchGrid)
-
-
         for i in range(len(toggleText)):
 
             if toggleText[i] == "Popular":
-                #print("FALSE CHECKBOX")
+                # print("FALSE CHECKBOX")
                 filterBox[i] = FilterBox(on_press=self.filter, active=False)
             elif toggleText[i] == "Newest":
-                #print("FALSE CHECKBOX")
+                # print("FALSE CHECKBOX")
                 filterBox[i] = FilterBox(on_press=self.filter, active=True)
             elif toggleText[i] == "Benchmarks":
-               filterBox[i] = FilterBox(on_press=self.filter, active=False)
+                filterBox[i] = FilterBox(on_press=self.filter, active=False)
             else:
                 filterBox[i] = FilterBox(on_press=self.filter, active=True)
             # print(filterBox[i])
@@ -1120,54 +1098,34 @@ class MoonboardAppLayout(GridLayout):
         self.search_field.add_widget(self.search_input)
         self.search_field.add_widget(self.search_button)
         self.navigation_field.add_widget(self.prev_page_button)
-        #self.navigation_field.add_widget(self.random_button)
+        # self.navigation_field.add_widget(self.random_button)
         self.navigation_field.add_widget(self.next_page_button)
         self.navigateGrid.add_widget(self.search_field)
         self.navigateGrid.add_widget(self.navigation_field)
         self.customizeBox.add_widget(self.customize)
 
 
-        #self.add_widget(self.nextPage)
-
-
-        # self.moonImagesArray[13].source = "images/" + MoonLayout + "moon-1-1-blue-square.png"
-        # self.moonImagesArray[14].source = "images/" + MoonLayout + "moon-1-1-blue-square.png"
-        # self.moonImagesArray.reload()
-
-
-
-    # def randomPressed(self, random):
-    #
-    #     global filterBox, pageIndex
-    #     if filterBox[20] == False:
-    #         filterBox[20] = True
-    #     pageIndex = 0
-    #
-    #     self.filter()
-
-
-    def pageIncrease(self, pageNum):  #TODO account for something like remaining 99 if there isn't an even search
+    def pageIncrease(self, pageNum):  # TODO account for something like remaining 99 if there isn't an even search
         global Routes, pageIndex, filterBox
-        #print(pageIndex)
-        #print(len(Routes))
+        # print(pageIndex)
+        # print(len(Routes))
         filterBox[20] = False
         if (len(Routes) > 9):
-            pageIndex+=1
+            pageIndex += 1
         else:
-            pageIndex+=0
+            pageIndex += 0
         self.filter()
 
-
-    def pageDecrease(self, pageNum):  #TODO account for something like remaining 99 if there isn't an even search
+    def pageDecrease(self, pageNum):  # TODO account for something like remaining 99 if there isn't an even search
         global Routes, pageIndex, filterBox
-        #print(pageIndex)
-        #print(len(Routes))
+        # print(pageIndex)
+        # print(len(Routes))
 
         filterBox[20] = False
         if (pageIndex > 0):
-            pageIndex-=1
+            pageIndex -= 1
         else:
-            pageIndex+=0
+            pageIndex += 0
         self.filter()
 
     def creationScreen(self, *args):
@@ -1175,42 +1133,13 @@ class MoonboardAppLayout(GridLayout):
 
     def filter_table(self, search=""):
         global Routes, filterBox, pageIndex
-        # if filterBox[17].active or filterBox[18].active:
-        #     filterBox[19] = False
-        if filterBox[20]:
-            filterBox[17].active = False
-            filterBox[18].active = False
-
-        #Routes = self.db.get_rows_filtered(filterBox[0].active, filterBox[1].active, filterBox[2].active, filterBox[3].active, filterBox[4].active, filterBox[5].active, filterBox[6].active, filterBox[7].active, filterBox[8].active, filterBox[9].active, filterBox[10].active, filterBox[11].active, filterBox[12].active, filterBox[13].active, filterBox[14].active, filterBox[15].active, filterBox[16].active, filterBox[17].active, filterBox[18].active, filterBox[19].active, search)
         Routes = self.db.get_rows_filtered(True, filterBox[0].active, filterBox[1].active, filterBox[2].active,
                                            filterBox[3].active, filterBox[4].active, filterBox[5].active,
                                            filterBox[6].active, filterBox[7].active, filterBox[8].active,
                                            filterBox[9].active, filterBox[10].active, filterBox[11].active,
                                            filterBox[12].active, filterBox[13].active, filterBox[14].active,
                                            filterBox[15].active, filterBox[16].active, filterBox[17].active,
-                                           filterBox[18].active, filterBox[19].active, filterBox[20], search)
-        for index in range(len(Routes)):
-            #print(Routes[index])
-            #print(len(Routes[index]))
-            problemButton[index] = Problem(
-                text=(Routes[index][1] + '\n' + "Set By: " + Routes[index][10].encode('utf-8')) + '\n' + "Grade: " + Routes[index][
-                    2] + " UserRating: " + str(Routes[index][19]) + '\n' + '     ' + "Repeats: " + str(Routes[index][20]),
-                size_hint_y=None)
-            problemButton[index].route = Routes[index][34:68]
-            problemButton[index].routeName = Routes[index][1]
-            problemButton[index].setterName = str(Routes[index][10])
-            # problemButton[i].gradeUK = str(Routes[i][2])
-            problemButton[index].Grade = str(Routes[index][2])
-            problemButton[index].UserRating = Routes[index][19]
-            # problemButton[i].moves = Routes[i][5]
-            problemButton[index].repeats = Routes[index][20]
-            self.problemList.add_widget(problemButton[index])
-
-
-    def update_table(self, search=""):
-        global Routes
-        Routes = self.db.get_rows_searched(search)
-        #print(Routes)
+                                           filterBox[18].active, filterBox[19].active, search)
         for index in range(len(Routes)):
             problemButton[index] = Problem(
                 text=(Routes[index][1] + '\n' + "Set By: " + Routes[index][10].encode('utf-8')) + '\n' + "Grade: " +
@@ -1218,11 +1147,27 @@ class MoonboardAppLayout(GridLayout):
                          2] + " UserRating: " + str(Routes[index][19]) + '\n' + '     ' + "Repeats: " + str(
                     Routes[index][20]),
                 size_hint_y=None)
-            # problemButton[i].route = Routes[i][7:211]
             problemButton[index].route = Routes[index][34:68]
             problemButton[index].routeName = Routes[index][1]
             problemButton[index].setterName = str(Routes[index][10])
-            # problemButton[i].gradeUK = str(Routes[i][2])
+            problemButton[index].Grade = str(Routes[index][2])
+            problemButton[index].UserRating = Routes[index][19]
+            problemButton[index].repeats = Routes[index][20]
+            self.problemList.add_widget(problemButton[index])
+
+    def update_table(self, search=""):
+        global Routes
+        Routes = self.db.get_rows_searched(search)
+        for index in range(len(Routes)):
+            problemButton[index] = Problem(
+                text=(Routes[index][1] + '\n' + "Set By: " + Routes[index][10].encode('utf-8')) + '\n' + "Grade: " +
+                     Routes[index][
+                         2] + " UserRating: " + str(Routes[index][19]) + '\n' + '     ' + "Repeats: " + str(
+                    Routes[index][20]),
+                size_hint_y=None)
+            problemButton[index].route = Routes[index][34:68]
+            problemButton[index].routeName = Routes[index][1]
+            problemButton[index].setterName = str(Routes[index][10])
             problemButton[index].Grade = str(Routes[index][2])
             problemButton[index].UserRating = Routes[index][19]
             # problemButton[i].moves = Routes[i][5]
@@ -1233,8 +1178,10 @@ class MoonboardAppLayout(GridLayout):
         self.problemList.clear_widgets()
 
     def custom_screen(self, custom):
-        colorWipe(strip, Color(0, 0, 0))
+        # colorWipe(strip, Color(0, 0, 0))
+        start = time.time()
         self.clear_widgets()
+
         self.cols = 1
         self.return_home.size_hint_y = None
         self.moonImageGroup = moonBoardProblemImage()
@@ -1243,8 +1190,10 @@ class MoonboardAppLayout(GridLayout):
             for j in range(12):
                 self.imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
                 global LED_ROUTE_IMAGES
-                LED_ROUTE_IMAGES[self.temp] = moonBoardButton(background_normal=self.imageStr, background_down=self.imageStr, size_hint_y=1, size_hint_x=1,
-                                                             allow_stretch=False, keep_ratio=True, border=(0,0,0,0))
+                LED_ROUTE_IMAGES[self.temp] = moonBoardButton(background_normal=self.imageStr,
+                                                              background_down=self.imageStr, size_hint_y=1,
+                                                              size_hint_x=1,
+                                                              allow_stretch=False, keep_ratio=True, border=(0, 0, 0, 0))
                 # self.moonImagesArray[temp]
                 self.temp += 1
         for i in range(228):
@@ -1252,16 +1201,13 @@ class MoonboardAppLayout(GridLayout):
 
         self.add_widget(self.moonImageGroup)
         self.add_widget(self.return_home)
-        #dataApp.build()
+        end = time.time()
+        print(end - start)
+        # dataApp.build()
 
     def home_screen(self, home):
         self.clear_widgets()
         self.__init__()
-
-    # def change_button_image(self, random):
-    #     print(self.imageStr)
-
-
 
 
     def search(self, *args):
@@ -1270,24 +1216,21 @@ class MoonboardAppLayout(GridLayout):
         self.clear_table()
         if "\'" in self.search_input.text:
             temp = self.search_input.text
-            temp = temp.replace("'","+[^.apostrophe.]+")
-            #print(temp)
+            temp = temp.replace("'", "+[^.apostrophe.]+")
             try:
                 self.update_table(temp)
             except:
                 pass
         elif "\\" in self.search_input.text:
-                temp = self.search_input.text
-                temp = temp.replace("\\", "+[^.solidus.]+")
-                #print(temp)
-                try:
-                    self.update_table(temp)
-                except:
-                    pass
+            temp = self.search_input.text
+            temp = temp.replace("\\", "+[^.solidus.]+")
+            try:
+                self.update_table(temp)
+            except:
+                pass
         elif self.search_input.text == '':
             temp = self.search_input.text
-            temp = temp.replace("",".*.*")
-            #print(temp)
+            temp = temp.replace("", ".*.*")
             try:
                 self.filter_table(temp)
             except:
@@ -1302,24 +1245,22 @@ class MoonboardAppLayout(GridLayout):
         self.clear_table()
         if "\'" in self.search_input.text:
             temp = self.search_input.text
-            temp = temp.replace("'","+[^.apostrophe.]+")
+            temp = temp.replace("'", "+[^.apostrophe.]+")
             print(temp)
             try:
                 self.filter_table(temp)
             except:
                 pass
         elif "\\" in self.search_input.text:
-                temp = self.search_input.text
-                temp = temp.replace("\\", "+[[.solidus.]]+")
-                #print(temp)
-                try:
-                    self.filter_table(temp)
-                except:
-                    pass
+            temp = self.search_input.text
+            temp = temp.replace("\\", "+[[.solidus.]]+")
+            try:
+                self.filter_table(temp)
+            except:
+                pass
         elif self.search_input.text == '':
             temp = self.search_input.text
-            temp = temp.replace("",".*.*")
-            #print(temp)
+            temp = temp.replace("", ".*.*")
             try:
                 self.filter_table(temp)
             except:

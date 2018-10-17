@@ -83,10 +83,12 @@ LED_BRIGHTNESS = 255
 LED_INVERT = False
 LED_CHANNEL = 0
 
-
+print("START THE LED LIBRARY")
+start_time = time.time()
 LED_STRIP = ws.WS2811_STRIP_GRB
 strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
 strip.begin()
+print("--- %s seconds ---" % (time.time() - start_time))
 
 
 def getVGrade(fontGrade):

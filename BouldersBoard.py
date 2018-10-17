@@ -1046,23 +1046,23 @@ class MoonboardAppLayout(GridLayout):
         for i in range(19):
             for j in range(12):
                 self.imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                if i != 0 and j != 0:
+                #if i != 0 and j != 0:
 
-                    self.imageStr1 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-white-square.png")
-                    self.imageStr2 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-yellow-square.png")
-                    self.imageStr3 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-blue-square.png")
-                    self.imageStr4 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-red-square.png")
-                    self.imageStr5 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-green-square.png")
-                    temp = moonBoardImage(source=self.imageStr1, size_hint_y=1, size_hint_x=1,
-                                      allow_stretch=True, keep_ratio=False)
-                    temp = moonBoardImage(source=self.imageStr2, size_hint_y=1, size_hint_x=1,
-                                      allow_stretch=True, keep_ratio=False)
-                    temp = moonBoardImage(source=self.imageStr3, size_hint_y=1, size_hint_x=1,
-                                      allow_stretch=True, keep_ratio=False)
-                    temp = moonBoardImage(source=self.imageStr4, size_hint_y=1, size_hint_x=1,
-                                      allow_stretch=True, keep_ratio=False)
-                    temp = moonBoardImage(source=self.imageStr5, size_hint_y=1, size_hint_x=1,
-                                      allow_stretch=True, keep_ratio=False)
+                   # self.imageStr1 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-white-square.png")
+                   # self.imageStr2 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-yellow-square.png")
+                   #self.imageStr3 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-blue-square.png")
+                   # self.imageStr4 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-red-square.png")
+                   #self.imageStr5 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-green-square.png")
+                   # temp = moonBoardImage(source=self.imageStr1, size_hint_y=1, size_hint_x=1,
+                   #                   allow_stretch=True, keep_ratio=False)
+                   # temp = moonBoardImage(source=self.imageStr2, size_hint_y=1, size_hint_x=1,
+                   #                   allow_stretch=True, keep_ratio=False)
+                   #temp = moonBoardImage(source=self.imageStr3, size_hint_y=1, size_hint_x=1,
+                   #                  allow_stretch=True, keep_ratio=False)
+                   #temp = moonBoardImage(source=self.imageStr4, size_hint_y=1, size_hint_x=1,
+                   #                  allow_stretch=True, keep_ratio=False)
+                   #temp = moonBoardImage(source=self.imageStr5, size_hint_y=1, size_hint_x=1,
+                   #                  allow_stretch=True, keep_ratio=False)
                 global LED_ROUTE_IMAGES
                 LED_ROUTE_IMAGES[self.temp] = moonBoardImage(source=self.imageStr, size_hint_y=1, size_hint_x=1,
                                                              allow_stretch=True, keep_ratio=False)

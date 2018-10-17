@@ -30,7 +30,7 @@ LabelBase.register(name="NotoSans",
                    fn_bold="NotoSans-hinted/NotoSansUI-Bold.ttf",
                    fn_italic="NotoSans-hinted/NotoSansUI-Italic.ttf",
                    fn_bolditalic="NotoSans-hinted/NotoSansUI-BoldItalic.ttf")
-Config.set('graphics', 'default_font', '[‘Roboto’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’]')
+
 '''
 Coordinate Key: This is for color value
 
@@ -707,7 +707,7 @@ class DbCon:
         #execute = "SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '')"  "REGEXP '.*%s.*'" + orderCommandStr + "LIMIT 0,100" % search
         #print(execute)
         #print("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT "  + str(pageIndex*10) + ",10)" + addedCommandStr)
-        self.c.execute("(SELECT * FROM moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT " + str(pageIndex*10) + ",10)" + addedCommandStr)
+        self.c.execute("(SELECT * FROM Moonboard" + filteredCommandStr + " AND concat(Author, '', moonboard.Name, '',  GradeUK, '', GradeUS, '', Moves, '', Stars, '', Repeats, '') REGEXP '%s'" % search + "" + orderCommandStr + "LIMIT " + str(pageIndex*10) + ",10)" + addedCommandStr)
         return self.c.fetchall()
 
     def get_rows_searched(self, search=""):
@@ -1061,7 +1061,7 @@ class MoonboardAppLayout(GridLayout):
         for i in range(len(Routes)):
         #for i in range(10):
             problemButton[i] = Problem(
-                text=str(Routes[i][0].decode('cp1252').encode('utf-8') + '\n' + "Set By: " + Routes[i][1].decode('cp1252').encode('utf-8')) + '\n' + "Grade: " + Routes[i][2] + '/' +
+                text=str(Routes[i][0] + '\n' + "Set By: " + Routes[i][1]) + '\n' + "Grade: " + Routes[i][2] + '/' +
                      Routes[i][3] + " Stars: " + str(Routes[i][4]) + '\n' + "Moves: " + str(Routes[i][5]) + '     ' + "Repeats: " + str(Routes[i][6]),
                 size_hint_y=None)
             problemButton[i].route = Routes[i][7:211]
@@ -1203,7 +1203,7 @@ class MoonboardAppLayout(GridLayout):
             #print(Routes[index])
             #print(len(Routes[index]))
             problemButton[index] = Problem(
-                text=str(Routes[index][0].decode('cp1252').encode('utf-8') + '\n' + "Set By: " + Routes[index][1].decode('cp1252').encode('utf-8')) + '\n' + "Grade: " + Routes[index][2] + '/' +
+                text=str(Routes[index][0] + '\n' + "Set By: " + Routes[index][1]) + '\n' + "Grade: " + Routes[index][2] + '/' +
                      Routes[index][3] + " Stars: " + str(Routes[index][4]) + '\n' + "Moves: " + str(Routes[index][5]) + '     ' + "Repeats: " + str(Routes[index][6]),
                 size_hint_y=None)
             problemButton[index].route = Routes[index][7:211]
@@ -1223,7 +1223,7 @@ class MoonboardAppLayout(GridLayout):
         #print(Routes)
         for index in range(len(Routes)):
             problemButton[index] = Problem(
-                text=str(Routes[index][0].decode('cp1252').encode('utf-8') + '\n' + "Set By: " + Routes[index][1].decode('cp1252').encode('utf-8')) + '\n' + "Grade: " + Routes[index][2] + '/' +
+                text=str(Routes[index][0].decode('cp1252').encode('utf-8') + '\n' + "Set By: " + Routes[index][1]) + '\n' + "Grade: " + Routes[index][2] + '/' +
                      Routes[index][3] + " Stars: " + str(Routes[index][4]) + '\n' + "Moves: " + str(Routes[index][5]) + '     ' + "Repeats: " + str(Routes[index][6]),
                 size_hint_y=None)
             problemButton[index].route = Routes[index][7:211]

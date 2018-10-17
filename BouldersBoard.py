@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-# from neopixel import *
+from neopixel import *
 import sys
 import time
 
@@ -997,7 +997,7 @@ class moonBoardButton(Button):
                 self.background_normal = imageStrTemp + "-white-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
                 strip.setPixelColorRGB(LEDNum, 255, 255, 255)
-        strip.show()
+        #strip.show()
 
     pass
 

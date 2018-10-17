@@ -1010,6 +1010,20 @@ class MoonboardAppLayout(GridLayout):
         self.db = DbCon()
         global Routes, problemButton, filterBox, FilterLabel, filteredCommandStr, orderCommandStr, pageIndex, MoonLayout
         MoonLayout = "2017/"
+        for i in range(19):
+            for j in range(12):
+                self.imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
+                tempimage = moonBoardImage(source=self.imageStr)
+                self.imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-white-square.png")
+                tempimage = moonBoardImage(source=self.imageStr)
+                self.imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-yellow-square.png")
+                tempimage = moonBoardImage(source=self.imageStr)
+                self.imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-green-square.png")
+                tempimage = moonBoardImage(source=self.imageStr)
+                self.imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-red-square.png")
+                tempimage = moonBoardImage(source=self.imageStr)
+                self.imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-blue-square.png")
+                tempimage = moonBoardImage(source=self.imageStr)
         filteredCommandStr = ""
         orderCommandStr = "ORDER BY RAND() "
         pageIndex = 0

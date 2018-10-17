@@ -801,6 +801,8 @@ class Problem(Button):
         	# 3. Green - Finish Hold
         	'''
         index = 0
+        print("couple of commands to strip.setPixelColorRGB()")
+        start_time = time.time()
         while index < len(self.coordLED):
             if index < 4:
                 # start Holds
@@ -826,7 +828,11 @@ class Problem(Button):
                 self.colorLED[index] = 0
                 strip.setPixelColorRGB(index, 0, 0, 0)
             index += 1
+        print("--- %s seconds ---" % (time.time() - start_time))
+        print("strip.show()")
+        start_time = time.time()
         strip.show()
+        print("--- %s seconds ---" % (time.time() - start_time))
 
         # picturesAdjusted(LED_ROUTE_IMAGES)
         self.tmp = 0  # running index for 228 images

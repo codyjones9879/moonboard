@@ -1274,6 +1274,21 @@ class MoonboardAppLayout(GridLayout):
 
 class DatabaseApp(App):
     def build(self):
+        MoonLayout = "2017/"
+        for i in range(19):
+            for j in range(12):
+                imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
+                tempimage = moonBoardImage(source=imageStr)
+                imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-white-square.png")
+                tempimage = moonBoardImage(source=imageStr)
+                imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-yellow-square.png")
+                tempimage = moonBoardImage(source=imageStr)
+                imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-green-square.png")
+                tempimage = moonBoardImage(source=imageStr)
+                imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-red-square.png")
+                tempimage = moonBoardImage(source=imageStr)
+                imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-blue-square.png")
+                tempimage = moonBoardImage(source=imageStr)
         self.title = "MOONBOARD"
         parent = BoxLayout(size=(Window.width, Window.height))
         self.gridsDisplay = MoonboardAppLayout()

@@ -997,7 +997,7 @@ class moonBoardButton(Button):
                 self.background_normal = imageStrTemp + "-white-square.png"
                 LEDNum = moonToLED(letterCoordinate + ycoordinateAdjusted)
                 strip.setPixelColorRGB(LEDNum, 255, 255, 255)
-        #strip.show()
+        strip.show()
 
     pass
 

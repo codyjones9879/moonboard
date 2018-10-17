@@ -1010,6 +1010,20 @@ class MoonboardAppLayout(GridLayout):
         self.db = DbCon()
         global Routes, problemButton, filterBox, FilterLabel, filteredCommandStr, orderCommandStr, pageIndex, MoonLayout
         MoonLayout = "2017/"
+        # for i in range(19):
+        #     for j in range(12):
+        #         imageStr = str("images/2017/moon-1-2-yellow-square.png")
+        #         tempimage = moonBoardImage(source=imageStr)
+        #         imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-white-square.png")
+        #         tempimage = moonBoardImage(source=imageStr)
+        #         imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-yellow-square.png")
+        #         tempimage = moonBoardImage(source=imageStr)
+        #         imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-green-square.png")
+        #         tempimage = moonBoardImage(source=imageStr)
+        #         imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-red-square.png")
+        #         tempimage = moonBoardImage(source=imageStr)
+        #         imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-blue-square.png")
+        #         tempimage = moonBoardImage(source=imageStr)
         filteredCommandStr = ""
         orderCommandStr = "ORDER BY RAND() "
         pageIndex = 0
@@ -1046,9 +1060,27 @@ class MoonboardAppLayout(GridLayout):
         for i in range(19):
             for j in range(12):
                 self.imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
+                if i != 0 and j != 0:
+
+                    self.imageStr1 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-white-square.png")
+                    self.imageStr2 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-yellow-square.png")
+                    self.imageStr3 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-blue-square.png")
+                    self.imageStr4 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-red-square.png")
+                    self.imageStr5 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-green-square.png")
+                    temp = moonBoardImage(source=self.imageStr1, size_hint_y=1, size_hint_x=1,
+                                      allow_stretch=True, keep_ratio=False)
+                    temp = moonBoardImage(source=self.imageStr2, size_hint_y=1, size_hint_x=1,
+                                      allow_stretch=True, keep_ratio=False)
+                    temp = moonBoardImage(source=self.imageStr3, size_hint_y=1, size_hint_x=1,
+                                      allow_stretch=True, keep_ratio=False)
+                    temp = moonBoardImage(source=self.imageStr4, size_hint_y=1, size_hint_x=1,
+                                      allow_stretch=True, keep_ratio=False)
+                    temp = moonBoardImage(source=self.imageStr5, size_hint_y=1, size_hint_x=1,
+                                      allow_stretch=True, keep_ratio=False)
                 global LED_ROUTE_IMAGES
                 LED_ROUTE_IMAGES[self.temp] = moonBoardImage(source=self.imageStr, size_hint_y=1, size_hint_x=1,
                                                              allow_stretch=True, keep_ratio=False)
+
                 # self.moonImagesArray[temp]
                 self.temp += 1
         for i in range(228):
@@ -1278,6 +1310,7 @@ class DatabaseApp(App):
         parent = BoxLayout(size=(Window.width, Window.height))
         self.gridsDisplay = MoonboardAppLayout()
         parent.add_widget(self.gridsDisplay)
+
         return parent
 
 

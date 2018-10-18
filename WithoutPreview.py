@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import kivy
 #from neopixel import *
 import sys
+import io
 from kivy.app import App
 from kivy.uix.image import Image
 from kivy.uix.gridlayout import GridLayout
@@ -23,8 +24,9 @@ import pymysql
 import pymysql.cursors
 from kivy.core.window import Window
 import time
+from kivy.core.image import Image as CoreImage
 from kivy.cache import Cache
-
+import glob
 reload(sys)
 sys.setdefaultencoding('utf-8')
 LabelBase.register(name="NotoSans",
@@ -88,6 +90,13 @@ LED_CHANNEL = 0
 #strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
 #strip.begin()
 
+def preloadImages(self):
+    for img in glob.glob("images/2017/*.png"):
+        #data = io.BytesIO(open(img, "rb").read())
+        print(img)
+        self.imageStr = img
+        temporary = moonBoardImage(source=self.imageStr, size_hint_y=1, size_hint_x=1,
+                                                     allow_stretch=True, keep_ratio=False)
 
 def colorWipe(strip, color, wait_ms=0):
     for i in range(strip.numPixels()):
@@ -747,7 +756,7 @@ class DbCon:
         else:
             filterBox[20] = False
             addCommandStr = ""
-            self.c.execute("(SELECT * FROM routes" + filteredCommandStr + " AND (Method = \'Feet follow hands\' OR Method = \'Footless + kickboard\')" + " AND (HoldSetupDesc = 'MoonBoard Masters 2017') AND (ConfigurationDesc) REGEXP '40'" + " AND concat(SetterNickName, '', routes.Name, '', Grade, '', UserRating, '', Repeats, '') REGEXP '%s'" % search + " AND CONCAT_WS(StartHold1Desc, StartHold2Desc, IntermediateHold1Desc, IntermediateHold2Desc, IntermediateHold3Desc, IntermediateHold4Desc, IntermediateHold5Desc, IntermediateHold6Desc, IntermediateHold7Desc, IntermediateHold8Desc, IntermediateHold9Desc, IntermediateHold10Desc, IntermediateHold11Desc, IntermediateHold12Desc, IntermediateHold13Desc, FinishHold1Desc, FinishHold2Desc) NOT REGEXP 'B5|E5|G5|J5|C6|I6|A7|D7|H7|K7|C9|E9|G9|I9|A10|K10|C11|I11|B12|E12|G12|J12|D13|H13|B15|E15|G15|J15|D16|H16|C18,I18'" + "" + orderCommandStr + "LIMIT " + str(pageIndex*10) + ",10)" + addedCommandStr)
+        self.c.execute("(SELECT * FROM routes" + filteredCommandStr + " AND (Method = \'Feet follow hands\' OR Method = \'Footless + kickboard\')" + " AND (HoldSetupDesc = 'MoonBoard Masters 2017') AND (ConfigurationDesc) REGEXP '40'" + " AND concat(SetterNickName, '', routes.Name, '', Grade, '', UserRating, '', Repeats, '') REGEXP '%s'" % search + " AND CONCAT_WS(StartHold1Desc, StartHold2Desc, IntermediateHold1Desc, IntermediateHold2Desc, IntermediateHold3Desc, IntermediateHold4Desc, IntermediateHold5Desc, IntermediateHold6Desc, IntermediateHold7Desc, IntermediateHold8Desc, IntermediateHold9Desc, IntermediateHold10Desc, IntermediateHold11Desc, IntermediateHold12Desc, IntermediateHold13Desc, FinishHold1Desc, FinishHold2Desc) NOT REGEXP 'B5|E5|G5|J5|C6|I6|A7|D7|H7|K7|C9|E9|G9|I9|A10|K10|C11|I11|B12|E12|G12|J12|D13|H13|B15|E15|G15|J15|D16|H16|C18,I18'" + "" + orderCommandStr + "LIMIT " + str(pageIndex*10) + ",10)" + addedCommandStr)
         return self.c.fetchall()
 
     def get_rows_searched(self, search=""):
@@ -1084,6 +1093,7 @@ class MoonboardAppLayout(GridLayout):
                                            filterBox[12].active, filterBox[13].active, filterBox[14].active,
                                            filterBox[15].active, filterBox[16].active, filterBox[17].active,
                                            filterBox[18].active, filterBox[19].active, search)
+        print(len(Routes))
         for index in range(len(Routes)):
             problemButton[index] = Problem(
                 text=(Routes[index][1] + '\n' + "Set By: " + Routes[index][10].encode('utf-8')) + '\n' + "Grade: " + Routes[index][
@@ -1103,6 +1113,7 @@ class MoonboardAppLayout(GridLayout):
     def update_table(self, search=""):
         global Routes
         Routes = self.db.get_rows_searched(search)
+        print(len(Routes))
         for index in range(len(Routes)):
             problemButton[index] = Problem(
                 text=(Routes[index][1] + '\n' + "Set By: " + Routes[index][10].encode('utf-8')) + '\n' + "Grade: " +
@@ -1213,6 +1224,7 @@ class MoonboardAppLayout(GridLayout):
 class DatabaseApp(App):
     def build(self):
         self.title = "MOONBOARD"
+        preloadImages(self)
         parent = BoxLayout(size=(Window.width, Window.height))
         self.gridsDisplay = MoonboardAppLayout()
         parent.add_widget(self.gridsDisplay)

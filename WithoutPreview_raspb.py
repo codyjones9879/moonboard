@@ -1220,7 +1220,7 @@ class MoonboardAppLayout(GridLayout):
 class DatabaseApp(App):
     def build(self):
         self.title = "MOONBOARD"
-        preloadImages(self)
+        #preloadImages(self)
         parent = BoxLayout(size=(Window.width, Window.height))
         self.gridsDisplay = MoonboardAppLayout()
         parent.add_widget(self.gridsDisplay)

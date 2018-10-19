@@ -90,12 +90,12 @@ LED_CHANNEL = 0
 #strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
 #strip.begin()
 
-def preloadImages(self):
+def preloadImages():
     for img in glob.glob("images/2017/*.png"):
         #data = io.BytesIO(open(img, "rb").read())
         print(img)
-        self.imageStr = img
-        temporary = moonBoardImage(source=self.imageStr, size_hint_y=1, size_hint_x=1,
+        imageStr = img
+        temporary = moonBoardImage(source=imageStr, size_hint_y=1, size_hint_x=1,
                                                      allow_stretch=True, keep_ratio=False)
 
 def colorWipe(strip, color, wait_ms=0):
@@ -1224,12 +1224,12 @@ class MoonboardAppLayout(GridLayout):
 class DatabaseApp(App):
     def build(self):
         self.title = "MOONBOARD"
-        preloadImages(self)
-        parent = BoxLayout(size=(Window.width, Window.height))
-        self.gridsDisplay = MoonboardAppLayout()
-        parent.add_widget(self.gridsDisplay)
-        return parent
 
+        #parent = BoxLayout(size=(Window.width, Window.height))
+        #self.gridsDisplay = MoonboardAppLayout()
+        #arent.add_widget(self.gridsDisplay)
+        #return parent
 
+preloadImages()
 dataApp = DatabaseApp()
-dataApp.run()
+#dataApp.close()

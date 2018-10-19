@@ -91,7 +91,7 @@ strip.begin()
 print("--- %s seconds ---" % (time.time() - start_time))
 
 def preloadImages(self):
-    for img in glob.glob("images/2017/*.png"):
+    for img in glob.glob("/home/pi/kivy/rpi_ws281x/moonboard/images/2017/*.png"):
         #data = io.BytesIO(open(img, "rb").read())
         print(img)
         self.imageStr = img

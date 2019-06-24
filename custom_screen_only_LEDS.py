@@ -715,6 +715,7 @@ class MoonboardAppLayout(GridLayout):
 
     def home_screen(self, home):
         self.clear_widgets()
+        colorWipe(strip, Color(0, 0, 0))
         self.__init__()
 
 

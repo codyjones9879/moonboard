@@ -1,35 +1,15 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 # from neopixel import *
-import sys
 import time
-
-import pymysql
-import pymysql.cursors
 from kivy.app import App
 from kivy.cache import Cache
-from kivy.config import Config
-from kivy.core.text import LabelBase
 from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
-from kivy.uix.checkbox import CheckBox
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
-from kivy.uix.label import Label
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.textinput import TextInput
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
-LabelBase.register(name="NotoSans",
-                   fn_regular="NotoSans-hinted/NotoSansUI-Regular.ttf",
-                   fn_bold="NotoSans-hinted/NotoSansUI-Bold.ttf",
-                   fn_italic="NotoSans-hinted/NotoSansUI-Italic.ttf",
-                   fn_bolditalic="NotoSans-hinted/NotoSansUI-BoldItalic.ttf")
-Config.set('graphics', 'default_font',
-           '[‘Roboto’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’, ‘data/fonts/uming.ttc’]')
 
 '''
 Coordinate Key: This is for color value
@@ -62,7 +42,7 @@ M			G1=6     G2=15    G3=28    G4=37    G5=50    G6=59    G7=72    G8=81    G9=9
 Globals
 '''
 count = 0
-global LED_ROUTE_IMAGES, problemButton, Routes, filterBox, FilterLabel, filteredCommandStr, orderCommandStr, addedCommandStr, pageIndex
+global LED_ROUTE_IMAGES
 LED_ROUTE_IMAGES = [None] * 228
 
 '''
@@ -90,45 +70,6 @@ def colorWipe(strip, color, wait_ms=0):
         strip.setPixelColor(i, color)
         strip.show()
         # time.sleep(wait_ms/1000.0)
-
-
-def getVGrade(fontGrade):
-    switcher = {
-        "5+": "V2",
-        "6a": "V3",
-        "6a+": "V3+",
-        "6B": "V4",
-        "6b": "V4",
-        "6B+": "V4+",
-        "6b+": "V4+",
-        "6C": "V5",
-        "6c": "V5",
-        "6C+": "V5+",
-        "6c+": "V5+",
-        "7A": "V6",
-        "7a": "V6",
-        "7A+": "V7",
-        "7a+": "V7",
-        "7B": "V8",
-        "7b": "V8",
-        "7B+": "V8+",
-        "7b+": "V8+",
-        "7C": "V9",
-        "7c": "V9",
-        "7C+": "V10",
-        "7c+": "V10",
-        "8A": "V11",
-        "8a": "V11",
-        "8A+": "V12",
-        "8a+": "V12",
-        "8B": "V13",
-        "8b": "V13",
-        "8B+": "V14",
-        "8b+": "V14",
-        "8C": "V15",
-        "8c": "V15"
-    }
-    return switcher.get(fontGrade, None)
 
 
 def numberToLetter(coord):
@@ -601,327 +542,6 @@ def picIndexLookUp(index):
     return switcher.get(index, None)
 
 
-class DbCon:
-    def __init__(self):
-        self.filteredCommandStr = ""
-        self.orderCommandStr = ""
-        self.db = pymysql.connect(host="localhost", user="root", passwd="root", db="climbingholdsape")
-        self.c = self.db.cursor()
-
-    def get_rows(self):
-        self.c.execute("(SELECT * FROM routes ORDER BY DateInserted DESC LIMIT 0,10)")
-        return self.c.fetchall()
-
-    def get_rows_filtered(self, v4, v4plus, v5, v5plus, v6, v7, v8, v8plus, v9, v10, v11, v12, v13, v14, star3, star2,
-                          star1,
-                          star0, popular, newest, benchmark, search):
-        global filteredCommandStr, orderCommandStr, addedCommandStr, filterBox, pageIndex
-        filteredCommandStr = ""
-        orderCommandStr = ""
-        addedCommandStr = ""
-        if v4:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-            filteredCommandStr += "Grade = '\"6B\"' "
-        if v4plus:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-            filteredCommandStr += "Grade = '\"6B+\"' "
-        if v5:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-
-            filteredCommandStr += "Grade = '\"6C\"'"
-        if v5plus:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-            filteredCommandStr += "Grade = '\"6C+\"'"
-        if v6:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-            filteredCommandStr += "Grade = '\"7A\"'"
-        if v7:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-            filteredCommandStr += "Grade = '\"7A+\"'"
-        if v8:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-            filteredCommandStr += "Grade = '\"7B\"'"
-        if v8plus:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-            filteredCommandStr += "Grade = '\"V8+\"'"
-        if v9:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-            filteredCommandStr += "Grade = '\"7C\"'"
-        if v10:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-            filteredCommandStr += "Grade = '\"7C+\"'"
-        if v11:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-            filteredCommandStr += "Grade = '\"8A\"'"
-        if v12:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-            filteredCommandStr += "Grade = '\"8A+\"'"
-        if v13:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-            filteredCommandStr += "Grade = '\"8B\"'"
-        if v14:
-            if filteredCommandStr != "":
-                filteredCommandStr += " OR "
-            else:
-                filteredCommandStr += " WHERE ("
-            filteredCommandStr += "Grade = '\"8B+\"'"
-        if v4plus or v5 or v5plus or v6 or v7 or v8 or v8plus or v9 or v10 or v11 or v12 or v13 or v14:
-            filteredCommandStr += ") "
-            if star0 or star1 or star2 or star3:
-                filteredCommandStr += "AND ("
-        else:
-            filteredCommandStr += " WHERE ("
-        if star0:
-            filteredCommandStr += "UserRating = 0"
-        if star1:
-            if star0:
-                filteredCommandStr += " OR "
-            filteredCommandStr += "UserRating = 1"
-        if star2:
-            if star0 or star1:
-                filteredCommandStr += " OR "
-            filteredCommandStr += "UserRating = 2"
-        if star3:
-            if star0 or star1 or star2:
-                filteredCommandStr += " OR "
-            filteredCommandStr += "UserRating = 3"
-        if star0 or star1 or star2 or star3:
-            filteredCommandStr += ")"
-        if benchmark:
-            filteredCommandStr += " AND (isBenchmark = 1)"
-        if popular and newest:
-            orderCommandStr = " ORDER BY DateInserted ASC "
-            addedCommandStr = " ORDER BY Repeats DESC"
-        elif popular:
-            orderCommandStr = " ORDER BY Repeats DESC "
-            addedCommandStr = ""
-        elif newest:
-            orderCommandStr = " ORDER BY DateInserted ASC "
-            addedCommandStr = ""
-        elif not popular and not newest:
-            orderCommandStr = " ORDER BY DateInserted DESC "
-            addedCommandStr = ""
-        elif popular and not newest:
-            addedCommandStr = " ORDER BY Repeats DESC"
-        else:
-            filterBox[20] = False
-        print(
-        "(SELECT * FROM routes" + filteredCommandStr + " AND (Method = \'Feet follow hands\' OR Method = \'Footless + kickboard\')" + " AND (HoldSetupDesc = 'MoonBoard Masters 2017') AND (ConfigurationDesc) REGEXP '40'" + " AND concat(SetterNickName, '', routes.Name, '', Grade, '', UserRating, '', Repeats, '') REGEXP '%s'" % search + " AND CONCAT_WS(StartHold1Desc, StartHold2Desc, IntermediateHold1Desc, IntermediateHold2Desc, IntermediateHold3Desc, IntermediateHold4Desc, IntermediateHold5Desc, IntermediateHold6Desc, IntermediateHold7Desc, IntermediateHold8Desc, IntermediateHold9Desc, IntermediateHold10Desc, IntermediateHold11Desc, IntermediateHold12Desc, IntermediateHold13Desc, FinishHold1Desc, FinishHold2Desc) NOT REGEXP 'B5|E5|G5|J5|C6|I6|A7|D7|H7|K7|C9|E9|G9|I9|A10|K10|C11|I11|B12|E12|G12|J12|D13|H13|B15|E15|G15|J15|D16|H16|C18,I18'" + "" + orderCommandStr + "LIMIT " + str(
-            pageIndex * 10) + ",10)" + addedCommandStr)
-        self.c.execute(
-            "(SELECT * FROM routes" + filteredCommandStr + " AND (Method = \'Feet follow hands\' OR Method = \'Footless + kickboard\')" + " AND (HoldSetupDesc = 'MoonBoard Masters 2017') AND (ConfigurationDesc) REGEXP '40'" + " AND concat(SetterNickName, '', routes.Name, '', Grade, '', UserRating, '', Repeats, '') REGEXP '%s'" % search + " AND CONCAT_WS(StartHold1Desc, StartHold2Desc, IntermediateHold1Desc, IntermediateHold2Desc, IntermediateHold3Desc, IntermediateHold4Desc, IntermediateHold5Desc, IntermediateHold6Desc, IntermediateHold7Desc, IntermediateHold8Desc, IntermediateHold9Desc, IntermediateHold10Desc, IntermediateHold11Desc, IntermediateHold12Desc, IntermediateHold13Desc, FinishHold1Desc, FinishHold2Desc) NOT REGEXP 'B5|E5|G5|J5|C6|I6|A7|D7|H7|K7|C9|E9|G9|I9|A10|K10|C11|I11|B12|E12|G12|J12|D13|H13|B15|E15|G15|J15|D16|H16|C18,I18'" + "" + orderCommandStr + "LIMIT " + str(
-                pageIndex * 10) + ",10)" + addedCommandStr)
-        return self.c.fetchall()
-
-    def get_rows_searched(self, search=""):
-        global filteredCommandStr, pageIndex
-        if filteredCommandStr == "":
-            self.c.execute(
-                    "SELECT * FROM routes WHERE (Grade = '\"6B\"' OR Grade = '\"6B+\"'  OR Grade = '\"6C\"' OR Grade = '\"6C+\"' OR Grade = '\"7A\"' OR Grade = '\"7A+\"' OR Grade = '\"7B\"' OR Grade = '\"V8+\"' OR Grade = '\"7C\"' OR Grade = '\"7C+\"' OR Grade = '\"8A\"' OR Grade = '\"8A+\"' OR Grade = '\"8B\"' OR Grade = '\"8B+\"') AND (UserRating = 0 OR UserRating = 1 OR UserRating = 2 OR UserRating = 3)" + " AND (Method = \'Feet follow hands\' OR Method = \'Footless + kickboard\')" + " AND (HoldSetupDesc = 'MoonBoard Masters 2017') AND (ConfigurationDesc) REGEXP '40'" + " AND concat(SetterNickName, '', routes.Name, '', Grade, '', UserRating, '', Repeats, '') REGEXP '%s' AND CONCAT_WS(StartHold1Desc, StartHold2Desc, IntermediateHold1Desc, IntermediateHold2Desc, IntermediateHold3Desc, IntermediateHold4Desc, IntermediateHold5Desc, IntermediateHold6Desc, IntermediateHold7Desc, IntermediateHold8Desc, IntermediateHold9Desc, IntermediateHold10Desc, IntermediateHold11Desc, IntermediateHold12Desc, IntermediateHold13Desc, FinishHold1Desc, FinishHold2Desc) NOT REGEXP 'B5|E5|G5|J5|C6|I6|A7|D7|H7|K7|C9|E9|G9|I9|A10|K10|C11|I11|B12|E12|G12|J12|D13|H13|B15|E15|G15|J15|D16|H16|C18,I18' ORDER BY DateInserted ASC LIMIT " % search + str(
-                    pageIndex * 10) + ",10")
-        else:
-            self.c.execute(
-                "SELECT * FROM routes" + filteredCommandStr + " AND (Method = \'Feet follow hands\' OR Method = \'Footless + kickboard\')" + " AND (HoldSetupDesc = 'MoonBoard Masters 2017') AND (ConfigurationDesc) REGEXP '40'" + " AND concat(SetterNickName, '', routes.Name, '',  Grade, '', UserRating, '', Repeats, '') REGEXP '%s' AND CONCAT_WS(StartHold1Desc, StartHold2Desc, IntermediateHold1Desc, IntermediateHold2Desc, IntermediateHold3Desc, IntermediateHold4Desc, IntermediateHold5Desc, IntermediateHold6Desc, IntermediateHold7Desc, IntermediateHold8Desc, IntermediateHold9Desc, IntermediateHold10Desc, IntermediateHold11Desc, IntermediateHold12Desc, IntermediateHold13Desc, FinishHold1Desc, FinishHold2Desc) NOT REGEXP 'B5|E5|G5|J5|C6|I6|A7|D7|H7|K7|C9|E9|G9|I9|A10|K10|C11|I11|B12|E12|G12|J12|D13|H13|B15|E15|G15|J15|D16|H16|C18,I18' ORDER BY DateInserted ASC LIMIT 0,10" % search)
-        return self.c.fetchall()
-
-
-
-
-
-class Problem(Button):
-    route = [None] * 34
-    global LED_ROUTE_IMAGES
-    routeName = ""
-    setterName = ""
-    gradeUK = ""
-    Grade = ""
-    UserRating = 0
-    # moves = 0
-    repeats = 0
-    font_name = 'DejaVuSans.ttf'
-
-    def on_press(self):
-        # colorWipe(strip, Color(0, 0, 0))
-        start = time.time()
-        self.coordLED = [None] * 34
-        '''
-            # Example Array setup:   [SH1, SH2, SH3, SH4,IH1,.....IH196,FH1,FH2]   SH1-4  is a combination of 2 hands and 2 feet, Intermediate max is with only 1 hand hold to start and 1 finish
-            # hold max making a remaining 196 Intermediate holds potentially if the wall is filled We need designated locations for these combinations
-            '''
-        self.colorLED = [0] * 198
-        # start holds
-        print(self.route)
-        self.coordLED[0] = moonToLED(self.route[1])
-        self.coordLED[1] = moonToLED(self.route[3])
-        self.coordLED[2] = None  # only because of moonboard only having 2 start holds
-        self.coordLED[3] = None  # only because of moonboard only having 2 start holds
-        # finish Holds
-        self.coordLED[31] = moonToLED(self.route[31])
-        self.coordLED[33] = moonToLED(self.route[33])
-
-        temp = 5  # starting index in route that intermediate holds belong to
-        temp2 = 4
-        while self.route[temp] != None:
-            self.coordLED[temp2] = moonToLED(self.route[temp])
-            temp2 += 1
-            temp += 2
-        '''
-        	# Color Choice:
-        	# 0. Off
-        	# 1. Blue - Start Hold
-        	# 2. Red - Intermediate Hold
-        	# 3. Green - Finish Hold
-        	'''
-        index = 0
-        while index < len(self.coordLED):
-            if index < 4:
-                # start Holds
-                if self.coordLED[index] != None:
-                    self.colorLED[self.coordLED[index]] = 1
-                    # strip.setPixelColorRGB(self.coordLED[index], 255, 0, 0)
-            elif index > 3 and index < 31:
-                if self.coordLED[index] != None:
-                    self.colorLED[self.coordLED[index]] = 2
-                    # strip.setPixelColorRGB(self.coordLED[index], 0, 0, 255)
-                    # else:
-                    # 	#colorLED[coordLED[index]] = 0
-            else:
-                if self.coordLED[index] != None:
-                    self.colorLED[self.coordLED[index]] = 3
-                    # strip.setPixelColorRGB(self.coordLED[index], 0, 255, 0)
-                    # else:
-                    # 	#colorLED[coordLED[index]] = 0
-            index += 1
-        index = 0
-        while index < len(self.colorLED):
-            if self.colorLED[index] == None:
-                self.colorLED[index] = 0
-                # strip.setPixelColorRGB(index, 0, 0, 0)
-            index += 1
-        # strip.show()
-        self.tmp = 0  # running index for 228 images
-        self.TEMP = 197  # running index for 197 LEDs
-        self.REVERSE = True
-        for i in range(19):
-            for j in range(12):
-                # print("i=&s", i)
-                # print("j=&s", j)
-                if self.tmp < 13:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 24:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 36:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 48:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 60:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 72:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 84:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 96:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 108:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 120:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 132:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 144:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 156:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 168:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 180:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 192:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 204:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                elif self.tmp == 216:
-                    imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                    LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                else:
-                    # since LED's go in zig zags, we need to adjust mirror numbers.
-                    if self.colorLED[picIndexLookUp(self.TEMP)] == 0:
-                        imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + ".png")
-                        LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                    elif self.colorLED[picIndexLookUp(self.TEMP)] == 1:
-                        imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-green-square.png")
-                        LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                    elif self.colorLED[picIndexLookUp(self.TEMP)] == 2:
-                        imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-blue-square.png")
-                        LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                    elif self.colorLED[picIndexLookUp(self.TEMP)] == 3:
-                        imageStr = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-red-square.png")
-                        LED_ROUTE_IMAGES[self.tmp].source = imageStr
-                    else:
-                        print("WE HAVE A PROBLEM")
-                    self.TEMP -= 1
-                    # adjust Row and Column
-                self.tmp += 1
-        end = time.time()
-        print(end - start)
-
-
 class moonBoardProblemImage(GridLayout):
     def __init__(self, **kwargs):
         super(moonBoardProblemImage, self).__init__(**kwargs)
@@ -999,15 +619,8 @@ class MoonboardAppLayout(GridLayout):
         super(MoonboardAppLayout, self).__init__(**kwargs)
         self.cols = 2
         self.rows = 2
-        self.db = DbCon()
-        global Routes, problemButton, filterBox, FilterLabel, filteredCommandStr, orderCommandStr, pageIndex, MoonLayout
+        global MoonLayout
         MoonLayout = "2017/"
-        filteredCommandStr = ""
-        orderCommandStr = "ORDER BY RAND() "
-        pageIndex = 0
-        Routes = self.db.get_rows()
-        # print(Routes)
-
         self.moonImageGroup = moonBoardProblemImage()
         self.temp = 0
         for i in range(19):
@@ -1033,15 +646,11 @@ class MoonboardAppLayout(GridLayout):
                 global LED_ROUTE_IMAGES
                 LED_ROUTE_IMAGES[self.temp] = moonBoardImage(source=self.imageStr, size_hint_y=1, size_hint_x=1,
                                                              allow_stretch=True, keep_ratio=False)
-
-                # self.moonImagesArray[temp]
                 self.temp += 1
         for i in range(228):
             self.moonImageGroup.add_widget(LED_ROUTE_IMAGES[i])
 
-
         self.return_home = Button(text="Clear", on_press=self.home_screen)
-
 
         self.clear_widgets()
 
@@ -1106,6 +715,7 @@ class MoonboardAppLayout(GridLayout):
 
     def home_screen(self, home):
         self.clear_widgets()
+        # colorWipe(strip, Color(0, 0, 0))
         self.__init__()
 
 

@@ -48,7 +48,7 @@ LED_ROUTE_IMAGES = [None] * 228
 '''
 In order to not have to access the SD card which can be slow, here we make sure everything stays in the cache increasing performance. (Hopefully)
 '''
-Cache.register('kv.image', limit=None, timeout=None)
+#Cache.register('kv.image', limit=None, timeout=None)
 
 # Window.fullscreen = 'auto'
 LED_COUNT = 198
@@ -633,16 +633,16 @@ class MoonboardAppLayout(GridLayout):
                     self.imageStr3 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-blue-square.png")
                     self.imageStr4 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-red-square.png")
                     self.imageStr5 = str("images/" + MoonLayout + "moon-" + str(i) + "-" + str(j) + "-green-square.png")
-                    temp = moonBoardImage(source=self.imageStr1, size_hint_y=1, size_hint_x=1,
-                                      allow_stretch=True, keep_ratio=False)
-                    temp = moonBoardImage(source=self.imageStr2, size_hint_y=1, size_hint_x=1,
-                                      allow_stretch=True, keep_ratio=False)
-                    temp = moonBoardImage(source=self.imageStr3, size_hint_y=1, size_hint_x=1,
-                                      allow_stretch=True, keep_ratio=False)
-                    temp = moonBoardImage(source=self.imageStr4, size_hint_y=1, size_hint_x=1,
-                                      allow_stretch=True, keep_ratio=False)
-                    temp = moonBoardImage(source=self.imageStr5, size_hint_y=1, size_hint_x=1,
-                                      allow_stretch=True, keep_ratio=False)
+                    #temp = moonBoardImage(source=self.imageStr1, size_hint_y=1, size_hint_x=1,
+                    #                  allow_stretch=True, keep_ratio=False)
+                    #temp = moonBoardImage(source=self.imageStr2, size_hint_y=1, size_hint_x=1,
+                    #                  allow_stretch=True, keep_ratio=False)
+                    #temp = moonBoardImage(source=self.imageStr3, size_hint_y=1, size_hint_x=1,
+                    #                  allow_stretch=True, keep_ratio=False)
+                    #temp = moonBoardImage(source=self.imageStr4, size_hint_y=1, size_hint_x=1,
+                    #                  allow_stretch=True, keep_ratio=False)
+                    #temp = moonBoardImage(source=self.imageStr5, size_hint_y=1, size_hint_x=1,
+                    #                  allow_stretch=True, keep_ratio=False)
                 global LED_ROUTE_IMAGES
                 LED_ROUTE_IMAGES[self.temp] = moonBoardImage(source=self.imageStr, size_hint_y=1, size_hint_x=1,
                                                              allow_stretch=True, keep_ratio=False)
